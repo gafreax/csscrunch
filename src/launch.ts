@@ -1,4 +1,4 @@
-import cleancss from "./index.ts";
+import cleancss from "./index";
 
 const css = `
   a {  color: purple;}

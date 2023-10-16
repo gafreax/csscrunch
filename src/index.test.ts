@@ -1,4 +1,4 @@
-import  { tokenize }  from ".";
+import  { tokenize }  from "./index";
 
 describe("index", () => {
     test( "tokenize", () => {

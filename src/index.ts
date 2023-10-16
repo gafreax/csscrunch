@@ -1,4 +1,4 @@
-import type { Tokens } from "./index.d.ts"
+import { Tokens } from "./index.d"
 
 export const isWhitespace = function (char: string) { return char === ' ' || char === '\t' || char === '\n' }
 
@@ -88,6 +88,6 @@ export const stringify = function (tokens: Tokens):string {
   return result.join('')
 }
 
-const cleancss = tokenize(css);
+const cleancss = (css:string) => stringify(compact(tokenize(css)));
 
-exports default cleancss
+export default cleancss
