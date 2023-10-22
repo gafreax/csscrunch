@@ -4,8 +4,8 @@
   "description": "Simple CSS Parser to tokenize CSS, merge rules, and optimize it",
   "main": "index.js",
   "scripts": {
-    "prebuild": "standard --fix",
-    "lint": "standard",
+    "prebuild": "rimraf dist/ && ts-standard --fix src/**/*.ts",
+    "lint": "ts-standard --fix",
     "build": "tsc",
     "dev": "ts-node --esm src/launch.ts",
     "start": "node dist/src/launch.js",
@@ -14,14 +14,21 @@
   "author": "Gabriele Fontana",
   "license": "MIT",
   "devDependencies": {
+    "@types/clean-css": "^4.2.9",
     "@types/jest": "^29.5.5",
     "jest": "^29.7.0",
-    "standard": "^17.1.0",
+    "rimraf": "^5.0.5",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
+    "ts-standard": "^12.0.2",
     "typescript": "^5.2.2"
   },
   "standard": {
-    "env": [ "jest" ]
+    "env": [
+      "jest"
+    ]
+  },
+  "dependencies": {
+    "clean-css": "^5.3.2"
   }
 }
