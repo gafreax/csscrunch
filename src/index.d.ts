@@ -1,5 +1,5 @@
-export type Token = string;
+export type Token = string
 
-export type Tokens = {
-    [key: string]: Token
-} 
+export interface Tokens {
+  [key: string]: Token
+}
