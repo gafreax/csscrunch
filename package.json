@@ -2,13 +2,11 @@
   "name": "cssparser",
   "version": "1.0.0",
   "description": "Simple CSS Parser to tokenize CSS, merge rules, and optimize it",
-  "main": "index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "prebuild": "rimraf dist/ && ts-standard --fix src/**/*.ts",
     "lint": "ts-standard --fix",
     "build": "tsc",
-    "dev": "ts-node --esm src/launch.ts",
-    "start": "node dist/src/launch.js",
     "test": "jest"
   },
   "author": "Gabriele Fontana",
