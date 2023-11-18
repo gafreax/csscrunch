@@ -1,0 +1,8 @@
+node_modules/
+src/
+test/
+performance/
+.vscode/
+jest*
+README.md
+ts-config.json
