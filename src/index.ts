@@ -29,9 +29,10 @@ export const isSkippable = function (char: string, oldChar: string): boolean {
  * Become:
  *
  * {'.class': 'color: red; background: blue;' }
- *
+ * 
+ * TODO: add configuration parameter to allow only some optimizations 
  * @param css String with css style
- * @returns Tokens with identification tokens and its style rules
+ * @returns string Tokens with identification tokens and its style rules
  */
 export const tokenize = function (css: string): Tokens {
   const tokens: Tokens = {}
@@ -46,8 +47,6 @@ export const tokenize = function (css: string): Tokens {
     // optimization
     if (oldChar === '/' && char === '*') {
       index = css.indexOf('*/', index) + 2
-    } else if (oldChar === '/' && char === '/') {
-      index = css.indexOf('\n', index) + 1
     }
     if (index >= mediaQueries[mediaQueryParsed]?.start) {
       index = mediaQueries[mediaQueryParsed].end + 1
@@ -91,11 +90,16 @@ export const tokenize = function (css: string): Tokens {
     const mediaQueryFirstParenthesis = css.indexOf('{', mediaQueryStart)
     const rule = css.slice(mediaQueryStart, mediaQueryFirstParenthesis)
     const value = css.slice(mediaQueryFirstParenthesis + 1, mediaQueryEnd - 1)
-    mediaTokens[rule] = value
+    mediaTokens[rule] = value.replaceAll('\n', '').replaceAll('\t', '').replaceAll('  ', '')
   }
   return { ...tokens, ...mediaTokens }
 }
 
+/**
+ * Compact the tokens
+ * @param Tokens that will be compacted 
+ * @returns compacted Tokens
+ */
 export const compact = function (tokens: Tokens): Tokens {
   for (const token in tokens) {
     // do not optimize media queries
