@@ -3,7 +3,7 @@ import cleancss from './index'
 // import { css } from './data'
 const cleanCssInstance = new CleanCssLib({ level: 2 })
 // todo: remove empty rules
-const css = 'a{font-weight:bold; background-color: #aaff00; color: #ffaa00; border: 0px;} p{};'
+const css = 'a{font-weight:bold; /* comment */ background-color: #aaff00; color: #ffaa00; border: 0px;} p{};'
 // const _css = `
 // body {
 //   margin: 0;
