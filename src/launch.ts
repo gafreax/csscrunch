@@ -3,7 +3,7 @@ import { parse } from './index'
 // import { css } from './data'
 const cleanCssInstance = new CleanCssLib({ level: 2 })
 // todo: remove empty rules
-const css = `div{color:red}div{float:left}a{color:yellow; /* comment */ background: #aaff00;} p{color:#fffff}div{padding:4px;margin:0px}
+const css = `div {color:red}div{float:left}a{color:yellow; /* comment */ background: #aaff00;} p{color:#fffff}div{padding:4px;margin:0px}
 .row-7 td.column.first .border {
   border: 0;
   padding: 0 30px 0 0; 
@@ -366,7 +366,7 @@ const css = `div{color:red}div{float:left}a{color:yellow; /* comment */ backgrou
 // `
 console.log('css ', css)
 const perf = []
-const testNumber = 1
+const testNumber = 1000
 for (let i = 0; i < testNumber; i++) {
   const t1 = performance.now()
   parse(css)
