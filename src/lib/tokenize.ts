@@ -8,12 +8,29 @@ import { isWhitespace } from './utils'
  * This is useful for optimization purposes
  * @param {string} char current char
  * @param {string} oldChar old char to compare
+ * @param {string} nextChar next char to compare
  * @returns if the current char is skippable
  */
-export const isSkippable = function (char: string, oldChar: string): boolean {
+export const isSkippable = (char: string, oldChar: string, nextChar: string): boolean => {
   const whiteSpace = (isWhitespace(oldChar) && isWhitespace(char)) || char === '\n'
-  const afterSpace = (oldChar === ';' || oldChar === ':' || oldChar === '{' || oldChar === '}') && isWhitespace(char)
-  return whiteSpace || afterSpace
+  const spaceAfter = (oldChar === ';' || oldChar === ':' || oldChar === '{' || oldChar === '}') && isWhitespace(char)
+  const punctuationNext = isWhitespace(char) && isPunctuation(nextChar)
+  return whiteSpace || spaceAfter || punctuationNext
+}
+
+/**
+ * Verify if the char is punctuation like ; : { } ( )
+ * @param char the char to check
+ * @returns if the char is punctuation like ; : { } ( )
+ */
+export const isPunctuation = (char: string): boolean => {
+  // this is more readable but slower version return [';', ':', '{', '}', '(', ')'].includes(char)
+  switch (char) {
+    case ';': case ':': case '{': case '}': case '(': case ')':
+      return true
+    default:
+      return false
+  }
 }
 
 /**
@@ -95,12 +112,12 @@ export const tokenize = (css: string): Tokens => {
       index = css.indexOf('*/', index) + 2 // NOSONAR
       continue
     }
+    if (isSkippable(char, oldChar, nextChar)) { continue }
     if (index >= mediaQueries[mediaQueryParsed]?.start) {
       index = mediaQueries[mediaQueryParsed].end + 1 // NOSONAR
       mediaQueryParsed++
       continue
     }
-    if (isSkippable(char, oldChar)) { continue }
 
     // tokenization
     if (char === '}' && ruleValue?.length === 0) {
