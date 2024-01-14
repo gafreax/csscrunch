@@ -103,8 +103,9 @@ export const tokenize = (css: string): Tokens => {
     if (isSkippable(char, oldChar)) { continue }
 
     // tokenization
-    if (char === '}' && ruleValue?.length === 0) { // remove empty rules
-      delete tokens[ruleId] // NOSONAR
+    if (char === '}' && ruleValue?.length === 0) {
+      // remove empty rules
+      delete tokens[ruleId] // eslint-disable-line
       ruleId = ''
       ruleValue = ''
       isValueToken = false

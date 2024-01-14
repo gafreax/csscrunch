@@ -1,5 +1,5 @@
 import CleanCssLib from 'clean-css'
-import cleancss from './index'
+import { parse } from './index'
 // import { css } from './data'
 const cleanCssInstance = new CleanCssLib({ level: 2 })
 // todo: remove empty rules
@@ -369,7 +369,7 @@ const perf = []
 const testNumber = 1
 for (let i = 0; i < testNumber; i++) {
   const t1 = performance.now()
-  cleancss(css)
+  parse(css)
   const d1 = performance.now() - t1
   const t2 = performance.now()
   cleanCssInstance.minify(css)
@@ -377,7 +377,7 @@ for (let i = 0; i < testNumber; i++) {
   perf.push({ d1, d2, win: d1 < d2 ? 'd1' : 'd2' })
 }
 
-const a = cleancss(css)
+const a = parse(css)
 const b = cleanCssInstance.minify(css)
 console.log('== result mine == \n', a, '\n')
 console.log('== result lib ==\n', b.styles, '\n')
