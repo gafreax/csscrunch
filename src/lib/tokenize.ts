@@ -15,7 +15,8 @@ export const isSkippable = (char: string, oldChar: string, nextChar: string): bo
   const whiteSpace = (isWhitespace(oldChar) && isWhitespace(char)) || char === '\n'
   const spaceAfter = (oldChar === ';' || oldChar === ':' || oldChar === '{' || oldChar === '}') && isWhitespace(char)
   const punctuationNext = isWhitespace(char) && isPunctuation(nextChar)
-  return whiteSpace || spaceAfter || punctuationNext
+  const isLastSemicolon = char === ';' && isPunctuation(nextChar)
+  return whiteSpace || spaceAfter || punctuationNext || isLastSemicolon
 }
 
 /**
