@@ -1,6 +1,6 @@
-import { tokenize } from './index'
+import { tokenize } from './tokenize'
 
-describe('index', () => {
+describe('tokenize', () => {
   test('tokenize', () => {
     const css = `
         a {  color: purple;}
@@ -11,6 +11,7 @@ describe('index', () => {
         .goofy { background: red; }
         .goofy { color: purple; }`
     const res = tokenize(css)
+    console.log(res)
     expect(res).toBeDefined()
   })
 })
