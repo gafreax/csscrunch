@@ -1,15 +1,20 @@
 # CSS Parser
 
-This package provides a powerful and efficient TypeScript library for parsing and optimizing CSS strings. It enables developers to easily extract, manipulate, and transform CSS code within JavaScript projects.
+This package provides a powerful and efficient TypeScript library for optimizing CSS strings. It enables developers to easily compress css JavaScript projects.
+
+The great focus is on keeping a great compatibility across all kind of render engine especially on the various Outlook.
 
 ## Features
-* **Optimize CSS code:** Remove redundant or unnecessary CSS rules to reduce file size and improve performance.
+* **Group rules:** Group same rules with one selector.
+* **Compress:** Compress the size by removing not necessary char.
+* **Merge selector:** Merge same selector into only one.
+* **Media Query:** Move all media queries at the bottom.
 
 
 ## Installation
 
 ```bash
-npm install gafreax/cssparse
+npm install @gafreax/cssparse
 ```
 
 ## Usage
