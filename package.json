@@ -1,6 +1,6 @@
 {
   "name": "@gafreax/cssparser",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Simple CSS Parser to tokenize CSS, merge rules, and optimize it",
   "main": "dist/src/index.js",
   "scripts": {
