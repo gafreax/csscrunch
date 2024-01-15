@@ -1,10 +1,10 @@
 {
   "name": "@gafreax/cssparser",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Simple CSS Parser to tokenize CSS, merge rules, and optimize it",
   "main": "dist/src/index.js",
   "scripts": {
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "prebuild": "rimraf dist/ && ts-standard --fix src/**/*.ts",
     "lint": "ts-standard --fix",
     "build": "tsc",
