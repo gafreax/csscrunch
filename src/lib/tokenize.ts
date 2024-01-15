@@ -35,9 +35,10 @@ export const isPunctuation = (char: string): boolean => {
 }
 
 /**
- *
- * @param css build media queries tokens
- * @param object
+ * build media queries tokens
+ * todo: merge same media query rules
+ * @param css the css string
+ * @param object media query
  * @returns {Tokerns} media tokens
  */
 const buildMediaTokens: BuildMediaTokensFunction = ({ css, mediaQueries }) => {
@@ -45,10 +46,15 @@ const buildMediaTokens: BuildMediaTokensFunction = ({ css, mediaQueries }) => {
   for (const mediaQuery of mediaQueries) {
     const mediaQueryStart = mediaQuery.start
     const mediaQueryEnd = mediaQuery.end
-    const mediaQueryFirstParenthesis: number = css.indexOf('{', mediaQueryStart)
+    const mediaQueryFirstParenthesis = css.indexOf('{', mediaQueryStart)
     const rule = css.slice(mediaQueryStart, mediaQueryFirstParenthesis)
     const value = css.slice(mediaQueryFirstParenthesis + 1, mediaQueryEnd - 1)
-    mediaTokens[rule] = value.replaceAll('\n', '').replaceAll('\t', '').replaceAll('  ', '')
+    // add new rule and little size optimization
+    if (mediaTokens[rule] !== undefined) {
+      mediaTokens[rule] = mediaTokens[rule] + value.replaceAll('\n', '').replaceAll('\t', '').replaceAll('  ', '')
+    } else {
+      mediaTokens[rule] = value.replaceAll('\n', '').replaceAll('\t', '').replaceAll('  ', '')
+    }
   }
   return mediaTokens
 }
@@ -111,12 +117,17 @@ export const tokenize = (css: string): Tokens => {
     // remove comments
     if (char === '/' && nextChar === '*') {
       index = css.indexOf('*/', index) + 2 // NOSONAR
+      oldChar = '' // reset old char to avoid error
       continue
     }
-    if (isSkippable(char, oldChar, nextChar)) { continue }
+    if (isSkippable(char, oldChar, nextChar)) {
+      oldChar = '' // reset old char to avoid error
+      continue
+    }
     if (index >= mediaQueries[mediaQueryParsed]?.start) {
       index = mediaQueries[mediaQueryParsed].end + 1 // NOSONAR
       mediaQueryParsed++
+      oldChar = '' // reset old char to avoid error
       continue
     }
 
