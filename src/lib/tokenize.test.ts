@@ -11,7 +11,6 @@ describe('tokenize', () => {
         .goofy { background: red; }
         .goofy { color: purple; }`
     const res = tokenize(css)
-    console.log(res)
     expect(res).toBeDefined()
   })
 })
