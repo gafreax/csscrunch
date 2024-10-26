@@ -1,7 +1,7 @@
 import CleanCssLib from 'clean-css'
 import fs from 'node:fs'
 import { parse } from './index'
-// import { css } from './data'
+
 const cleanCssInstance = new CleanCssLib({
   compatibility: {
     properties: {
@@ -15,11 +15,6 @@ const cleanCssInstance = new CleanCssLib({
     }
   }
 })
-
-
-// todo: remove empty rules
-// const css = `div {color:red}div{float:left}a{color:yellow; /* comment */ background: #aaff00;} p{color:#fffff}div{padding:4px;margin:0px}`
-
 
 function calculatePerformanceMetrics(perf: { d1: number; d2: number; win: string }[], a: string, b: CleanCssLib.Output, css: string): any {
   return {
