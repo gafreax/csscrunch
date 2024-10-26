@@ -2,6 +2,8 @@ import { BuildMediaTokensFunction, GetRuleValueFunction, Tokens } from './tokeni
 import { MediaQuery } from './mediaQuery.d'
 import { getMediaQueries } from './mediaQuery'
 import { isWhitespace } from './utils'
+import {removeComments} from "./removeComments";
+import {removeDuplicates} from "./removeDuplicates";
 
 /**
  * Check if char is skippable because its value does mean nothing in css
@@ -39,7 +41,7 @@ export const isPunctuation = (char: string): boolean => {
  * todo: merge same media query rules
  * @param css the css string
  * @param object media query
- * @returns {Tokerns} media tokens
+ * @returns {Tokens} media tokens
  */
 const buildMediaTokens: BuildMediaTokensFunction = ({ css, mediaQueries }) => {
   const mediaTokens: Tokens = {}
@@ -69,7 +71,7 @@ const optimizeZeroUnitsRule = (ruleValue: string): string => {
   return ruleValue
 }
 
-const getRuleValue: GetRuleValueFunction = ({ oldChar, rule, ruleValue }) => {
+const getRuleValue: ({oldChar, rule, ruleValue}: { oldChar: any; rule: any; ruleValue: any }) => (any) = ({ oldChar, rule, ruleValue }) => {
   // remove last ; in css rules
   if (oldChar === ';') {
     ruleValue = ruleValue.slice(0, -1)
@@ -83,6 +85,17 @@ const getRuleValue: GetRuleValueFunction = ({ oldChar, rule, ruleValue }) => {
   // size output optimization
   const lastRuleChar: string = rule[rule.length]
   return lastRuleChar === ';' ? rule + ruleValue : rule + ';' + ruleValue
+}
+
+/**
+ * Clean css string by removing comments and duplicates
+ * @param css css string
+ * @returns cleaned css string
+ */
+export const cleanCss = (css: string): string => {
+  css = removeDuplicates(css, [';', '.', ' ']);
+  css = removeComments(css);
+  return css;
 }
 
 /**
@@ -103,23 +116,19 @@ const getRuleValue: GetRuleValueFunction = ({ oldChar, rule, ruleValue }) => {
  */
 export const tokenize = (css: string): Tokens => {
   const tokens: Tokens = {}
-  const mediaQueries: MediaQuery[] = getMediaQueries(css)
-  // todo: change theese var into state object
+  const cleanedCss = cleanCss(css);
+  const mediaQueries: MediaQuery[] = getMediaQueries(cleanedCss)
+  // todo: change these var into state object
   let ruleId = ''
   let ruleValue = ''
   let isValueToken = false
   let oldChar = ''
   let mediaQueryParsed = 0
-  for (let index = 0; index < css.length; index++) {
+
+  for (let index = 0; index < cleanedCss.length; index++) {
     const char = css[index]
     const nextChar = css[index + 1]
     // optimization
-    // remove comments
-    if (char === '/' && nextChar === '*') {
-      index = css.indexOf('*/', index) + 2 // NOSONAR
-      oldChar = '' // reset old char to avoid error
-      continue
-    }
     if (isSkippable(char, oldChar, nextChar)) {
       oldChar = '' // reset old char to avoid error
       continue
