@@ -2,8 +2,8 @@ import { BuildMediaTokensFunction, GetRuleValueFunction, Tokens } from './tokeni
 import { MediaQuery } from './mediaQuery.d'
 import { getMediaQueries } from './mediaQuery'
 import { isWhitespace } from './utils'
-import {removeComments} from "./removeComments";
-import {removeDuplicates} from "./removeDuplicates";
+import { removeComments } from './removeComments'
+import { removeDuplicates } from './removeDuplicates'
 
 /**
  * Check if char is skippable because its value does mean nothing in css
@@ -76,7 +76,7 @@ const optimizeZeroUnitsRule = (ruleValue: string): string => {
   return ruleValue
 }
 
-const getRuleValue: ({oldChar, rule, ruleValue}: { oldChar: any; rule: any; ruleValue: any }) => (any) = ({ oldChar, rule, ruleValue }) => {
+const getRuleValue: ({ oldChar, rule, ruleValue }: { oldChar: any, rule: any, ruleValue: any }) => (any) = ({ oldChar, rule, ruleValue }) => {
   // remove last ; in css rules
   if (oldChar === ';') {
     ruleValue = ruleValue.slice(0, -1)
@@ -98,9 +98,9 @@ const getRuleValue: ({oldChar, rule, ruleValue}: { oldChar: any; rule: any; rule
  * @returns cleaned css string
  */
 export const cleanCss = (css: string): string => {
-  css = removeDuplicates(css, [';', '.', ' ']);
-  css = removeComments(css);
-  return css;
+  css = removeDuplicates(css, [';', '.', ' '])
+  css = removeComments(css)
+  return css
 }
 
 /**
