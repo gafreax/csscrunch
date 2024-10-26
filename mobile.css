@@ -1,0 +1,44 @@
+/* Global styles */
+body {
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+h1 {
+  font-size: 24px;
+}
+
+/* Desktop styles */
+@media screen and (min-width: 768px) {
+  h1 {
+    font-size: 36px;
+  }
+}
+
+/* Mobile styles */
+@media screen and (max-width: 767px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar {
+    display: none;
+  }
+}
+
+/* Tablet styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .sidebar {
+    display: block;
+    width: 30%;
+  }
+
+  .main-content {
+    width: 70%;
+  }
+}
