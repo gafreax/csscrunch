@@ -1,5 +1,14 @@
 import { MediaQuery } from './mediaQuery.d'
 
+export const deepLevel = (char: string): number => {
+  if (char === '{') {
+    return +1
+  } else if (char === '}') {
+    return -1
+  }
+  return 0
+}
+
 export const findIndexOfMediaQueries = (css: string): number[] => {
   const indexList = []
   const len = '@media'.length
@@ -25,14 +34,9 @@ export const getMediaQueries = (css: string): MediaQuery[] => {
       for (i; deep > 0 && i <= css.length; i++) {
         if (css[i] === '/' && css[i + 1] === '*') {
           continue
-        } else {
-          if (css[i] === '{') {
-            deep++
-          } else if (css[i] === '}') {
-            deep--
-          }
-          val += css[i]
         }
+        deep = deep + deepLevel(css[i])
+        val += css[i]
       }
       mediaQueries.push({ rule, val, start: index, end: i })
     }
