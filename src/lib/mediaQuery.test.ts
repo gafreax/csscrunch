@@ -1,4 +1,4 @@
-import { findIndexOfMediaQueries, getMediaQueries } from "./mediaQuery"
+import { findIndexOfMediaQueries, getMediaQueries } from './mediaQuery'
 const simpleCssWithMediaQuery = `
 /* On screens that are 992px or less, set the background color to blue */
 @media screen and (max-width: 992px) {
@@ -105,7 +105,7 @@ describe('getMediaQueries', () => {
 
   it('return media queries with complex css', () => {
     const rules = getMediaQueries(complexCssWithMediaQuery)
-    
-    rules.some(i => i.rule.indexOf('//') || i.rule.indexOf('/*') || i.rule.indexOf('*/') || i.val.indexOf('//') || i.val.indexOf('/*') || i.val.indexOf('*/') )
+
+    rules.some(i => i.rule.indexOf('//') || i.rule.indexOf('/*') || i.rule.indexOf('*/') || i.val.indexOf('//') || i.val.indexOf('/*') || i.val.indexOf('*/'))
   })
 })

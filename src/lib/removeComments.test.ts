@@ -1,12 +1,12 @@
-import { removeComments } from "./removeComments";
+import { removeComments } from './removeComments'
 
-describe("removeComments", () => {
-    it("should remove single-line comments", () => {
-        expect(removeComments("color: black; // background-color: white")).toBe("color: black;");
-    });
+describe('removeComments', () => {
+  it('should remove single-line comments', () => {
+    expect(removeComments('color: black; // background-color: white')).toBe('color: black;')
+  })
 
-    it('should remove comments and duplicate characters', () => {
-        const input = `
+  it('should remove comments and duplicate characters', () => {
+    const input = `
             /* 
                 Multi-line Comment
                 Line 2 
@@ -24,8 +24,8 @@ describe("removeComments", () => {
             
             // this is the closing comment
             
-        `;
-        const output = `
+        `
+    const output = `
             body {
                 color: black; 
                 background-color: white;
@@ -36,7 +36,7 @@ describe("removeComments", () => {
             div {
                 border: 1px solid black; 
             }
-        `;
-        expect(removeComments(input)).toBe(output.trim());
-    });
-});
+        `
+    expect(removeComments(input)).toBe(output.trim())
+  })
+})
