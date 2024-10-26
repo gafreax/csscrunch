@@ -8,18 +8,20 @@
   color: #000000;
 }
 
-.bdue {
+/* Comment */
+.blu-class {
   background-color: #00ff00;
   color: #000000;
 }
 
-.bdue {
+.blu-class {
   background-color: #00ff00;
   color: #000000;
 }
 
 .a { 
-  margin: 13px;
+  margin: 13px;;
+  // A comment here
 }
 
 #example, .esempio {
@@ -35,3 +37,5 @@
 .empty-rules {
            
 }
+
+/* Last line comment */

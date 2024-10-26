@@ -29,7 +29,12 @@ export const isSkippable = (char: string, oldChar: string, nextChar: string): bo
 export const isPunctuation = (char: string): boolean => {
   // this is more readable but slower version return [';', ':', '{', '}', '(', ')'].includes(char)
   switch (char) {
-    case ';': case ':': case '{': case '}': case '(': case ')':
+    case ';':
+    case ':':
+    case '{':
+    case '}':
+    case '(':
+    case ')':
       return true
     default:
       return false
@@ -116,8 +121,7 @@ export const cleanCss = (css: string): string => {
  */
 export const tokenize = (css: string): Tokens => {
   const tokens: Tokens = {}
-  const cleanedCss = cleanCss(css);
-  const mediaQueries: MediaQuery[] = getMediaQueries(cleanedCss)
+  const mediaQueries: MediaQuery[] = getMediaQueries(css)
   // todo: change these var into state object
   let ruleId = ''
   let ruleValue = ''
@@ -125,7 +129,7 @@ export const tokenize = (css: string): Tokens => {
   let oldChar = ''
   let mediaQueryParsed = 0
 
-  for (let index = 0; index < cleanedCss.length; index++) {
+  for (let index = 0; index < css.length; index++) {
     const char = css[index]
     const nextChar = css[index + 1]
     // optimization
