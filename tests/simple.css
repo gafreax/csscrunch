@@ -1,0 +1,37 @@
+.a {
+  background-color: red;
+  color: #ffffff;
+}
+
+.b {
+  background-color: #00ff00;
+  color: #000000;
+}
+
+.bdue {
+  background-color: #00ff00;
+  color: #000000;
+}
+
+.bdue {
+  background-color: #00ff00;
+  color: #000000;
+}
+
+.a { 
+  margin: 13px;
+}
+
+#example, .esempio {
+  background-color: #00ff00;
+  color: #000000;
+}
+
+.c {
+  background-color: red;
+  color: #ffffff;
+}
+
+.empty-rules {
+           
+}
