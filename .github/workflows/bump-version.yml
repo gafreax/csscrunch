@@ -1,6 +1,10 @@
 name: Bump Version
 
 on:
+  pull_request_target:
+    branches:
+      - main
+      -
   push:
     branches:
       - github-actions
@@ -20,6 +24,7 @@ jobs:
           node-version: '20'
 
       - name: Bump version
+        id: bump_version
         run: |
           VERSION=$(npm version patch --no-git-tag-version)
           echo "version=$VERSION" >> $GITHUB_ENV
@@ -29,10 +34,5 @@ jobs:
         with:
           commit_message: "📦 Bump a new version"
           file_pattern: "package.json package-lock.json"
-
-      - name: Create and push tag
-        run: |
-          git tag "$VERSION"
-          git push origin "$VERSION"
-        env:
-          VERSION: ${{ env.version }}
+          tagging_message: "${{ env.version }}"
+          push_options: '--tags'
