@@ -6,7 +6,7 @@ import { parse } from './index'
 function start (): void {
   program
     .name('cssparse')
-    .description('Optimize css')
+    .description('CSS parser that optimizes CSS files')
     .version(process.env.npm_package_version ?? 'no version')
   program
     .addHelpText('after', `
