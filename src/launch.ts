@@ -10,7 +10,7 @@ function start (): void {
     .version(process.env.npm_package_version ?? 'no version')
   program
     .addHelpText('after', `
-  Example call: 
+  Example call:
     $ cssparse compile style.css -o style.optimized.css
     $ npm start -- compile style.css -o style.optimized.css`)
     .command('compile')
