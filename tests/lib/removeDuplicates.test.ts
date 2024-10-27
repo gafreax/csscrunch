@@ -1,4 +1,4 @@
-import { removeDuplicates } from './removeDuplicates'
+import { removeDuplicates } from '../../src/lib/removeDuplicates'
 
 describe('removeDuplicates', () => {
   it('should remove duplicate semicolons', () => {
