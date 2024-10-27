@@ -5,9 +5,11 @@
   "main": "dist/src/index.js",
   "scripts": {
     "build": "tsc",
+    "clean": "rimraf dist/",
+    "type-check": "tsc --noEmit",
     "launch": "ts-node src/launch.ts",
-    "lint": "ts-standard --fix",
-    "prebuild": "rimraf dist/ && ts-standard --fix src/**/*.ts",
+    "lint": "ts-standard --fix src/**/*.ts",
+    "prebuild": "npm run clean && npm run type-check",
     "prepare": "npm run build",
     "test": "jest"
   },
