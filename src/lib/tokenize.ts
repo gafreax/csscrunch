@@ -76,7 +76,7 @@ const optimizeZeroUnitsRule = (ruleValue: string): string => {
   return ruleValue
 }
 
-const getRuleValue: ({ oldChar, rule, ruleValue }: { oldChar: any, rule: any, ruleValue: any }) => (any) = ({ oldChar, rule, ruleValue }) => {
+const getRuleValue: GetRuleValueFunction = ({ oldChar, rule, ruleValue }) => {
   // remove last ; in css rules
   if (oldChar === ';') {
     ruleValue = ruleValue.slice(0, -1)
