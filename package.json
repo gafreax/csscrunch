@@ -5,7 +5,7 @@
   "main": "dist/src/index.js",
   "scripts": {
     "build": "tsc",
-    "launch": "ts-node src/launch.ts",
+    "start": "ts-node src/launch.ts",
     "lint": "ts-standard --fix",
     "prebuild": "rimraf dist/ && ts-standard --fix src/**/*.ts",
     "prepare": "npm run build",
@@ -30,6 +30,7 @@
     ]
   },
   "dependencies": {
-    "clean-css": "^5.3.3"
+    "clean-css": "^5.3.3",
+    "commander": "^12.1.0"
   }
 }
