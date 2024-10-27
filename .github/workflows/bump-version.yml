@@ -33,6 +33,7 @@ jobs:
         with:
           branch: main
           commit_message: "📦 Bump a new version"
+          commit_options: '--verebose'
           file_pattern: "package.json package-lock.json"
           tagging_message: "${{ env.version }}"
           push_options: '--tags'
