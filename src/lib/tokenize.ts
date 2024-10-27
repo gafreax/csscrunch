@@ -88,7 +88,9 @@ const getRuleValue: ({ oldChar, rule, ruleValue }: { oldChar: any, rule: any, ru
     return ruleValue
   }
   // size output optimization
+
   const lastRuleChar: string = rule.to[rule.to.length - 1];
+
   return lastRuleChar === ';'
       ? String(rule.to) + String(ruleValue)
       : String(rule.to) + ';' + String(ruleValue);
