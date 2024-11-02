@@ -106,7 +106,7 @@ describe('getMediaQueries', () => {
   it('return media queries with complex css', () => {
     const rules = getMediaQueries(complexCssWithMediaQuery)
 
-    expect(rules.some((i: MediaQuery) =>
+    expect(rules.some(i =>
       i.rule.includes('//') || i.rule.includes('/*') || i.rule.includes('*/') || i.val.includes('//') || i.val.includes('/*') || i.val.includes('*/')
     )).toBe(true)
   })
