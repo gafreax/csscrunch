@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "ts-node src/launch.ts",
-    "lint": "ts-standard --fix",
+    "lint": "ts-standard src/**/*.ts",
+    "lint:fix": "ts-standard --fix src/**/*.ts",
     "prebuild": "rimraf dist/ && ts-standard --fix src/**/*.ts",
     "prepare": "npm run build",
     "test": "jest"
@@ -30,7 +31,6 @@
     ]
   },
   "dependencies": {
-    "clean-css": "^5.3.3",
     "commander": "^12.1.0"
   }
 }
