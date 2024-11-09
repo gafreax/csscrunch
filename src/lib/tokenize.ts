@@ -1,6 +1,7 @@
 import { BuildMediaTokensFunction, GetRuleValueFunction, Tokens } from './tokenize.d'
-import { MediaQuery, getMediaQueries } from './mediaQuery'
+import { getMediaQueries } from './mediaQuery'
 import { isWhitespace } from './utils'
+import { MediaQuery } from './mediaQuery.d'
 import { removeComments } from './removeComments'
 import { removeDuplicates } from './removeDuplicates'
 
