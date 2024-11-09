@@ -32,16 +32,6 @@ parsedCSS.rules[0].declarations[0].setProperty('color', 'blue');
 const optimizedCSS = cssparse.stringify(parsedCSS);
 ```
 
-## Testing Functionality
-
-To test the functionality of the CSS parser, you can launch the provided launch script:
-
-```bash
-ts-node src/launch.ts
-```
-
-This script will execute sample code that demonstrates the parser's capabilities.
-
 ## Contribution
 
 We welcome contributions to this open-source project. If you encounter issues or have suggestions for improvement, please feel free to create GitHub issues or submit pull requests.
