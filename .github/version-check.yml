@@ -8,7 +8,7 @@ on:
 jobs:
   version-update:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v4
     - name: Update version
@@ -22,4 +22,6 @@ jobs:
     - name: Create tag
       run: |
         git tag -a $(cat package.json | grep version | cut -d'"' -f4) -m "Release $(jq -r '.version' package.json)"
+        git add package.json package-lock.json
+        git commit -m "chore: created tag"
         git push origin main --tags
