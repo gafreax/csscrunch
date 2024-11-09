@@ -1,4 +1,5 @@
-import { MediaQuery, findIndexOfMediaQueries, getMediaQueries } from './mediaQuery'
+import { MediaQuery } from './mediaQuery.d'
+import { findIndexOfMediaQueries, getMediaQueries } from './mediaQuery'
 
 const simpleCssWithMediaQuery = `
 /* On screens that are 992px or less, set the background color to blue */
