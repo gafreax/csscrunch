@@ -1,4 +1,4 @@
-import { tokenize } from './tokenize'
+import { tokenize } from '../../src/lib/tokenize'
 
 describe('tokenize', () => {
   test('tokenize', () => {
