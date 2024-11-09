@@ -1,3 +1,4 @@
+import { MediaQuery } from './../../src/lib/mediaQuery.d'
 import { findIndexOfMediaQueries, getMediaQueries } from './../../src/lib/mediaQuery'
 
 const simpleCssWithMediaQuery = `
