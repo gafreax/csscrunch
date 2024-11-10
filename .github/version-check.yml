@@ -15,13 +15,8 @@ jobs:
       run: |
         if [[ "$(cat package.json | grep version | cut -d'"' -f4)" != *".0."* ]]; then
           npm version patch
+          git tag -a $(cat package.json | grep version | cut -d'"' -f4) -m "Release $(jq -r '.version' package.json)"
+          git add package.json package-lock.json
+          git commit -m "chore: update version to $(cat package.json | grep version | cut -d'"' -f4)"
+          git push origin main
         fi
-        git add package.json package-lock.json
-        git commit -m "chore: update version to $(cat package.json | grep version | cut -d'"' -f4)"
-        git push origin main
-    - name: Create tag
-      run: |
-        git tag -a $(cat package.json | grep version | cut -d'"' -f4) -m "Release $(jq -r '.version' package.json)"
-        git add package.json package-lock.json
-        git commit -m "chore: created tag"
-        git push origin main --tags
