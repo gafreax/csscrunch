@@ -105,7 +105,7 @@ describe('getMediaQueries', () => {
 
   it('return media queries with complex css', () => {
     const rules = getMediaQueries(complexCssWithMediaQuery)
-
-    rules.some(i => i.rule.indexOf('//') || i.rule.indexOf('/*') || i.rule.indexOf('*/') || i.val.indexOf('//') || i.val.indexOf('/*') || i.val.indexOf('*/'))
+    
+    expect(rules.length).toEqual(6)
   })
 })

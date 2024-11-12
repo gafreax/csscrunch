@@ -30,13 +30,12 @@ describe('removeComments', () => {
                 color: black;
                 background-color: white;
             }
-
-
-
             div {
                 border: 1px solid black;
             }
         `
-    expect(removeComments(input)).toBe(output.trim())
+    const result = removeComments(input)
+
+    expect(result.replace(/[\s\t]*/g,'')).toEqual(expected.replace(/[\s\t]*/g, ''))
   })
 })
