@@ -1,38 +1,18 @@
 name: Bump Version
 
 on:
-  pull_request_target:
-    branches:
-      - main
-      -
-  push:
-    branches:
-      - github-actions
+  pull_request:
+    types: [closed]
+    branches: [main]
 
 jobs:
-  bump-version:
+  versioning:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          fetch-depth: 0
+          node-version: '22'
+      - run: npm install
+      - run: npx standard-version
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      - name: Bump version
-        id: bump_version
-        run: |
-          VERSION=$(npm version patch --no-git-tag-version)
-          echo "version=$VERSION" >> $GITHUB_ENV
-
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "📦 Bump a new version"
-          file_pattern: package.json package-lock.json
-          tagging_message: "${{ env.version }}"
-          push_options: '--tags'
