@@ -25,7 +25,7 @@ describe('removeComments', () => {
             // this is the closing comment
 
         `
-    const output = `
+    const expected = `
             body {
                 color: black;
                 background-color: white;
