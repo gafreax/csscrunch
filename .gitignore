@@ -4,13 +4,12 @@ node_modules/*
 # css
 lib.css
 mine.css
+out.css
 
 # misc
 *~
 .DS_Store
 *.pem
-.idea/*
-.vscode/*
 
 # debug
 npm-debug.log*
@@ -25,6 +24,6 @@ dist/
 coverage/
 
 # ide
-.vscode/
-.idea/
-.project/
+.vscode/*
+.idea/*
+.project/*

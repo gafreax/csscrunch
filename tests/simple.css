@@ -19,7 +19,7 @@
   color: #000000;
 }
 
-.a { 
+.a {
   margin: 13px;;
   // A comment here
 }
@@ -35,7 +35,12 @@
 }
 
 .empty-rules {
-           
+
+}
+
+.e {
+  background-color: blueviolet;
+  color: orangered;;
 }
 
 /* Last line comment */

@@ -88,7 +88,7 @@ const getRuleValue: GetRuleValueFunction = ({ oldChar, rule, ruleValue }) => {
     return ruleValue
   }
   // size output optimization
-  const lastRuleChar: string = rule[rule.length]
+  const lastRuleChar: string = rule[rule.length - 1]
   return lastRuleChar === ';' ? rule + ruleValue : rule + ';' + ruleValue
 }
 
