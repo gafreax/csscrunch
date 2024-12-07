@@ -1,8 +1,8 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from 'vitest'
 import {
   findIndexOfMediaQueries,
-  getMediaQueries,
-} from "../../src/lib/mediaQuery";
+  getMediaQueries
+} from '../../src/lib/mediaQuery'
 const simpleCssWithMediaQuery = `
 /* On screens that are 992px or less, set the background color to blue */
 @media screen and (max-width: 992px) {
@@ -17,7 +17,7 @@ const simpleCssWithMediaQuery = `
     background-color: olive;
   }
 }
-`;
+`
 const complexCssWithMediaQuery = `
 
 /* Small screens (phones) */
@@ -89,27 +89,27 @@ const complexCssWithMediaQuery = `
   section {
     flex-direction: column;
   }
-}`;
+}`
 
-describe("findIndexOfMediaQueries", () => {
-  it("return position of media query if present", () => {
-    expect(findIndexOfMediaQueries(simpleCssWithMediaQuery)).toEqual([75, 233]);
-  });
+describe('findIndexOfMediaQueries', () => {
+  it('return position of media query if present', () => {
+    expect(findIndexOfMediaQueries(simpleCssWithMediaQuery)).toEqual([75, 233])
+  })
 
-  it("return empty array if no media query", () => {
-    expect(findIndexOfMediaQueries("")).toEqual([]);
-  });
-});
+  it('return empty array if no media query', () => {
+    expect(findIndexOfMediaQueries('')).toEqual([])
+  })
+})
 
-describe("getMediaQueries", () => {
-  it("return media queries", () => {
-    const rules = getMediaQueries(simpleCssWithMediaQuery);
-    expect(rules.length).toEqual(2);
-  });
+describe('getMediaQueries', () => {
+  it('return media queries', () => {
+    const rules = getMediaQueries(simpleCssWithMediaQuery)
+    expect(rules.length).toEqual(2)
+  })
 
-  it("return media queries with complex css", () => {
-    const rules = getMediaQueries(complexCssWithMediaQuery);
+  it('return media queries with complex css', () => {
+    const rules = getMediaQueries(complexCssWithMediaQuery)
 
-    expect(rules.length).toEqual(6);
-  });
-});
+    expect(rules.length).toEqual(6)
+  })
+})

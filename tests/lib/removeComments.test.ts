@@ -1,14 +1,14 @@
-import { describe, it, expect } from "vitest";
-import { removeComments } from "../../src/lib/removeComments";
+import { describe, it, expect } from 'vitest'
+import { removeComments } from '../../src/lib/removeComments'
 
-describe("removeComments", () => {
-  it("should remove single-line comments", () => {
-    expect(removeComments("color: black; // background-color: white")).toBe(
-      "color: black;"
-    );
-  });
+describe('removeComments', () => {
+  it('should remove single-line comments', () => {
+    expect(removeComments('color: black; // background-color: white')).toBe(
+      'color: black;'
+    )
+  })
 
-  it("should remove comments and duplicate characters", () => {
+  it('should remove comments and duplicate characters', () => {
     const input = `
             /*
                 Multi-line Comment
@@ -27,7 +27,7 @@ describe("removeComments", () => {
 
             // this is the closing comment
 
-        `;
+        `
     const expected = `
             body {
                 color: black;
@@ -36,9 +36,9 @@ describe("removeComments", () => {
             div {
                 border: 1px solid black;
             }
-        `;
-    const result = removeComments(input);
-    
+        `
+    const result = removeComments(input)
+
     expect(result.replace(/[\s\t]*/g, '')).toEqual(expected.replace(/[\s\t]*/g, ''))
   })
 })
