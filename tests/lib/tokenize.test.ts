@@ -2,7 +2,7 @@ import { describe, test, expect } from 'vitest'
 import { tokenize } from '../../src/lib/tokenize'
 
 describe('tokenize', () => {
-  test('tokenize', () => {
+  test('simple css', () => {
     const css = `
         a {  color: purple;}
         div { border: none; }
@@ -13,5 +13,20 @@ describe('tokenize', () => {
         .goofy { color: purple; }`
     const res = tokenize(css)
     expect(res).toBeDefined()
+  })
+
+  test('simple css with duplicated rules', () => {
+    const css = `
+    .blu-class {
+      background-color: #00ff00;
+      color: #000000;
+    }
+
+    .blu-class {
+      background-color: #00ff00;
+      color: #000000;
+    }`
+    const res = tokenize(css)
+    expect(res).toEqual({ '.blu-class': 'background-color:#00ff00;color:#000000;' })
   })
 })
