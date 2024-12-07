@@ -1,15 +1,21 @@
 name: Bump Version
 
-on:
-  pull_request:
-    types: [closed]
-    branches: [main]
+on: [pull_request]
 
 jobs:
   versioning:
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+
+    permissions:
+      contents: write
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
