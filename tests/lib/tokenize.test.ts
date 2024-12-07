@@ -1,8 +1,8 @@
-import { describe, test, expect } from "vitest";
-import { tokenize } from "../../src/lib/tokenize";
+import { describe, test, expect } from 'vitest'
+import { tokenize } from '../../src/lib/tokenize'
 
-describe("tokenize", () => {
-  test("tokenize", () => {
+describe('tokenize', () => {
+  test('tokenize', () => {
     const css = `
         a {  color: purple;}
         div { border: none; }
@@ -10,8 +10,8 @@ describe("tokenize", () => {
         .mickey { color: purple;}
         .don { color: purple; background: red; }
         .goofy { background: red; }
-        .goofy { color: purple; }`;
-    const res = tokenize(css);
-    expect(res).toBeDefined();
-  });
-});
+        .goofy { color: purple; }`
+    const res = tokenize(css)
+    expect(res).toBeDefined()
+  })
+})

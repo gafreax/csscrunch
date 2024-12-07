@@ -10,7 +10,7 @@
     "start": "ts-node src/launch.ts",
     "lint": "ts-standard src/**/*.ts",
     "lint:fix": "ts-standard --fix src/**/*.ts",
-    "prebuild": "npm run clean && ts-standard --fix src/**/*.ts",
+    "prebuild": "npm run clean && ts-standard --fix src/**/*.ts tests/**/*.ts",
     "prepare": "npm run build && husky install",
     "test": "vitest run"
   },
