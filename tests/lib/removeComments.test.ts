@@ -38,9 +38,7 @@ describe("removeComments", () => {
             }
         `;
     const result = removeComments(input);
-
-    expect(result.replace(/[\s\t]*/g, "")).toEqual(
-      expected.replace(/[\s\t]*/g, "")
-    );
-  });
-});
+    
+    expect(result.replace(/[\s\t]*/g, '')).toEqual(expected.replace(/[\s\t]*/g, ''))
+  })
+})

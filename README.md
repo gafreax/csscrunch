@@ -1,4 +1,4 @@
-# CSS Parser
+# CSS Parse
 
 This package provides a powerful and efficient TypeScript library for optimizing CSS strings. It enables developers to easily compress css JavaScript projects.
 
@@ -14,22 +14,36 @@ The great focus is on keeping a great compatibility across all kind of render en
 ## Installation
 
 ```bash
-npm install @gafreax/cssparse
+npm install @gafreax/csscrunch
 ```
 
 ## Usage
 
 ```typescript
-import * as cssparse from 'cssparse';
+import * as csscrunch from '@gafreax/csscrunch';
 
 const cssString = '.example { color: red; font-size: 16px; }';
-const parsedCSS = cssparse.parse(cssString);
+const parsedCSS = csscrunch.parse(cssString);
 
 // Access and modify CSS properties
 parsedCSS.rules[0].declarations[0].setProperty('color', 'blue');
 
 // Generate optimized CSS
-const optimizedCSS = cssparse.stringify(parsedCSS);
+const optimizedCSS = csscrunch.stringify(parsedCSS);
+```
+
+
+## CLI Usage
+To clean a css file simply run this command
+
+```bash
+$ npm start -- compile simple.css out.cs
+```
+
+Or via npx
+
+```bash
+$ npx csscrunch compile simple.css out.cs
 ```
 
 ## Contribution
