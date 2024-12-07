@@ -25,7 +25,7 @@ describe('removeComments', () => {
             // this is the closing comment
 
         `
-    const output = `
+    const expected = `
             body {
                 color: black;
                 background-color: white;
@@ -36,6 +36,6 @@ describe('removeComments', () => {
         `
     const result = removeComments(input)
 
-    expect(result.replace(/[\s\t]*/g,'')).toEqual(expected.replace(/[\s\t]*/g, ''))
+    expect(result.replace(/[\s\t]*/g, '')).toEqual(expected.replace(/[\s\t]*/g, ''))
   })
 })

@@ -1,4 +1,4 @@
-# CSS Parser
+# CSS Parse
 
 This package provides a powerful and efficient TypeScript library for optimizing CSS strings. It enables developers to easily compress css JavaScript projects.
 
@@ -30,6 +30,20 @@ parsedCSS.rules[0].declarations[0].setProperty('color', 'blue');
 
 // Generate optimized CSS
 const optimizedCSS = cssparse.stringify(parsedCSS);
+```
+
+
+## CLI Usage
+To clean a css file simply run this command
+
+```bash
+$ npm start -- compile simple.css out.cs
+```
+
+Or via npx
+
+```bash
+$ npx cssparse compile simple.css out.cs
 ```
 
 ## Contribution
