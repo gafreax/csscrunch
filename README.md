@@ -14,22 +14,22 @@ The great focus is on keeping a great compatibility across all kind of render en
 ## Installation
 
 ```bash
-npm install @gafreax/cssparse
+npm install @gafreax/csscrunch
 ```
 
 ## Usage
 
 ```typescript
-import * as cssparse from 'cssparse';
+import * as csscrunch from 'csscrunch';
 
 const cssString = '.example { color: red; font-size: 16px; }';
-const parsedCSS = cssparse.parse(cssString);
+const parsedCSS = csscrunch.parse(cssString);
 
 // Access and modify CSS properties
 parsedCSS.rules[0].declarations[0].setProperty('color', 'blue');
 
 // Generate optimized CSS
-const optimizedCSS = cssparse.stringify(parsedCSS);
+const optimizedCSS = csscrunch.stringify(parsedCSS);
 ```
 
 
@@ -43,7 +43,7 @@ $ npm start -- compile simple.css out.cs
 Or via npx
 
 ```bash
-$ npx cssparse compile simple.css out.cs
+$ npx csscrunch compile simple.css out.cs
 ```
 
 ## Contribution

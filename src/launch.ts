@@ -5,13 +5,13 @@ import { parse } from './index'
 
 function start (): void {
   program
-    .name('cssparse')
+    .name('csscrunch')
     .description('CSS parser that optimizes CSS files')
     .version(process.env.npm_package_version ?? 'no version')
   program
     .addHelpText('after', `
   Example call:
-    $ cssparse compile style.css -o style.optimized.css
+    $ csscrunch compile style.css -o style.optimized.css
     $ npm start -- compile style.css -o style.optimized.css`)
     .command('compile')
     .argument('<file css>', 'css file to compile')

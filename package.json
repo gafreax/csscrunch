@@ -1,5 +1,5 @@
 {
-  "name": "cssparse",
+  "name": "csscrunch",
   "version": "1.0.11",
   "description": "Simple CSS Parser to tokenize CSS, merge rules, and optimize it",
   "main": "dist/src/index.js",
@@ -15,7 +15,7 @@
   },
   "author": "Gabriele Fontana",
   "bin": {
-    "cssparse": "dist/src/launch.js"
+    "csscrunch": "dist/src/launch.js"
   },
   "license": "MIT",
   "devDependencies": {
