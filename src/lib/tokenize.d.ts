@@ -5,8 +5,8 @@ export interface BuildMediaTokensI {
 
 interface GetRuleValueI {
   oldChar: string
-  rule: string
-  ruleValue: string
+  currentRules: string
+  newRules: string
 }
 
 export type Token = string

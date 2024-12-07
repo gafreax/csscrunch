@@ -76,20 +76,16 @@ const optimizeZeroUnitsRule = (ruleValue: string): string => {
   return ruleValue
 }
 
-const getRuleValue: GetRuleValueFunction = ({ oldChar, rule, ruleValue }) => {
-  // remove last ; in css rules
-  if (oldChar === ';') {
-    ruleValue = ruleValue.slice(0, -1)
+const getRuleValue: GetRuleValueFunction = ({ oldChar, currentRules, newRules }) => {
+  if (currentRules === undefined || currentRules.includes(newRules.trim())) {
+    return newRules.trim()
   }
-  // optimize 0 pixel values
-  ruleValue = optimizeZeroUnitsRule(ruleValue)
-  // first rule usage on the css
-  if (rule === undefined) {
-    return ruleValue
-  }
-  // size output optimization
-  const lastRuleChar: string = rule[rule.length - 1]
-  return lastRuleChar === ';' ? rule + ruleValue : rule + ';' + ruleValue
+
+  const currentRuleValue = (oldChar === ';') ? newRules.slice(0, -1) : newRules
+  const optimizedRuleValue = optimizeZeroUnitsRule(currentRuleValue)
+  const lastRuleChar: string = currentRules[currentRules.length - 1]
+  const concat = lastRuleChar === ';' ? '' : ';'
+  return currentRules + concat + optimizedRuleValue
 }
 
 /**
@@ -123,8 +119,8 @@ export const tokenize = (css: string): Tokens => {
   const tokens: Tokens = {}
   const mediaQueries: MediaQuery[] = getMediaQueries(css)
   // todo: change these var into state object
-  let ruleId = ''
-  let ruleValue = ''
+  let selector = ''
+  let rules = ''
   let isValueToken = false
   let oldChar = ''
   let mediaQueryParsed = 0
@@ -134,7 +130,7 @@ export const tokenize = (css: string): Tokens => {
     const nextChar = css[index + 1]
     // optimization
     if (isSkippable(char, oldChar, nextChar)) {
-      oldChar = '' // reset old char to avoid error
+      oldChar = char // reset old char to avoid error
       continue
     }
     if (index >= mediaQueries[mediaQueryParsed]?.start) {
@@ -145,23 +141,23 @@ export const tokenize = (css: string): Tokens => {
     }
 
     // tokenization
-    if (char === '}' && ruleValue?.length === 0) {
+    if (char === '}' && rules?.length === 0) {
       // remove empty rules
-      delete tokens[ruleId] // eslint-disable-line
-      ruleId = ''
-      ruleValue = ''
+      delete tokens[selector] // eslint-disable-line
+      selector = ''
+      rules = ''
       isValueToken = false
     } else if (char === '}') {
-      tokens[ruleId] = getRuleValue({ oldChar, rule: tokens[ruleId], ruleValue })
-      ruleId = ''
-      ruleValue = ''
+      tokens[selector] = getRuleValue({ oldChar, currentRules: tokens[selector], newRules: rules })
+      selector = ''
+      rules = ''
       isValueToken = false
     } else if (char === '{') {
       isValueToken = true
     } else if (isValueToken) {
-      ruleValue += char
+      rules += char
     } else {
-      ruleId += char
+      selector += char
     }
     oldChar = char
   }
