@@ -1,12 +1,14 @@
 import { removeComments } from '../../src/lib/removeComments'
 
 describe('removeComments', () => {
-  it('should remove single-line comments', () => {
-    expect(removeComments('color: black; // background-color: white')).toBe('color: black;')
-  })
+    it('should remove single-line comments', () => {
+        expect(removeComments('color: black; // background-color: white')).toBe(
+            'color: black;'
+        )
+    })
 
-  it('should remove comments and duplicate characters', () => {
-    const input = `
+    it('should remove comments and duplicate characters', () => {
+        const input = `
             /*
                 Multi-line Comment
                 Line 2
@@ -25,7 +27,7 @@ describe('removeComments', () => {
             // this is the closing comment
 
         `
-    const expected = `
+        const expected = `
             body {
                 color: black;
                 background-color: white;
@@ -34,8 +36,10 @@ describe('removeComments', () => {
                 border: 1px solid black;
             }
         `
-    const result = removeComments(input)
+        const result = removeComments(input)
 
-    expect(result.replace(/[\s\t]*/g, '')).toEqual(expected.replace(/[\s\t]*/g, ''))
-  })
+        expect(result.replace(/[\s\t]*/g, '')).toEqual(
+            expected.replace(/[\s\t]*/g, '')
+        )
+    })
 })

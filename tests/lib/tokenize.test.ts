@@ -1,8 +1,8 @@
 import { tokenize } from '../../src/lib/tokenize'
 
 describe('tokenize', () => {
-  test('tokenize', () => {
-    const css = `
+    test('tokenize', () => {
+        const css = `
         a {  color: purple;}
         div { border: none; }
         .pippo { color: purple;}
@@ -10,7 +10,7 @@ describe('tokenize', () => {
         .don { color: purple; background: red; }
         .goofy { background: red; }
         .goofy { color: purple; }`
-    const res = tokenize(css)
-    expect(res).toBeDefined()
-  })
+        const res = tokenize(css)
+        expect(res).toBeDefined()
+    })
 })

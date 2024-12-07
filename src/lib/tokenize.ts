@@ -1,4 +1,8 @@
-import { BuildMediaTokensFunction, GetRuleValueFunction, Tokens } from './tokenize.d'
+import {
+    BuildMediaTokensFunction,
+    GetRuleValueFunction,
+    Tokens,
+} from './tokenize.d'
 import { getMediaQueries } from './mediaQuery'
 import { isWhitespace } from './utils'
 import { MediaQuery } from './mediaQuery.d'
@@ -13,12 +17,22 @@ import { removeDuplicates } from './removeDuplicates'
  * @param {string} nextChar next char to compare
  * @returns if the current char is skippable
  */
-export const isSkippable = (char: string, oldChar: string, nextChar: string): boolean => {
-  const whiteSpace = (isWhitespace(oldChar) && isWhitespace(char)) || char === '\n'
-  const spaceAfter = (oldChar === ';' || oldChar === ':' || oldChar === '{' || oldChar === '}') && isWhitespace(char)
-  const punctuationNext = isWhitespace(char) && isPunctuation(nextChar)
-  const isLastSemicolon = char === ';' && isPunctuation(nextChar)
-  return whiteSpace || spaceAfter || punctuationNext || isLastSemicolon
+export const isSkippable = (
+    char: string,
+    oldChar: string,
+    nextChar: string
+): boolean => {
+    const whiteSpace =
+        (isWhitespace(oldChar) && isWhitespace(char)) || char === '\n'
+    const spaceAfter =
+        (oldChar === ';' ||
+            oldChar === ':' ||
+            oldChar === '{' ||
+            oldChar === '}') &&
+        isWhitespace(char)
+    const punctuationNext = isWhitespace(char) && isPunctuation(nextChar)
+    const isLastSemicolon = char === ';' && isPunctuation(nextChar)
+    return whiteSpace || spaceAfter || punctuationNext || isLastSemicolon
 }
 
 /**
@@ -27,18 +41,18 @@ export const isSkippable = (char: string, oldChar: string, nextChar: string): bo
  * @returns if the char is punctuation like ; : { } ( )
  */
 export const isPunctuation = (char: string): boolean => {
-  // this is more readable but slower version return [';', ':', '{', '}', '(', ')'].includes(char)
-  switch (char) {
-    case ';':
-    case ':':
-    case '{':
-    case '}':
-    case '(':
-    case ')':
-      return true
-    default:
-      return false
-  }
+    // this is more readable but slower version return [';', ':', '{', '}', '(', ')'].includes(char)
+    switch (char) {
+        case ';':
+        case ':':
+        case '{':
+        case '}':
+        case '(':
+        case ')':
+            return true
+        default:
+            return false
+    }
 }
 
 /**
@@ -49,47 +63,58 @@ export const isPunctuation = (char: string): boolean => {
  * @returns {Tokens} media tokens
  */
 const buildMediaTokens: BuildMediaTokensFunction = ({ css, mediaQueries }) => {
-  const mediaTokens: Tokens = {}
-  for (const mediaQuery of mediaQueries) {
-    const mediaQueryStart = mediaQuery.start
-    const mediaQueryEnd = mediaQuery.end
-    const mediaQueryFirstParenthesis = css.indexOf('{', mediaQueryStart)
-    const rule = css.slice(mediaQueryStart, mediaQueryFirstParenthesis)
-    const value = css.slice(mediaQueryFirstParenthesis + 1, mediaQueryEnd - 1)
-    // add new rule and little size optimization
-    if (mediaTokens[rule] !== undefined) {
-      mediaTokens[rule] = mediaTokens[rule] + value.replaceAll('\n', '').replaceAll('\t', '').replaceAll('  ', '')
-    } else {
-      mediaTokens[rule] = value.replaceAll('\n', '').replaceAll('\t', '').replaceAll('  ', '')
+    const mediaTokens: Tokens = {}
+    for (const mediaQuery of mediaQueries) {
+        const mediaQueryStart = mediaQuery.start
+        const mediaQueryEnd = mediaQuery.end
+        const mediaQueryFirstParenthesis = css.indexOf('{', mediaQueryStart)
+        const rule = css.slice(mediaQueryStart, mediaQueryFirstParenthesis)
+        const value = css.slice(
+            mediaQueryFirstParenthesis + 1,
+            mediaQueryEnd - 1
+        )
+        // add new rule and little size optimization
+        if (mediaTokens[rule] !== undefined) {
+            mediaTokens[rule] =
+                mediaTokens[rule] +
+                value
+                    .replaceAll('\n', '')
+                    .replaceAll('\t', '')
+                    .replaceAll('  ', '')
+        } else {
+            mediaTokens[rule] = value
+                .replaceAll('\n', '')
+                .replaceAll('\t', '')
+                .replaceAll('  ', '')
+        }
     }
-  }
-  return mediaTokens
+    return mediaTokens
 }
 
 const optimizeZeroUnitsRule = (ruleValue: string): string => {
-  if (ruleValue.includes(':0px')) {
-    return ruleValue.replace(':0px', ':0')
-  }
-  if (ruleValue.includes(':0%')) {
-    return ruleValue.replace(':0%', ':0')
-  }
-  return ruleValue
+    if (ruleValue.includes(':0px')) {
+        return ruleValue.replace(':0px', ':0')
+    }
+    if (ruleValue.includes(':0%')) {
+        return ruleValue.replace(':0%', ':0')
+    }
+    return ruleValue
 }
 
 const getRuleValue: GetRuleValueFunction = ({ oldChar, rule, ruleValue }) => {
-  // remove last ; in css rules
-  if (oldChar === ';') {
-    ruleValue = ruleValue.slice(0, -1)
-  }
-  // optimize 0 pixel values
-  ruleValue = optimizeZeroUnitsRule(ruleValue)
-  // first rule usage on the css
-  if (rule === undefined) {
-    return ruleValue
-  }
-  // size output optimization
-  const lastRuleChar: string = rule[rule.length]
-  return lastRuleChar === ';' ? rule + ruleValue : rule + ';' + ruleValue
+    // remove last ; in css rules
+    if (oldChar === ';') {
+        ruleValue = ruleValue.slice(0, -1)
+    }
+    // optimize 0 pixel values
+    ruleValue = optimizeZeroUnitsRule(ruleValue)
+    // first rule usage on the css
+    if (rule === undefined) {
+        return ruleValue
+    }
+    // size output optimization
+    const lastRuleChar: string = rule[rule.length]
+    return lastRuleChar === ';' ? rule + ruleValue : rule + ';' + ruleValue
 }
 
 /**
@@ -98,9 +123,9 @@ const getRuleValue: GetRuleValueFunction = ({ oldChar, rule, ruleValue }) => {
  * @returns cleaned css string
  */
 export const cleanCss = (css: string): string => {
-  css = removeDuplicates(css, [';', '.', ' '])
-  css = removeComments(css)
-  return css
+    css = removeDuplicates(css, [';', '.', ' '])
+    css = removeComments(css)
+    return css
 }
 
 /**
@@ -120,52 +145,56 @@ export const cleanCss = (css: string): string => {
  * @returns string Tokens with identification tokens and its style rules
  */
 export const tokenize = (css: string): Tokens => {
-  const tokens: Tokens = {}
-  const mediaQueries: MediaQuery[] = getMediaQueries(css)
-  // todo: change these var into state object
-  let ruleId = ''
-  let ruleValue = ''
-  let isValueToken = false
-  let oldChar = ''
-  let mediaQueryParsed = 0
+    const tokens: Tokens = {}
+    const mediaQueries: MediaQuery[] = getMediaQueries(css)
+    // todo: change these var into state object
+    let ruleId = ''
+    let ruleValue = ''
+    let isValueToken = false
+    let oldChar = ''
+    let mediaQueryParsed = 0
 
-  for (let index = 0; index < css.length; index++) {
-    const char = css[index]
-    const nextChar = css[index + 1]
-    // optimization
-    if (isSkippable(char, oldChar, nextChar)) {
-      oldChar = '' // reset old char to avoid error
-      continue
-    }
-    if (index >= mediaQueries[mediaQueryParsed]?.start) {
-      index = mediaQueries[mediaQueryParsed].end + 1 // NOSONAR
-      mediaQueryParsed++
-      oldChar = '' // reset old char to avoid error
-      continue
+    for (let index = 0; index < css.length; index++) {
+        const char = css[index]
+        const nextChar = css[index + 1]
+        // optimization
+        if (isSkippable(char, oldChar, nextChar)) {
+            oldChar = '' // reset old char to avoid error
+            continue
+        }
+        if (index >= mediaQueries[mediaQueryParsed]?.start) {
+            index = mediaQueries[mediaQueryParsed].end + 1 // NOSONAR
+            mediaQueryParsed++
+            oldChar = '' // reset old char to avoid error
+            continue
+        }
+
+        // tokenization
+        if (char === '}' && ruleValue?.length === 0) {
+            // remove empty rules
+            delete tokens[ruleId] // eslint-disable-line
+            ruleId = ''
+            ruleValue = ''
+            isValueToken = false
+        } else if (char === '}') {
+            tokens[ruleId] = getRuleValue({
+                oldChar,
+                rule: tokens[ruleId],
+                ruleValue,
+            })
+            ruleId = ''
+            ruleValue = ''
+            isValueToken = false
+        } else if (char === '{') {
+            isValueToken = true
+        } else if (isValueToken) {
+            ruleValue += char
+        } else {
+            ruleId += char
+        }
+        oldChar = char
     }
 
-    // tokenization
-    if (char === '}' && ruleValue?.length === 0) {
-      // remove empty rules
-      delete tokens[ruleId] // eslint-disable-line
-      ruleId = ''
-      ruleValue = ''
-      isValueToken = false
-    } else if (char === '}') {
-      tokens[ruleId] = getRuleValue({ oldChar, rule: tokens[ruleId], ruleValue })
-      ruleId = ''
-      ruleValue = ''
-      isValueToken = false
-    } else if (char === '{') {
-      isValueToken = true
-    } else if (isValueToken) {
-      ruleValue += char
-    } else {
-      ruleId += char
-    }
-    oldChar = char
-  }
-
-  const mediaTokens: Tokens = buildMediaTokens({ css, mediaQueries })
-  return { ...tokens, ...mediaTokens }
+    const mediaTokens: Tokens = buildMediaTokens({ css, mediaQueries })
+    return { ...tokens, ...mediaTokens }
 }

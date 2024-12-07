@@ -6,14 +6,16 @@ import { Tokens } from './tokenize.d'
  * @returns string with stringified tokens
  */
 export const stringify = function (tokens: Tokens): string {
-  const result = []
-  const resultMediaQueries = []
-  for (const token in tokens) {
-    if (token.includes('@media')) {
-      resultMediaQueries.push(''.concat(token, '{').concat(tokens[token], '}'))
-    } else {
-      result.push(''.concat(token, '{').concat(tokens[token], '}'))
+    const result = []
+    const resultMediaQueries = []
+    for (const token in tokens) {
+        if (token.includes('@media')) {
+            resultMediaQueries.push(
+                ''.concat(token, '{').concat(tokens[token], '}')
+            )
+        } else {
+            result.push(''.concat(token, '{').concat(tokens[token], '}'))
+        }
     }
-  }
-  return result.join('').concat('\n').concat(resultMediaQueries.join('\n'))
+    return result.join('').concat('\n').concat(resultMediaQueries.join('\n'))
 }
