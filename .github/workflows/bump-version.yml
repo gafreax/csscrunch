@@ -9,10 +9,11 @@ jobs:
   versioning:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Bump version
         id: bump_version
@@ -21,8 +22,8 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_ENV
 
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "📦 Bump a new version"
           tagging_message: "${{ env.version }}"
-          push_options: '--tags'
+          push_options: "--tags"
