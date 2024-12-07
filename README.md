@@ -20,7 +20,7 @@ npm install @gafreax/csscrunch
 ## Usage
 
 ```typescript
-import * as csscrunch from 'csscrunch';
+import * as csscrunch from '@gafreax/csscrunch';
 
 const cssString = '.example { color: red; font-size: 16px; }';
 const parsedCSS = csscrunch.parse(cssString);

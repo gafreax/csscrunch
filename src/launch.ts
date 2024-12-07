@@ -11,7 +11,7 @@ function start (): void {
   program
     .addHelpText('after', `
   Example call:
-    $ csscrunch compile style.css -o style.optimized.css
+    $ npx @gafreax/csscrunch compile style.css -o style.optimized.css
     $ npm start -- compile style.css -o style.optimized.css`)
     .command('compile')
     .argument('<file css>', 'css file to compile')
