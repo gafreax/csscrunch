@@ -1,9 +1,10 @@
 {
   "name": "@gafreax/csscrunch",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Simple CSS Parser to tokenize CSS, merge rules, and optimize it",
   "main": "dist/src/index.js",
   "scripts": {
+    "prepublish": "npm run build",
     "build": "tsc",
     "clean": "rimraf dist/",
     "start": "ts-node src/launch.ts",
