@@ -2,7 +2,7 @@
 import fs from 'node:fs'
 import process from 'node:process'
 import { program } from 'commander'
-import { parse } from './index'
+import compile from './index'
 
 function start (): void {
   program
@@ -17,11 +17,11 @@ function start (): void {
     .command('compile')
     .argument('<file css>', 'css file to compile')
     .argument('[<output>]', 'css output file')
-    .action((file, output) => {
+    .action((file: string, output: string) => {
       const css = fs.readFileSync(file)
-      const optimizedCss = parse(css.toString())
+      const optimizedCss = compile(css.toString())
       console.log(optimizedCss)
-      if (output) {
+      if (output !== undefined) {
         fs.writeFileSync(output, optimizedCss)
       }
     })
