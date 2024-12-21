@@ -37,13 +37,18 @@ const optimizedCSS = csscrunch.stringify(parsedCSS);
 To clean a css file simply run this command
 
 ```bash
-$ npm start -- compile simple.css out.cs
+$ npm start -- compile input.css optimized.cs
 ```
 
 Or via npx
 
 ```bash
-$ npx csscrunch compile simple.css out.cs
+$ npx @gafreax/csscrunch compile input.css optimized.cs
+```
+
+Or via global install
+```bash
+$ npm install - @gafreaxa/csscrunch compile input.css optimized.cs
 ```
 
 ## Contribution
