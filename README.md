@@ -1,4 +1,4 @@
-# CSS Parse
+# CSS Crunch
 
 This package provides a powerful and efficient TypeScript library for optimizing CSS strings. It enables developers to easily compress css JavaScript projects.
 
