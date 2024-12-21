@@ -1,0 +1,6 @@
+body {
+  padding: calc(1rem + 1vw);
+  background-image: url('img.png');
+  background-image: url('https://fastly.picsum.photos/id/423/100/100.jpg?hmac=Yb4FKqDYd2C1Lvx5F0BDwATeS4vxsllU9vPl228-BXQ')
+}
+
