@@ -40,13 +40,18 @@ const optimizedCSS = csscrunch.stringify(parsedCSS);
 To optimize your CSS file, simply run the following command in your terminal:
 
 ```bash
-$ npm start -- compile simple.css out.cs
+$ npm start -- compile input.css optimized.cs
 ```
 
 Or via npx
 
 ```bash
-$ npx csscrunch compile simple.css out.cs
+$ npx @gafreax/csscrunch compile input.css optimized.cs
+```
+
+Or via global install
+```bash
+$ npm install - @gafreaxa/csscrunch compile input.css optimized.cs
 ```
 
 ## Contribution
