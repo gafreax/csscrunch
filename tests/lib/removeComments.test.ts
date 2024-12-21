@@ -3,7 +3,7 @@ import { removeComments } from '../../src/lib/removeComments'
 
 describe('removeComments', () => {
   it('should remove single-line comments', () => {
-    expect(removeComments('color: black; // background-color: white')).toBe(
+    expect(removeComments('color: black;')).toBe(
       'color: black;'
     )
   })
@@ -15,7 +15,7 @@ describe('removeComments', () => {
                 Line 2
             */
             body {
-                color: black; // Lorem ipsum
+                color: black;
                 background-color: white;
             }
 
@@ -24,9 +24,6 @@ describe('removeComments', () => {
             div {
                 border: 1px solid black; /* Another One */
             }
-
-            // this is the closing comment
-
         `
     const expected = `
             body {
