@@ -1,35 +1,36 @@
-name: Bump Version
+name: Release
+on:
+  push:
+    branches:
+      - main # or main
 
-on: [pull_request]
+permissions:
+  contents: read # for checkout
 
 jobs:
-  versioning:
+  release:
+    name: Release
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: true
-
     permissions:
-      contents: write
-
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for npm provenance
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
-
+        with:
+          fetch-depth: 0
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: "22"
-
-      - name: Bump version
-        id: bump_version
-        run: |
-          VERSION=$(npm version patch --no-git-tag-version)
-          echo "version=$VERSION" >> $GITHUB_ENV
-
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "📦 Bump a new version"
-          tagging_message: "${{ env.version }}"
-          push_options: "--tags"
+          node-version: "lts/*"
+      - name: Install dependencies
+        run: npm clean-install
+      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+        run: npm audit signatures
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
