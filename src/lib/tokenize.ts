@@ -4,6 +4,7 @@ import { isWhitespace } from './utils'
 import { MediaQuery } from './mediaQuery.d'
 import { removeComments } from './removeComments'
 import { removeDuplicates } from './removeDuplicates'
+import { removeRuleLastSemi } from './removeRuleLastSemi'
 
 /**
  * Check if char is skippable because its value does mean nothing in css
@@ -94,9 +95,10 @@ const getRuleValue: GetRuleValueFunction = ({ oldChar, currentRules, newRules })
  * @returns cleaned css string
  */
 export const cleanCss = (css: string): string => {
-  css = removeDuplicates(css, [';', '.', ' '])
-  css = removeComments(css)
-  return css
+  const cssNoDuplicates = removeDuplicates(css, [';', '.', ' '])
+  const cssNoComments = removeComments(cssNoDuplicates)
+  const cssNoLastSemi = removeRuleLastSemi(cssNoComments)
+  return cssNoLastSemi
 }
 
 /**
