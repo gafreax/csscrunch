@@ -15,14 +15,15 @@ function start (): void {
     $ npx @gafreax/csscrunch compile style.css -o style.optimized.css
     $ npm start -- compile style.css -o style.optimized.css`)
     .command('compile')
-    .argument('<file css>', 'css file to compile')
-    .argument('[<output>]', 'css output file')
-    .action((file: string, output: string) => {
+    .argument('<input.css>', 'css file to compile')
+    .argument('[<output.css>]', 'css output file')
+    .action((file: string, output?: string) => {
       const css = fs.readFileSync(file)
       const optimizedCss = compile(css.toString())
-      console.log(optimizedCss)
       if (output !== undefined) {
         fs.writeFileSync(output, optimizedCss)
+      } else {
+        console.log(optimizedCss)
       }
     })
   program.parse(process.argv)
