@@ -51,7 +51,8 @@ $ npx @gafreax/csscrunch compile input.css optimized.cs
 
 Or via global install
 ```bash
-$ npm install - @gafreaxa/csscrunch compile input.css optimized.cs
+$ npm install -g @gafreaxa/csscrunch
+$ csscrunch compile input.css optimized.cs
 ```
 
 ## Contribution
