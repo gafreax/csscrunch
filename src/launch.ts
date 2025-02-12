@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 import fs from 'node:fs'
 import process from 'node:process'
+
 import { program } from 'commander'
 import compile from './index'
 
-function start (): void {
+export function start (): void {
   program
     .name('csscrunch')
     .description('CSS parser that optimizes CSS files')
@@ -12,8 +13,8 @@ function start (): void {
   program
     .addHelpText('after', `
   Example call:
-    $ npx @gafreax/csscrunch compile style.css -o style.optimized.css
-    $ npm start -- compile style.css -o style.optimized.css`)
+    $ npx @gafreax/csscrunch compile style.css style.optimized.css
+    $ npm start -- compile style.css style.optimized.css`)
     .command('compile')
     .argument('<input.css>', 'css file to compile')
     .argument('[<output.css>]', 'css output file')
@@ -30,3 +31,4 @@ function start (): void {
 }
 
 start()
+
