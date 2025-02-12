@@ -42,6 +42,27 @@ export const isPunctuation = (char: string): boolean => {
   }
 }
 
+export const cleanMediaQueryRule = (rule: string): string => {
+  return rule
+    .replaceAll('\n', '')
+    .replaceAll('\t', '')
+    .replaceAll('  ', '')
+    .replaceAll('  ', '')
+    .replaceAll('{ ', '{')
+    .replaceAll('} ', '}')
+    .replaceAll(' }', '}')
+    .replaceAll(' {', '{')
+    .replaceAll(') ', ')')
+    .replaceAll('( ', '(')
+    .replaceAll(' (', '(')
+    .replaceAll(' )', ')')
+    .replaceAll('; ', ';')
+    .replaceAll(', ', ',')
+    .replaceAll(' ;', ';')
+    .replaceAll(': ', ':')
+    .replaceAll(' :', ':')
+}
+
 /**
  * build media queries tokens
  * todo: merge same media query rules
@@ -55,13 +76,13 @@ const buildMediaTokens: BuildMediaTokensFunction = ({ css, mediaQueries }) => {
     const mediaQueryStart = mediaQuery.start
     const mediaQueryEnd = mediaQuery.end
     const mediaQueryFirstParenthesis = css.indexOf('{', mediaQueryStart)
-    const rule = css.slice(mediaQueryStart, mediaQueryFirstParenthesis)
-    const value = css.slice(mediaQueryFirstParenthesis + 1, mediaQueryEnd - 1)
+    const rule = css.slice(mediaQueryStart, mediaQueryFirstParenthesis).trim()
+    const value = css.slice(mediaQueryFirstParenthesis + 1, mediaQueryEnd - 1).trim()
     // add new rule and little size optimization
     if (mediaTokens[rule] !== undefined) {
-      mediaTokens[rule] = mediaTokens[rule] + value.replaceAll('\n', '').replaceAll('\t', '').replaceAll('  ', '')
+      mediaTokens[rule] = mediaTokens[rule] + cleanMediaQueryRule(value)
     } else {
-      mediaTokens[rule] = value.replaceAll('\n', '').replaceAll('\t', '').replaceAll('  ', '')
+      mediaTokens[rule] = cleanMediaQueryRule(value)
     }
   }
   return mediaTokens
