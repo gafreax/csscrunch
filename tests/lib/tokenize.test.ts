@@ -3,7 +3,7 @@ import { tokenize } from '../../src/lib/tokenize'
 
 describe('tokenize', () => {
   test('simple css', () => {
-    const css = `
+   const css = `
         a {  color: purple;}
         div { border: none; }
         .pippo { color: purple;}
@@ -28,5 +28,15 @@ describe('tokenize', () => {
     }`
     const res = tokenize(css)
     expect(res).toEqual({ '.blu-class': 'background-color:#00ff00;color:#000000;' })
+  })
+
+  test('media queries', () => {
+    const css = `
+    @media screen and (max-width: 600px) {
+      body { color: red; }
+    }`
+
+    const res = tokenize(css)
+    expect(res).toEqual({ '@media screen and (max-width: 600px)': 'body{color:red;}' })
   })
 })
