@@ -17,4 +17,11 @@ export interface Tokens {
 
 export type GetRuleValueFunction = (params: GetRuleValueI) => string
 
+/**
+ * build media queries tokens
+ * todo: merge same media query rules
+ * @param css the css string
+ * @param object media query
+ * @returns {Tokens} media tokens
+ */
 export type BuildMediaTokensFunction = (mediaTokens: BuildMediaTokensI) => Tokens
