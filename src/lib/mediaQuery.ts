@@ -32,7 +32,9 @@ export const getMediaQueries = (css: string): MediaQuery[] => {
     let i = firstParenthesis + 1
     if (i > 0) {
       for (i; deep > 0 && i <= css.length; i++) {
-        if (css[i] === '/' && css[i + 1] === '*') {
+        // if (css[i] === '/' && css[i + 1] === '*') {
+        if (css.indexOf('/*', i) === i) {
+          i = css.indexOf('*/', i) + 2
           continue
         }
         deep = deep + deepLevel(css[i])
