@@ -32,6 +32,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@types/node": "^22.13.4",
     "commander": "^13.1.0",
     "vitest": "^3.0.5"
   },
