@@ -27,6 +27,8 @@ jobs:
           node-version: "lts/*"
       - name: Install pnpm
         uses: pnpm/action-setup@v4
+        with:
+          version: latest
       - name: Install dependencies
         run: pnpm install
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
