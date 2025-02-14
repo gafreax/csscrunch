@@ -56,9 +56,6 @@ export const buildMediaTokens: BuildMediaTokensFunction = ({ css, mediaQueries }
     const mediaQueryFirstParenthesis = css.indexOf('{', mediaQueryStart)
     const rule = css.slice(mediaQueryStart, mediaQueryFirstParenthesis).trim()
     const value = css.slice(mediaQueryFirstParenthesis + 1, mediaQueryEnd - 1).trim()
-    // add new rule and little size optimization
-    console.log('rule', rule)
-    console.log('value', value)
     if (mediaTokens[rule] !== undefined) {
       mediaTokens[rule] = mediaTokens[rule] + cleanMediaQueryRule(value)
     } else {
