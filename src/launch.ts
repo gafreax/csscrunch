@@ -29,7 +29,8 @@ export function start (): void {
     .addHelpText('after', `
   Example call:
     $ npx @gafreax/csscrunch compile style.css style.optimized.css
-    $ npm start -- compile style.css style.optimized.css`)
+    $ npm start -- compile style.css -o style.optimized.css
+    $ npm start -- compile -om style.css -o style.optimized.css`)
     .command('compile')
     .argument('<input.css>', 'css file to compile')
     .requiredOption('-o', '--output <output.css>', 'output css file')

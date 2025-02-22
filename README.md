@@ -23,13 +23,8 @@ npm install @gafreax/csscrunch
 import * as csscrunch from '@gafreax/csscrunch';
 
 const cssString = '.example { color: red; font-size: 16px; }';
-const parsedCSS = csscrunch.parse(cssString);
+const parsedCSS = csscrunch.compile(cssString);
 
-// Access and modify CSS properties
-parsedCSS.rules[0].declarations[0].setProperty('color', 'blue');
-
-// Generate optimized CSS
-const optimizedCSS = csscrunch.stringify(parsedCSS);
 ```
 
 
@@ -40,19 +35,19 @@ const optimizedCSS = csscrunch.stringify(parsedCSS);
 To optimize your CSS file, simply run the following command in your terminal:
 
 ```bash
-$ npm start -- compile input.css optimized.cs
+$ npm start -- compile input.css -o optimized.css
 ```
 
 Or via npx
 
 ```bash
-$ npx @gafreax/csscrunch compile input.css optimized.cs
+$ npx @gafreax/csscrunch compile input.css -o optimized.css
 ```
 
 Or via global install
 ```bash
 $ npm install -g @gafreaxa/csscrunch
-$ csscrunch compile input.css optimized.cs
+$ csscrunch compile input.css -o optimized.css
 ```
 
 ## Contribution
