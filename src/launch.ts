@@ -16,6 +16,9 @@ export function start (): void {
     $ npx @gafreax/csscrunch compile style.css style.optimized.css
     $ npm start -- compile style.css style.optimized.css`)
     .command('compile')
+    .option('-osh, --optimize-short-hand', 'optimize padding and margin short hand')
+    .option('-om, --optimize-margin', 'optimize margin short hand')
+    .option('-op, --optimize-padding', 'optimize padding short hand')
     .argument('<input.css>', 'css file to compile')
     .argument('[<output.css>]', 'css output file')
     .action((file: string, output?: string) => {
