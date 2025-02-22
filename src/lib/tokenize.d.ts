@@ -3,16 +3,17 @@ export interface BuildMediaTokensI {
   mediaQueries: MediaQuery[]
 }
 
-interface GetRuleValueI {
-  oldChar: string
-  currentRules: string
-  newRules: string
-}
-
 export type Token = string
 
 export interface Tokens {
   [key: string]: Token
+}
+
+interface GetRuleValueI {
+  oldChar: string
+  currentRules: string
+  newRules: string
+  optimizations?: Optimizations
 }
 
 export type GetRuleValueFunction = (params: GetRuleValueI) => string
