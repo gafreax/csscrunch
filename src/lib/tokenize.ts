@@ -2,8 +2,8 @@ import { BuildMediaTokensFunction, GetRuleValueFunction, Tokens } from './tokeni
 import { getMediaQueries } from './mediaQuery'
 import { isWhitespace } from './utils'
 import { MediaQuery } from './mediaQuery.d'
-import { removeComments } from './removeComments'
-import { removeDuplicates } from './removeDuplicates'
+import { Optimizations } from './optimization.d'
+import { optimizeRule, optimizeZeroUnitsRule, removeComments, removeDuplicates } from './optimization'
 import { removeRuleLastSemi } from './removeRuleLastSemi'
 
 const REGEX_MEDIA_QUERY_BRACKETS_WITH_SPACE = /[\n\t]| {2,}| ?([{}() ,;:]) ?/g
@@ -65,16 +65,6 @@ export const buildMediaTokens: BuildMediaTokensFunction = ({ css, mediaQueries }
   return mediaTokens
 }
 
-const optimizeZeroUnitsRule = (ruleValue: string): string => {
-  if (ruleValue.includes(':0px')) {
-    return ruleValue.replace(':0px', ':0')
-  }
-  if (ruleValue.includes(':0%')) {
-    return ruleValue.replace(':0%', ':0')
-  }
-  return ruleValue
-}
-
 const getRuleValue: GetRuleValueFunction = ({ oldChar, currentRules, newRules }) => {
   if (currentRules === undefined || currentRules.includes(newRules.trim())) {
     return newRules.trim()
@@ -115,7 +105,7 @@ export const cleanCss = (css: string): string => {
  * @param css String with css style
  * @returns string Tokens with identification tokens and its style rules
  */
-export const tokenize = (css: string): Tokens => {
+export const tokenize = (css: string, optmizations?: Optimizations): Tokens => {
   const tokens: Tokens = {}
   const mediaQueries: MediaQuery[] = getMediaQueries(css)
   // todo: change these var into state object
@@ -148,7 +138,9 @@ export const tokenize = (css: string): Tokens => {
       rules = ''
       isValueToken = false
     } else if (char === '}') {
-      tokens[selector] = getRuleValue({ oldChar, currentRules: tokens[selector], newRules: rules })
+      const ruleValue = getRuleValue({ oldChar, currentRules: tokens[selector], newRules: rules })
+      const optimizedRuleValue = optimizeRule(ruleValue, optmizations)
+      tokens[selector] = optimizedRuleValue
       selector = ''
       rules = ''
       isValueToken = false
