@@ -1,0 +1,16 @@
+{
+  "name": "examples",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "type": "module",
+  "author": "Gabriele Fontana <gafreax@gmail.com>",
+  "license": "MIT",
+  "description": "Simple examples of using csscrunch library",
+  "dependencies": {
+    "@gafreax/csscrunch": "^1.2.0"
+  }
+}

@@ -86,16 +86,35 @@ describe('getSideValue', () => {
     expect(left).toBe('11px')
     expect(bottom).toBe('14px')
   })
+
+  it('should return null if no rule', () => {
+    const rule = 'padding'
+    const ruleValue = 'padding-top: 11px; padding-left: 23px'
+    const bottom = getSideValue({rule, ruleValue, side: 'bottom' })
+    expect(bottom).toBeFalsy()
+  })
 })
 
 describe('getSidesShortcut', () => {
-  it('if all side are different return 4 values single shortcutt', () => {
+  it('margin if all side are different return 4 values single shortcut', () => {
+    const marginRules = 'margin-top: 12px; margin-right: 23px; margin-bottom: 11px; margin-left: 40px;'
+    const res = getSidesShortcut(marginRules, 'margin')
+    expect(res).toBe('margin:12px 23px 11px 40px;')
+  })
+
+  it('margin if top and bottom are the same but not the left and right return 4 diffrent rules', () => {
+    const marginRules = 'margin-top: 12px; margin-right: 23px; margin-bottom: 12px; margin-left: 40px;'
+    const res = getSidesShortcut(marginRules, 'margin')
+    expect(res).toBe(marginRules)
+  })
+
+  it('padding if all side are different return 4 values single shortcut', () => {
     const paddingRules = 'padding-top: 12px; padding-right: 23px; padding-bottom: 11px; padding-left: 40px;'
     const res = getSidesShortcut(paddingRules, 'padding')
     expect(res).toBe('padding:12px 23px 11px 40px;')
   })
 
-  it('if top and bottom are the same but not the left and right return 4 diffrent rules', () => {
+  it('padding if top and bottom are the same but not the left and right return 4 diffrent rules', () => {
     const paddingRules = 'padding-top: 12px; padding-right: 23px; padding-bottom: 12px; padding-left: 40px;'
     const res = getSidesShortcut(paddingRules, 'padding')
     expect(res).toBe(paddingRules)
