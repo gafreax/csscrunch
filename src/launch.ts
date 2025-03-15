@@ -30,21 +30,19 @@ export function start (): void {
   Example call:
     $ npx @gafreax/csscrunch compile style.css style.optimized.css
     $ npm start -- compile style.css -o style.optimized.css
-    $ npm start -- compile -om style.css -o style.optimized.css`)
-    .command('compile')
-    .argument('<input.css>', 'css file to compile')
-    .requiredOption('-o', '--output <output.css>', 'output css file')
-    .option('-osh, --optimize-short-hand', 'optimize padding and margin short hand')
-    .option('-om, --optimize-margin', 'optimize margin short hand')
-    .option('-op, --optimize-padding', 'optimize padding short hand')
-    .action((file: string, options: Options) => {
-      const css = fs.readFileSync(file)
+    $ npm start -- compile --optimize-short-hand style.css -o style.optimized.css`)
+    .command('compile <input> [output]')
+    .option('--optimize-short-hand', 'optimize padding and margin short hand')
+    .option('--optimize-margin', 'optimize margin short hand')
+    .option('--optimize-padding', 'optimize padding short hand')
+    .action((input: string, output: string, options: Options) => {
+      const css = fs.readFileSync(input)
       const optimizations = getOptimizations(options)
-      const optimizedCss = compile(css.toString(), optimizations)
-      if (options.output !== undefined) {
-        fs.writeFileSync(options.output, optimizedCss)
+      const optimizedCSS = compile(css.toString(), optimizations)
+      if (output !== undefined) {
+        fs.writeFileSync(output, optimizedCSS)
       } else {
-        console.log(optimizedCss)
+        console.log(optimizedCSS)
       }
     })
   program.parse(process.argv)
