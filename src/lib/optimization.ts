@@ -15,7 +15,13 @@ export const isAllSideEqual = ({ left, right, top, bottom }: Sides): boolean => 
 }
 
 export const existsNullSides = ({ left, right, top, bottom }: Sides): boolean => {
-  return left === undefined || right === undefined || top === undefined || bottom === undefined
+  if ([left, right, top, bottom].includes(undefined)) {
+    return true
+  }
+  if ([left, right, top, bottom].includes('')) {
+    return true
+  }
+  return false
 }
 
 export const isVerticalAndHorizontalEqual = ({ top, bottom, left, right }: Sides): boolean => {
@@ -29,7 +35,9 @@ export const isAllSideDifferent = ({ left, right, top, bottom }: Sides): boolean
 export const getSideValue = (params: { rule: string, ruleValue: string, side: string }): string => {
   const { rule, ruleValue, side } = params
   const sideProp = `${rule}-${side}:`
-
+  if (!ruleValue.includes(sideProp)) {
+    return ''
+  }
   const startSideValue = ruleValue.indexOf(sideProp) + sideProp.length
   const endSideValue = ruleValue.indexOf(';', ruleValue.indexOf(sideProp))
   return ruleValue.substring(startSideValue, endSideValue).trim()
@@ -44,14 +52,14 @@ export const getSidesShortcut = (ruleValue: string, rule: string): string => {
     return ruleValue
   }
   if (isAllSideEqual({ left, right, top, bottom })) {
-    return `padding:${top};`
+    return `${rule}:${top};`
   }
   if (isVerticalAndHorizontalEqual({ top, bottom, left, right })) {
-    return `padding:${top} ${right};`
+    return `${rule}:${top} ${right};`
   }
   // return shortcut if all rules are specified
   if (isAllSideDifferent({ left, right, top, bottom })) {
-    return `padding:${top} ${right} ${bottom} ${left};`
+    return `${rule}:${top} ${right} ${bottom} ${left};`
   }
   return ruleValue
 }
