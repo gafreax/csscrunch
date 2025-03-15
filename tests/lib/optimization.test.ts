@@ -90,7 +90,7 @@ describe('getSideValue', () => {
   it('should return null if no rule', () => {
     const rule = 'padding'
     const ruleValue = 'padding-top: 11px; padding-left: 23px'
-    const bottom = getSideValue({rule, ruleValue, side: 'bottom' })
+    const bottom = getSideValue({ rule, ruleValue, side: 'bottom' })
     expect(bottom).toBeFalsy()
   })
 })
