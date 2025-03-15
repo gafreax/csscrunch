@@ -7,3 +7,22 @@
   background-color: #00ff00;
     color: #000000;
 }
+
+.test_padding_a {
+  padding-left: 123px;
+  padding-top: 10px;
+}
+
+.test_padding_b {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.test_padding_c {
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
