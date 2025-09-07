@@ -28,3 +28,7 @@ coverage/
 .vscode/*
 .idea/*
 .project/*
+
+# qlty
+.qlty/*
+
