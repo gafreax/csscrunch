@@ -1,21 +1,18 @@
-import { describe, beforeAll, it, expect } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { readFile } from 'node:fs/promises'
 import path from 'path'
+import fs from 'fs'
 
 import compile from '../src/index'
 
-const css_path = path.join(__dirname, 'simple.css')
-
 describe('compile', () => {
-  let css: string
-
-  beforeAll(async () => {
-    css = await readFile(css_path, 'utf-8')
-  })
-
-  it('compiles CSS', () => {
-    const result = compile(css)
-    expect(result).toMatchSnapshot()
+  it('compiles CSS', async () => {
+    // get the list of css files in the test folder
+    const cssList = fs.readdirSync(path.join(__dirname)).filter(file => file.endsWith('.css'))
+    for (const cssFile of cssList) {
+      const css = await readFile(path.join(__dirname, cssFile), 'utf-8')
+      const result = compile(css)
+      expect(result).toMatchSnapshot()
+    }
   })
 })
-
