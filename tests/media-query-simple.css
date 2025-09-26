@@ -1,0 +1,33 @@
+h1,h2,h3 {
+  color: red;
+}
+@media (max-width: 600px) {
+  h1,h2,h3 {
+    color: blue;
+  }
+}
+p {
+  font-size: 16px;
+}@media (max-width: 200px) {
+  p {
+    font-size: 12px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  body {
+    background-color: lightgreen;
+  }
+}button {
+  padding: 10px 15px;
+  border: none;
+  background-color: darkblue;
+  color: white;
+  cursor: pointer;
+}
+span {
+  font-weight: bold;
+}a {
+  text-decoration: none;
+  color: darkred;
+}
