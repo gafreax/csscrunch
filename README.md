@@ -27,6 +27,17 @@ const parsedCSS = csscrunch.compile(cssString);
 
 ```
 
+## Optimization
+To enable the optimization pass a `Optimizations` object (file: `src/lib/optimization.d.ts`)  to the instance:
+
+```typescript
+interface Optimizations {
+  paddingShortHand?: boolean
+  marginShortHand?: boolean
+}
+```
+
+
 
 ## CLI Usage
 
