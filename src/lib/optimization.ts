@@ -1,13 +1,7 @@
 import { Optimizations, Sides } from './optimization.d'
 
 export const optimizeZeroUnitsRule = (ruleValue: string): string => {
-  if (ruleValue.includes(':0px')) {
-    return ruleValue.replace(':0px', ':0')
-  }
-  if (ruleValue.includes(':0%')) {
-    return ruleValue.replace(':0%', ':0')
-  }
-  return ruleValue
+  return ruleValue.replace(/(:| )0(px|%|em|rem)/g, '$10')
 }
 
 export const isAllSideEqual = ({ left, right, top, bottom }: Sides): boolean => {
