@@ -38,24 +38,55 @@ export const getSideValue = (params: { rule: string, ruleValue: string, side: st
 }
 
 export const getSidesShortcut = (ruleValue: string, rule: string): string => {
+  // Extract the individual side values from the rule value
   const bottom = getSideValue({ rule, ruleValue, side: 'bottom' })
   const left = getSideValue({ rule, ruleValue, side: 'left' })
   const right = getSideValue({ rule, ruleValue, side: 'right' })
   const top = getSideValue({ rule, ruleValue, side: 'top' })
+
+  // Don't optimize if any side is missing
   if (existsNullSides({ left, right, top, bottom })) {
     return ruleValue
   }
+
+  // Build the shorthand property string
+  let shorthandValue = ''
+
   if (isAllSideEqual({ left, right, top, bottom })) {
-    return `${rule}:${top};`
+    shorthandValue = `${rule}:${top};`
+  } else if (isVerticalAndHorizontalEqual({ top, bottom, left, right })) {
+    shorthandValue = `${rule}:${top} ${right};`
+  } else if (isAllSideDifferent({ left, right, top, bottom })) {
+    shorthandValue = `${rule}:${top} ${right} ${bottom} ${left};`
+  } else {
+    // If no optimization applied, return original
+    return ruleValue
   }
-  if (isVerticalAndHorizontalEqual({ top, bottom, left, right })) {
-    return `${rule}:${top} ${right};`
+
+  // Remove the individual side properties from the rule value
+  let updatedRuleValue = ruleValue
+  updatedRuleValue = updatedRuleValue.replace(new RegExp(`${rule}-top:([^;]+);`, 'g'), '')
+  updatedRuleValue = updatedRuleValue.replace(new RegExp(`${rule}-right:([^;]+);`, 'g'), '')
+  updatedRuleValue = updatedRuleValue.replace(new RegExp(`${rule}-bottom:([^;]+);`, 'g'), '')
+  updatedRuleValue = updatedRuleValue.replace(new RegExp(`${rule}-left:([^;]+);`, 'g'), '')
+
+  // Clean up any double semicolons that might be created
+  updatedRuleValue = updatedRuleValue.replace(/;;/g, ';')
+
+  // Clean up any leading/trailing whitespace
+  updatedRuleValue = updatedRuleValue.trim()
+
+  // If there's remaining content, ensure it ends with a semicolon
+  if (updatedRuleValue.length > 0) {
+    if (!updatedRuleValue.endsWith(';')) {
+      updatedRuleValue += ';'
+    }
+    // Add a space separator if needed
+    updatedRuleValue += ' '
   }
-  // return shortcut if all rules are specified
-  if (isAllSideDifferent({ left, right, top, bottom })) {
-    return `${rule}:${top} ${right} ${bottom} ${left};`
-  }
-  return ruleValue
+
+  // Return just the shorthand if there's no other rules left
+  return updatedRuleValue.length > 0 ? updatedRuleValue + shorthandValue : shorthandValue
 }
 
 export const optimizeRule = (ruleValue: string, optimizations?: Optimizations): string => {
@@ -63,10 +94,10 @@ export const optimizeRule = (ruleValue: string, optimizations?: Optimizations): 
     return ruleValue
   }
   let optimized = ruleValue
-  if (optimizations.paddingShortHand !== undefined) {
+  if (optimizations.paddingShortHand !== undefined && optimizations.paddingShortHand) {
     optimized = getSidesShortcut(optimized, 'padding')
   }
-  if (optimizations.marginShortHand !== undefined) {
+  if (optimizations.marginShortHand !== undefined && optimizations.marginShortHand) {
     optimized = getSidesShortcut(optimized, 'margin')
   }
   return optimized

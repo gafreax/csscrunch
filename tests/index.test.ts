@@ -8,9 +8,9 @@ import compile from '../src/index'
 describe('compile', () => {
   it('compiles CSS', async () => {
     // get the list of css files in the test folder
-    const cssList = fs.readdirSync(path.join(__dirname)).filter(file => file.endsWith('.css'))
+    const cssList = fs.readdirSync(path.join(__dirname, '__css__')).filter(file => file.endsWith('.css'))
     for (const cssFile of cssList) {
-      const css = await readFile(path.join(__dirname, cssFile), 'utf-8')
+      const css = await readFile(path.join(__dirname, '__css__', cssFile), 'utf-8')
       const result = compile(css)
       expect(result).toMatchSnapshot()
     }

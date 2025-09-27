@@ -1,0 +1,29 @@
+@media (max-width: 520px) {
+  .xkvEr67uu-row-content:not(.no_stack) {
+    display: block;
+  }
+  .xkvEr67uu-desktop_hide {
+    display: block !important;
+  }
+  .xkvEr67uu-mobile_hide {
+    display: none;
+  }
+}.xkvEr67uu-row-1{background-repeat: no-repeat;}.xkvEr67uu-row-1 .xkvEr67uu-row-content{background-repeat: no-repeat;color: #000000;}.xkvEr67uu-row-1 .xkvEr67uu-col-1{padding-bottom: 5px;padding-top: 5px;}.xkvEr67uu-row-1 .xkvEr67uu-col-1 .xkvEr67uu-block-1{width: 100%;text-align: center;}.xkvEr67uu-row-2{background-repeat: no-repeat;}.xkvEr67uu-row-2 .xkvEr67uu-row-content{background-color: #751a7c;color: #000000;background-repeat: no-repeat;border-radius: 0px;}.xkvEr67uu-row-2 .xkvEr67uu-col-1{padding-bottom: 5px;padding-top: 5px;}.xkvEr67uu-row-2 .xkvEr67uu-col-1 .xkvEr67uu-block-1{width: 100%;text-align: center;}.xkvEr67uu-row-3{background-repeat: no-repeat;}.xkvEr67uu-row-3 .xkvEr67uu-row-content{color: #000000;background-repeat: no-repeat;border-radius: 0px;}.xkvEr67uu-row-3 .xkvEr67uu-col-1{padding-bottom: 5px;padding-top: 5px;}.xkvEr67uu-row-3 .xkvEr67uu-col-1 .xkvEr67uu-block-1{width: 100%;text-align: center;}.xkvEr67uu-row-3 .xkvEr67uu-col-1 .xkvEr67uu-block-2{width: 100%;}.xkvEr67uu-row-4{background-repeat: no-repeat;}.xkvEr67uu-row-4 .xkvEr67uu-row-content{color: #000000;background-repeat: no-repeat;border-radius: 0px;}.xkvEr67uu-row-4 .xkvEr67uu-col-1{padding-bottom: 5px;padding-top: 5px;}.xkvEr67uu-row-4 .xkvEr67uu-col-1 .xkvEr67uu-block-1{text-align: center;padding-top: 10px;padding-right: 10px;padding-bottom: 10px;padding-left: 10px;}.xkvEr67uu-row-4 .xkvEr67uu-col-2{padding-bottom: 5px;padding-top: 5px;}.xkvEr67uu-row-4 .xkvEr67uu-col-2 .xkvEr67uu-block-1{text-align: center;padding-top: 10px;padding-right: 10px;padding-bottom: 10px;padding-left: 10px;}.xkvEr67uu-row-4 .xkvEr67uu-col-3{padding-bottom: 5px;padding-top: 5px;}.xkvEr67uu-row-4 .xkvEr67uu-col-3 .xkvEr67uu-block-1{text-align: center;padding-top: 10px;padding-right: 10px;padding-bottom: 10px;padding-left: 10px;}.xkvEr67uu-row-1 .xkvEr67uu-col-1 .xkvEr67uu-block-1 h1 {
+  color: #555555;
+  font-size: 23px;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 120%;
+  text-align: center;
+  direction: ltr;
+  font-weight: 700;
+  letter-spacing: normal;
+}.xkvEr67uu-row-2 .xkvEr67uu-col-1 .xkvEr67uu-block-1 h1 {
+  color: #555555;
+  font-size: 23px;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 120%;
+  text-align: center;
+  direction: ltr;
+  font-weight: 700;
+  letter-spacing: normal;
+}
