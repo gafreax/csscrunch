@@ -124,10 +124,11 @@ export const tokenize = (css: string, optmizations?: Optimizations): Tokens => {
       oldChar = char // reset old char to avoid error
       continue
     }
-    if (index >= mediaQueries[mediaQueryParsed]?.start) {
-      index = mediaQueries[mediaQueryParsed].end + 1 // NOSONAR
-      mediaQueryParsed++
-      oldChar = '' // reset old char to avoid error
+    if (index >= mediaQueries[mediaQueryParsed]?.start && index < mediaQueries[mediaQueryParsed]?.end) {
+      if (index === mediaQueries[mediaQueryParsed].end - 1) {
+        mediaQueryParsed++
+        oldChar = '}'
+      }
       continue
     }
 
