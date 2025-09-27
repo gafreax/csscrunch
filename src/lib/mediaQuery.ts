@@ -38,7 +38,7 @@ export const getMediaQueries = (css: string): MediaQuery[] => {
           continue
         }
         deep = deep + deepLevel(css[i])
-        if (deep > 0 || css[i] === '}') {
+        if (deep > 0) {
           val += css[i]
         }
       }
