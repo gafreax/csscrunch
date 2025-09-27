@@ -11,12 +11,11 @@ export const deepLevel = (char: string): number => {
 
 export const findIndexOfMediaQueries = (css: string): number[] => {
   const indexList = []
-  const len = '@media'.length
   let currentIndex = css.indexOf('@media')
 
   while (currentIndex >= 0) {
     indexList.push(currentIndex)
-    currentIndex = css.indexOf('@media', currentIndex + len)
+    currentIndex = css.indexOf('@media', currentIndex + '@media'.length)
   }
   return indexList
 }
@@ -32,15 +31,19 @@ export const getMediaQueries = (css: string): MediaQuery[] => {
     let i = firstParenthesis + 1
     if (i > 0) {
       for (i; deep > 0 && i <= css.length; i++) {
-        // if (css[i] === '/' && css[i + 1] === '*') {
         if (css.indexOf('/*', i) === i) {
-          i = css.indexOf('*/', i) + 2
+          const commentEnd = css.indexOf('*/', i)
+          if (commentEnd === -1) break // Malformed CSS with unclosed comment
+          i = commentEnd + 1 // Position at the end of comment
           continue
         }
         deep = deep + deepLevel(css[i])
-        val += css[i]
+        if (deep > 0) {
+          val += css[i]
+        }
       }
-      mediaQueries.push({ rule, val, start: index, end: i })
+      const mediaQueryEnd = i > 0 ? i : firstParenthesis
+      mediaQueries.push({ rule, val, start: index, end: mediaQueryEnd })
     }
   }
   return mediaQueries
