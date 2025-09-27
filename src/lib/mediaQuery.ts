@@ -42,8 +42,8 @@ export const getMediaQueries = (css: string): MediaQuery[] => {
           val += css[i]
         }
       }
-      const exactEnd = i > 0 ? i : firstParenthesis
-      mediaQueries.push({ rule, val, start: index, end: exactEnd })
+      const mediaQueryEnd = i > 0 ? i : firstParenthesis
+      mediaQueries.push({ rule, val, start: index, end: mediaQueryEnd })
     }
   }
   return mediaQueries
