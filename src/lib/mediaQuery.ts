@@ -23,27 +23,54 @@ export const findIndexOfMediaQueries = (css: string): number[] => {
 export const getMediaQueries = (css: string): MediaQuery[] => {
   const indexList = findIndexOfMediaQueries(css)
   const mediaQueries: MediaQuery[] = []
+
   for (const index of indexList) {
     const firstParenthesis = css.indexOf('{', index)
+    if (firstParenthesis < 0) continue // Skip if no opening brace found
+
     let deep = 1
     let val = ''
     const rule = css.slice(index, firstParenthesis)
     let i = firstParenthesis + 1
+
     if (i > 0) {
-      for (i; deep > 0 && i <= css.length; i++) {
-        if (css.indexOf('/*', i) === i) {
-          const commentEnd = css.indexOf('*/', i)
-          if (commentEnd === -1) break // Malformed CSS with unclosed comment
-          i = commentEnd + 1 // Position at the end of comment
+      for (i; deep > 0 && i < css.length; i++) {
+        // Handle comments within media queries
+        if (i + 1 < css.length && css[i] === '/' && css[i + 1] === '*') {
+          const commentEnd = css.indexOf('*/', i + 2)
+          if (commentEnd === -1) break // Unclosed comment
+          val += css.substring(i, commentEnd + 2)
+          i = commentEnd + 1
           continue
         }
-        deep = deep + deepLevel(css[i])
+
+        // Track brace depth
+        if (css[i] === '{') {
+          deep++
+        } else if (css[i] === '}') {
+          deep--
+        }
+
+        // Collect characters for the value
         if (deep > 0) {
           val += css[i]
         }
+
+        // Exit when we reach the closing brace of the media query
+        if (deep === 0) {
+          break
+        }
       }
-      const mediaQueryEnd = i > 0 ? i : firstParenthesis
-      mediaQueries.push({ rule, val, start: index, end: mediaQueryEnd })
+
+      // Set the end position to include the closing brace
+      const mediaQueryEnd = i + 1
+
+      mediaQueries.push({
+        rule,
+        val,
+        start: index,
+        end: mediaQueryEnd
+      })
     }
   }
   return mediaQueries
