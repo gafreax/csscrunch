@@ -65,10 +65,20 @@ export const buildMediaTokens: BuildMediaTokensFunction = ({ css, mediaQueries }
   return mediaTokens
 }
 
+/**
+ * Parses a CSS rules string into a key-value object representation
+ * @param rules - CSS rules string in the format "key1:value1;key2:value2;..."
+ * @returns Object with CSS property names as keys and their values as string values
+ * @example
+ * getRuleObject("color:red;background:blue;") // { color: "red", background: "blue" }
+ */
 const getRuleObject = (rules: string): RuleObject => {
   return rules.split(';').reduce<RuleObject>((acc, rule) => {
     if (rule === '') return acc
-    const [key, value] = rule.split(':')
+    const columnIndex = rule.indexOf(':')
+    if (columnIndex === -1) return acc
+    const key = rule.slice(0, columnIndex)
+    const value = rule.slice(columnIndex + 1)
     if (!isEmpty(key) && !isEmpty(value)) {
       acc[key.trim()] = value.trim()
     }
