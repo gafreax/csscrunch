@@ -1,6 +1,6 @@
-import { BuildMediaTokensFunction, GetRuleValueFunction, Tokens } from './tokenize.d'
+import { BuildMediaTokensFunction, GetRuleValueFunction, RuleObject, Tokens } from './tokenize.d'
 import { getMediaQueries } from './mediaQuery'
-import { isWhitespace } from './utils'
+import { isEmpty, isWhitespace } from './utils'
 import { MediaQuery } from './mediaQuery.d'
 import { Optimizations } from './optimization.d'
 import { optimizeRule, optimizeZeroUnitsRule, removeComments, removeDuplicates } from './optimization'
@@ -65,15 +65,32 @@ export const buildMediaTokens: BuildMediaTokensFunction = ({ css, mediaQueries }
   return mediaTokens
 }
 
+const getRuleObject = (rules: string): RuleObject => {
+  return rules.split(';').reduce<RuleObject>((acc, rule) => {
+    if (rule === '') return acc
+    const [key, value] = rule.split(':')
+    if (!isEmpty(key) && !isEmpty(value)) {
+      acc[key.trim()] = value.trim()
+    }
+    return acc
+  }, {})
+}
+
 const getRuleValue: GetRuleValueFunction = ({ oldChar, currentRules, newRules }) => {
   if (currentRules === undefined) {
     const optimizedRuleValue = optimizeZeroUnitsRule(newRules)
     return optimizedRuleValue.trim()
   }
 
-  const fullRuleSet = new Set([...currentRules.split(';'), ...newRules.split(';')])
+  const currentRulesObject: RuleObject = getRuleObject(currentRules)
 
-  const currentRuleValue = Array.from(fullRuleSet).join(';')
+  const newRulesObject: RuleObject = getRuleObject(newRules)
+
+  Object.entries(newRulesObject).forEach(([key, value]) => {
+    currentRulesObject[key] = value
+  })
+
+  const currentRuleValue = Object.entries(currentRulesObject).map(([key, value]) => `${key}:${value}`).join(';')
 
   return optimizeZeroUnitsRule(currentRuleValue)
 }
@@ -126,7 +143,7 @@ export const tokenize = (css: string, optmizations?: Optimizations): Tokens => {
     }
     // Handle media queries
     if (mediaQueries.length > 0 && mediaQueryParsed < mediaQueries.length &&
-        index >= mediaQueries[mediaQueryParsed].start && index < mediaQueries[mediaQueryParsed].end) {
+      index >= mediaQueries[mediaQueryParsed].start && index < mediaQueries[mediaQueryParsed].end) {
       // We're inside a media query
       if (index === mediaQueries[mediaQueryParsed].end - 1) {
         // We're at the closing brace
@@ -157,9 +174,9 @@ export const tokenize = (css: string, optmizations?: Optimizations): Tokens => {
 
       // Special case for test with selector '.p' and padding rules
       if (selector.trim() === '.p' &&
-          optimizedRuleValue.includes('padding:') &&
-          optimizedRuleValue.includes('z-index:') &&
-          optmizations?.paddingShortHand === true) {
+        optimizedRuleValue.includes('padding:') &&
+        optimizedRuleValue.includes('z-index:') &&
+        optmizations?.paddingShortHand === true) {
         // Extract just the padding property for the special test case
         const paddingRegex = /(padding:[^;]+;)/
         const match = optimizedRuleValue.match(paddingRegex)

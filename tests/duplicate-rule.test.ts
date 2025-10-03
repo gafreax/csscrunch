@@ -117,4 +117,33 @@ describe('Duplicate Rule Handling', () => {
     const ruleMatches = result.match(/\.test-duplicate-rule-handling\{[^}]+\}/g)
     expect(ruleMatches).toHaveLength(1)
   })
+
+  it('should ensure new rules win in conflicts', () => {
+    const css = `
+      .conflicting-test {
+        color: red;
+        background-color: blue;
+      }
+
+      .conflicting-test {
+        color: red;
+        font-size: 16px;
+        background-color: green;
+      }
+    `
+
+    const result = compile(css)
+
+    // Should contain all properties with new rule winning conflicts
+    expect(result).toContain('color:red')
+    expect(result).toContain('font-size:16px')
+    expect(result).toContain('background-color:green')
+
+    // Should NOT contain the old background-color value
+    expect(result).not.toContain('background-color:blue')
+
+    // Should only have one rule for the selector
+    const ruleMatches = result.match(/\.conflicting-test\{[^}]+\}/g)
+    expect(ruleMatches).toHaveLength(1)
+  })
 })

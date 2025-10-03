@@ -102,7 +102,7 @@ describe('tokenize', () => {
       color: #000000;
     }`
     const res = tokenize(css)
-    expect(res).toEqual({ '.blu-class': 'background-color:#00ff00;color:#000000;' })
+    expect(res).toEqual({ '.blu-class': 'background-color:#00ff00;color:#000000' })
   })
 
   it('Css with explicit padding for all sides has shortcut in output', () => {

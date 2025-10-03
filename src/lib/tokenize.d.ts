@@ -26,3 +26,5 @@ export type GetRuleValueFunction = (params: GetRuleValueI) => string
  * @returns {Tokens} media tokens
  */
 export type BuildMediaTokensFunction = (mediaTokens: BuildMediaTokensI) => Tokens
+
+export type RuleObject = Record<string, string>
