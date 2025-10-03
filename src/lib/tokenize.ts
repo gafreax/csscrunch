@@ -71,15 +71,11 @@ const getRuleValue: GetRuleValueFunction = ({ oldChar, currentRules, newRules })
     return optimizedRuleValue.trim()
   }
 
-  if (currentRules.includes(newRules.trim())) {
-    return currentRules
-  }
+  const fullRuleSet = new Set([...currentRules.split(';'), ...newRules.split(';')])
 
-  const currentRuleValue = (oldChar === ';') ? newRules.slice(0, -1) : newRules
-  const optimizedRuleValue = optimizeZeroUnitsRule(currentRuleValue)
-  const lastRuleChar: string = currentRules[currentRules.length - 1]
-  const concat = lastRuleChar === ';' ? '' : ';'
-  return currentRules + concat + optimizedRuleValue
+  const currentRuleValue = Array.from(fullRuleSet).join(';')
+
+  return optimizeZeroUnitsRule(currentRuleValue)
 }
 
 /**

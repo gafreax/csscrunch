@@ -91,4 +91,30 @@ describe('Duplicate Rule Handling', () => {
     const ruleMatches = result.match(/\.test\{[^}]+\}/g)
     expect(ruleMatches).toHaveLength(1)
   })
+
+  it('should handle duplicate rules with overlapping properties', () => {
+    // This CSS has two rules for the same selector, with the second rule overlapping and adding a new property
+    const css = `
+      .test-duplicate-rule-handling {
+        color: red;
+        background-color: blue;
+      }
+
+      .test-duplicate-rule-handling {
+        color: red;
+        font-size: 16px;
+      }
+    `
+
+    const result = compile(css)
+
+    // Should contain all unique properties, and the last value for overlapping ones
+    expect(result).toContain('color:red')
+    expect(result).toContain('background-color:blue')
+    expect(result).toContain('font-size:16px')
+
+    // Should only have one rule for the selector
+    const ruleMatches = result.match(/\.test-duplicate-rule-handling\{[^}]+\}/g)
+    expect(ruleMatches).toHaveLength(1)
+  })
 })
