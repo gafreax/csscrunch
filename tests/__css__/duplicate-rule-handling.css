@@ -1,0 +1,8 @@
+.test-duplicate-rule-handling {
+  color: red;
+  background-color: blue;
+}
+
+.test-duplicate-rule-handling {
+  color: red;
+}

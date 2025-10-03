@@ -66,9 +66,13 @@ export const buildMediaTokens: BuildMediaTokensFunction = ({ css, mediaQueries }
 }
 
 const getRuleValue: GetRuleValueFunction = ({ oldChar, currentRules, newRules }) => {
-  if (currentRules === undefined || currentRules.includes(newRules.trim())) {
+  if (currentRules === undefined) {
     const optimizedRuleValue = optimizeZeroUnitsRule(newRules)
     return optimizedRuleValue.trim()
+  }
+
+  if (currentRules.includes(newRules.trim())) {
+    return currentRules
   }
 
   const currentRuleValue = (oldChar === ';') ? newRules.slice(0, -1) : newRules
