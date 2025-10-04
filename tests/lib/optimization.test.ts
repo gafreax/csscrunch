@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { existsNullSides, getSidesShortcut, getSideValue, removeComments, removeDuplicates } from '../../src/lib/optimization'
+import { existsNullSides, createShorthandProperty, getSideValue, removeComments, removeDuplicates } from '../../src/lib/optimization'
+import { Sides } from '../../src/lib/optimization'
 
 describe('removeComments', () => {
   it('should remove single-line comments', () => {
@@ -98,26 +99,62 @@ describe('getSideValue', () => {
 describe('getSidesShortcut', () => {
   it('margin if all side are different return 4 values single shortcut', () => {
     const marginRules = 'margin-top: 12px; margin-right: 23px; margin-bottom: 11px; margin-left: 40px;'
-    const res = getSidesShortcut(marginRules, 'margin')
+    const res = createShorthandProperty(marginRules, 'margin')
     expect(res).toBe('margin:12px 23px 11px 40px;')
   })
 
   it('margin if top and bottom are the same but not the left and right return 4 diffrent rules', () => {
     const marginRules = 'margin-top: 12px; margin-right: 23px; margin-bottom: 12px; margin-left: 40px;'
-    const res = getSidesShortcut(marginRules, 'margin')
-    expect(res).toBe(marginRules)
+    const expected = 'margin:12px 23px 12px 40px;'
+    const res = createShorthandProperty(marginRules, 'margin')
+    expect(res).toBe(expected)
   })
 
   it('padding if all side are different return 4 values single shortcut', () => {
     const paddingRules = 'padding-top: 12px; padding-right: 23px; padding-bottom: 11px; padding-left: 40px;'
-    const res = getSidesShortcut(paddingRules, 'padding')
+    const res = createShorthandProperty(paddingRules, 'padding')
     expect(res).toBe('padding:12px 23px 11px 40px;')
   })
 
   it('padding if top and bottom are the same but not the left and right return 4 diffrent rules', () => {
     const paddingRules = 'padding-top: 12px; padding-right: 23px; padding-bottom: 12px; padding-left: 40px;'
-    const res = getSidesShortcut(paddingRules, 'padding')
-    expect(res).toBe(paddingRules)
+    const expected = 'padding:12px 23px 12px 40px;'
+    const res = createShorthandProperty(paddingRules, 'padding')
+    expect(res).toBe(expected)
+  })
+
+  it('should return one padding rules with all the sides different', () => {
+    const paddingRules = 'padding-bottom:3px;padding-left:4px;padding-right:2px;padding-top:1px'
+    const expected = 'padding:1px 2px 3px 4px;'
+    const res = createShorthandProperty(paddingRules, 'padding')
+    expect(res).toBe(expected)
+  })
+
+  it('should return the optmized rule and also do not affect other rules', () => {
+    const paddingRules = 'background-color:red;padding-top:10px;padding-bottom:10px;padding-right:10px;padding-left:30px;color:black;'
+    const expected = 'background-color:red;color:black;padding:10px 10px 10px 30px;'
+    const res = createShorthandProperty(paddingRules, 'padding')
+    expect(res).toBe(expected)
+  })
+
+  it('should return the optimized rule and also do not affect other rules while mixed with', () => {
+    const paddingRules = 'padding-top:10px;background-color:red;padding-bottom:10px;padding-right:10px;padding-left:30px;color:black;'
+    const expected = 'background-color:red;color:black;padding:10px 10px 10px 30px;'
+    const res = createShorthandProperty(paddingRules, 'padding')
+    expect(res).toBe(expected)
+  })
+
+  it('should return expected side value', () => {
+    const paddingRules = 'padding-bottom:3px;padding-left:4px;padding-right:2px;padding-top:1px'
+    const expectedSides: Sides = {
+      top: '1px',
+      right: '2px',
+      bottom: '3px',
+      left: '4px'
+    }
+    const top = getSideValue({ rule: 'padding', ruleValue: paddingRules, side: 'top' })
+
+    expect(top).toBe(expectedSides.top)
   })
 })
 

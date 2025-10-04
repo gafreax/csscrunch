@@ -1,5 +1,11 @@
 import { Optimizations, Sides } from './optimization.d'
 
+type SpacingRule = 'padding' | 'margin'
+type Side = 'top' | 'right' | 'bottom' | 'left'
+
+const REGEX_FIND_PADDING = /(\s*)(padding)-((top|right|bottom|left):[^;]+;?)(\s*)/g
+const REGEX_FIND_MARGIN = /(\s*)(margin)-((top|right|bottom|left):[^;]+;?)(\s*)/g
+
 export const optimizeZeroUnitsRule = (ruleValue: string): string => {
   return ruleValue.replace(/(:| )0(px|%|em|rem)/g, (match: string, p1: string) => p1 + '0')
 }
@@ -26,7 +32,7 @@ export const isAllSideDifferent = ({ left, right, top, bottom }: Sides): boolean
   return left !== right && right !== top && top !== bottom
 }
 
-export const getSideValue = (params: { rule: string, ruleValue: string, side: string }): string => {
+export const getSideValue = (params: { rule: SpacingRule, ruleValue: string, side: Side }): string => {
   const { rule, ruleValue, side } = params
   const sideProp = `${rule}-${side}:`
   if (!ruleValue.includes(sideProp)) {
@@ -34,10 +40,10 @@ export const getSideValue = (params: { rule: string, ruleValue: string, side: st
   }
   const startSideValue = ruleValue.indexOf(sideProp) + sideProp.length
   const endSideValue = ruleValue.indexOf(';', ruleValue.indexOf(sideProp))
-  return ruleValue.substring(startSideValue, endSideValue).trim()
+  return ruleValue.substring(startSideValue, endSideValue > 0 ? endSideValue : ruleValue.length).trim()
 }
 
-export const getSidesShortcut = (ruleValue: string, rule: string): string => {
+export const createShorthandProperty = (ruleValue: string, rule: SpacingRule): string => {
   // Extract the individual side values from the rule value
   const bottom = getSideValue({ rule, ruleValue, side: 'bottom' })
   const left = getSideValue({ rule, ruleValue, side: 'left' })
@@ -56,37 +62,14 @@ export const getSidesShortcut = (ruleValue: string, rule: string): string => {
     shorthandValue = `${rule}:${top};`
   } else if (isVerticalAndHorizontalEqual({ top, bottom, left, right })) {
     shorthandValue = `${rule}:${top} ${right};`
-  } else if (isAllSideDifferent({ left, right, top, bottom })) {
-    shorthandValue = `${rule}:${top} ${right} ${bottom} ${left};`
   } else {
-    // If no optimization applied, return original
-    return ruleValue
+    shorthandValue = `${rule}:${top !== '' ? top + ' ' : ''}${right !== '' ? right + ' ' : ''}${bottom !== '' ? bottom + ' ' : ''}${left !== '' ? left : ''};`
   }
-
-  // Remove the individual side properties from the rule value
-  let updatedRuleValue = ruleValue
-  updatedRuleValue = updatedRuleValue.replace(new RegExp(`${rule}-top:([^;]+);`, 'g'), '')
-  updatedRuleValue = updatedRuleValue.replace(new RegExp(`${rule}-right:([^;]+);`, 'g'), '')
-  updatedRuleValue = updatedRuleValue.replace(new RegExp(`${rule}-bottom:([^;]+);`, 'g'), '')
-  updatedRuleValue = updatedRuleValue.replace(new RegExp(`${rule}-left:([^;]+);`, 'g'), '')
-
-  // Clean up any double semicolons that might be created
-  updatedRuleValue = updatedRuleValue.replace(/;;/g, ';')
-
-  // Clean up any leading/trailing whitespace
-  updatedRuleValue = updatedRuleValue.trim()
-
-  // If there's remaining content, ensure it ends with a semicolon
-  if (updatedRuleValue.length > 0) {
-    if (!updatedRuleValue.endsWith(';')) {
-      updatedRuleValue += ';'
-    }
-    // Add a space separator if needed
-    updatedRuleValue += ' '
+  const ruleWithoutPaddingOrMargin = ruleValue.replace(rule === 'padding' ? REGEX_FIND_PADDING : REGEX_FIND_MARGIN, '')
+  if (ruleWithoutPaddingOrMargin.trim().length === 0 || ruleWithoutPaddingOrMargin.charAt(ruleWithoutPaddingOrMargin.length - 1) === ';') {
+    return ruleWithoutPaddingOrMargin + shorthandValue
   }
-
-  // Return just the shorthand if there's no other rules left
-  return updatedRuleValue.length > 0 ? updatedRuleValue + shorthandValue : shorthandValue
+  return ruleWithoutPaddingOrMargin + ';' + shorthandValue
 }
 
 export const optimizeRule = (ruleValue: string, optimizations?: Optimizations): string => {
@@ -95,10 +78,10 @@ export const optimizeRule = (ruleValue: string, optimizations?: Optimizations): 
   }
   let optimized = ruleValue
   if (optimizations.paddingShortHand !== undefined && optimizations.paddingShortHand) {
-    optimized = getSidesShortcut(optimized, 'padding')
+    optimized = createShorthandProperty(optimized, 'padding')
   }
   if (optimizations.marginShortHand !== undefined && optimizations.marginShortHand) {
-    optimized = getSidesShortcut(optimized, 'margin')
+    optimized = createShorthandProperty(optimized, 'margin')
   }
   if (optimizations.removeZeroUnits !== undefined && optimizations.removeZeroUnits) {
     optimized = optimizeZeroUnitsRule(optimized)
