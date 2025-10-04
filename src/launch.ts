@@ -14,11 +14,10 @@ interface Options {
 }
 
 const getOptimizations = (options: Options): Optimizations => {
-  const opt = {
-    paddingShortHand: options.optimizePadding ? true : options.optimizeShortHand ?? false,
-    marginShortHand: options.optimizeMargin ? true : options.optimizeShortHand ?? false
+  return {
+    paddingShortHand: options.optimizePadding || (options.optimizeShortHand ?? false),
+    marginShortHand: options.optimizeMargin || (options.optimizeShortHand ?? false)
   }
-  return opt
 }
 
 export function start (): void {
