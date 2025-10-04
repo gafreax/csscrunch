@@ -4,21 +4,7 @@ import process from 'node:process'
 import { program } from 'commander'
 
 import compile from './index'
-import { Optimizations } from './lib/optimization.d'
-
-interface Options {
-  output: string
-  optimizeShortHand: boolean
-  optimizeMargin: boolean
-  optimizePadding: boolean
-}
-
-const getOptimizations = (options: Options): Optimizations => {
-  return {
-    paddingShortHand: options.optimizePadding || (options.optimizeShortHand ?? false),
-    marginShortHand: options.optimizeMargin || (options.optimizeShortHand ?? false)
-  }
-}
+import { cleanArgs, getOptimizations, Options } from './lib/utils'
 
 export function start (): void {
   program
@@ -26,7 +12,6 @@ export function start (): void {
     .description('CSS parser that optimizes CSS files')
     .version(process.env.npm_package_version ?? 'no version')
 
-  // Define the compile command
   program
     .command('compile')
     .description('Compile and optimize CSS')
@@ -35,10 +20,13 @@ export function start (): void {
     .option('--optimize-short-hand', 'optimize padding and margin short hand')
     .option('--optimize-margin', 'optimize margin short hand')
     .option('--optimize-padding', 'optimize padding short hand')
+    .option('--remove-zero-units', 'remove zero units')
+    .option('--optimize-all', 'shorthand for --optimize-short-hand --remove-zero-units')
     .action((input: string, output: string, options: Options) => {
       try {
         const css = fs.readFileSync(input)
         const optimizations = getOptimizations(options)
+        console.log('Using optimizations:', optimizations)
         const optimizedCSS = compile(css.toString(), optimizations)
         if (output !== undefined) {
           fs.writeFileSync(output, optimizedCSS)
@@ -59,14 +47,7 @@ export function start (): void {
     $ npm start -- compile style.css style.optimized.css
     $ npm start -- compile --optimize-short-hand style.css style.optimized.css`)
 
-  // Handle '--' in npm/pnpm scripts
-  const args = process.argv
-  // Find where the -- delimiter is and remove it
-  const dashDashIndex = args.indexOf('--')
-  const cleanedArgs = dashDashIndex !== -1
-    ? [...args.slice(0, dashDashIndex), ...args.slice(dashDashIndex + 1)]
-    : args
-
+  const cleanedArgs = cleanArgs(process.argv)
   program.parse(cleanedArgs)
 }
 
