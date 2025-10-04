@@ -26,7 +26,6 @@ export function start (): void {
       try {
         const css = fs.readFileSync(input)
         const optimizations = getOptimizations(options)
-        console.log('Using optimizations:', optimizations)
         const optimizedCSS = compile(css.toString(), optimizations)
         if (output !== undefined) {
           fs.writeFileSync(output, optimizedCSS)
