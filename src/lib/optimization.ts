@@ -100,6 +100,9 @@ export const optimizeRule = (ruleValue: string, optimizations?: Optimizations): 
   if (optimizations.marginShortHand !== undefined && optimizations.marginShortHand) {
     optimized = getSidesShortcut(optimized, 'margin')
   }
+  if (optimizations.removeZeroUnits !== undefined && optimizations.removeZeroUnits) {
+    optimized = optimizeZeroUnitsRule(optimized)
+  }
   return optimized
 }
 

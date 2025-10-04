@@ -10,10 +10,8 @@ export interface Tokens {
 }
 
 interface GetRuleValueI {
-  oldChar: string
   currentRules: string
   newRules: string
-  optimizations?: Optimizations
 }
 
 export type GetRuleValueFunction = (params: GetRuleValueI) => string

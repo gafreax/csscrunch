@@ -3,7 +3,7 @@ import { getMediaQueries } from './mediaQuery'
 import { isEmpty, isWhitespace } from './utils'
 import { MediaQuery } from './mediaQuery.d'
 import { Optimizations } from './optimization.d'
-import { optimizeRule, optimizeZeroUnitsRule, removeComments, removeDuplicates } from './optimization'
+import { optimizeRule, removeComments, removeDuplicates } from './optimization'
 import { removeRuleLastSemi } from './removeRuleLastSemi'
 
 const REGEX_MEDIA_QUERY_BRACKETS_WITH_SPACE = /[\n\t]| {2,}| ?([{}() ,;:]) ?/g
@@ -86,10 +86,9 @@ const getRuleObject = (rules: string): RuleObject => {
   }, {})
 }
 
-const getRuleValue: GetRuleValueFunction = ({ oldChar, currentRules, newRules }) => {
+const getRuleValue: GetRuleValueFunction = ({ currentRules, newRules }) => {
   if (currentRules === undefined) {
-    const optimizedRuleValue = optimizeZeroUnitsRule(newRules)
-    return optimizedRuleValue.trim()
+    return newRules.trim()
   }
 
   const currentRulesObject: RuleObject = getRuleObject(currentRules)
@@ -100,9 +99,7 @@ const getRuleValue: GetRuleValueFunction = ({ oldChar, currentRules, newRules })
     currentRulesObject[key] = value
   })
 
-  const currentRuleValue = Object.entries(currentRulesObject).map(([key, value]) => `${key}:${value}`).join(';')
-
-  return optimizeZeroUnitsRule(currentRuleValue)
+  return Object.entries(currentRulesObject).map(([key, value]) => `${key}:${value}`).join(';')
 }
 
 /**
@@ -136,7 +133,7 @@ export const cleanCss = (css: string): string => {
 export const tokenize = (css: string, optmizations?: Optimizations): Tokens => {
   const tokens: Tokens = {}
   const mediaQueries: MediaQuery[] = getMediaQueries(css)
-  // todo: change these var into state object
+
   let selector = ''
   let rules = ''
   let isValueToken = false
@@ -179,7 +176,7 @@ export const tokenize = (css: string, optmizations?: Optimizations): Tokens => {
       rules = ''
       isValueToken = false
     } else if (char === '}') {
-      const ruleValue = getRuleValue({ oldChar, currentRules: tokens[selector], newRules: rules })
+      const ruleValue = getRuleValue({ currentRules: tokens[selector], newRules: rules })
       const optimizedRuleValue = optimizeRule(ruleValue, optmizations)
 
       // Special case for test with selector '.p' and padding rules
