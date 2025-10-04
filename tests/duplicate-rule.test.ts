@@ -79,7 +79,7 @@ describe('Duplicate Rule Handling', () => {
   })
 
   it('should handle minified CSS with duplicate rules on same line', () => {
-    const css = `.test{color:red;background-color:blue;}.test{color:red;}`
+    const css = '.test{color:red;background-color:blue;}.test{color:red;}'
 
     const result = compile(css)
 

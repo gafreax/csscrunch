@@ -1,15 +1,14 @@
 import { describe, it, expect } from 'vitest'
 import { readFile } from 'node:fs/promises'
 import path from 'path'
-import fs from 'fs'
-
 import compile from '../src/index'
+import { getIntegrationFiles } from './integration'
 
-const cssList = fs.readdirSync(path.join(__dirname, '__css__')).filter(file => file.endsWith('.css'))
 describe('compile', () => {
-  it.each(cssList)('compiles CSS %s', async (cssFile: string) => {
+  const cssList = getIntegrationFiles()
+  it.each(cssList)('compiles CSS %s with optimizations', async (cssFile: string) => {
     const css = await readFile(path.join(__dirname, '__css__', cssFile), 'utf-8')
-    const result = compile(css)
+    const result = compile(css, { paddingShortHand: true, marginShortHand: true, removeZeroUnits: true })
     expect(result).toMatchSnapshot()
   })
 })

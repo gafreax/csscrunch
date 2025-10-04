@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { getSidesShortcut, getSideValue, removeComments, removeDuplicates } from '../../src/lib/optimization'
+import { existsNullSides, getSidesShortcut, getSideValue, removeComments, removeDuplicates } from '../../src/lib/optimization'
 
 describe('removeComments', () => {
   it('should remove single-line comments', () => {
@@ -118,5 +118,22 @@ describe('getSidesShortcut', () => {
     const paddingRules = 'padding-top: 12px; padding-right: 23px; padding-bottom: 12px; padding-left: 40px;'
     const res = getSidesShortcut(paddingRules, 'padding')
     expect(res).toBe(paddingRules)
+  })
+})
+
+describe('existsNullSides', () => {
+  it('should return true if any side is null or undefined', () => {
+    expect(existsNullSides({ left: '10px', right: '10px', top: '10px', bottom: undefined })).toBe(true)
+    expect(existsNullSides({ left: '10px', right: '10px', top: '', bottom: '10px' })).toBe(true)
+    expect(existsNullSides({ left: undefined, right: '10px', top: '10px', bottom: '10px' })).toBe(true)
+    expect(existsNullSides({ left: '10px', right: '', top: '10px', bottom: '10px' })).toBe(true)
+  })
+  it('should return false if all sides have values', () => {
+    expect(existsNullSides({ left: '10px', right: '10px', top: '10px', bottom: '10px' })).toBe(false)
+    expect(existsNullSides({ left: '0', right: '0', top: '0', bottom: '0' })).toBe(false)
+  })
+
+  it('should return true if any side is empty string', () => {
+    expect(existsNullSides({ left: '10px', right: '10px', top: '', bottom: '10px' })).toBe(true)
   })
 })

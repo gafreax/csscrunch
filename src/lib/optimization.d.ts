@@ -2,6 +2,7 @@
 export interface Optimizations {
   paddingShortHand?: boolean
   marginShortHand?: boolean
+  removeZeroUnits?: boolean
 }
 
 export interface Sides {
