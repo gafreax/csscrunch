@@ -1,14 +1,5 @@
 import { Optimizations } from './optimization.d'
 
-/**
-* Cleans the string
-* @param char string that must be cleaned up
-* @returns the string that was cleaned up
-*/
-export const isWhitespace = function (char: string): boolean { return char === ' ' || char === '\t' || char === '\n' }
-
-export const isEmpty = (str: string | undefined | null): boolean => { return str === '' || str === undefined || str === null }
-
 export interface Options {
   output: string
   optimizeShortHand: boolean
@@ -17,6 +8,10 @@ export interface Options {
   optimizePadding: boolean
   removeZeroUnits: boolean
 }
+
+export const isWhitespace = function (char: string): boolean { return char === ' ' || char === '\t' || char === '\n' }
+
+export const isEmpty = (str: string | undefined | null): boolean => { return str === '' || str === undefined || str === null }
 
 export const getOptimizations = (options: Options): Optimizations => {
   return {
