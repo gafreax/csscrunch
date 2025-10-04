@@ -42,7 +42,7 @@ describe('isEmpty', () => {
 })
 
 describe('getOptimizations', () => {
-  it.each(generateOptmizationsCase())('optimizeShortHand: %s, optimizeAll: %s, optimizeMargin: %s, optimizePadding: %s, removeZeroUnits: %s, expected: %s',
+  it.each(generateOptimizationFlagCases())('optimizeShortHand: %s, optimizeAll: %s, optimizeMargin: %s, optimizePadding: %s, removeZeroUnits: %s, expected: %s',
     (optimizeShortHand: boolean, optimizeAll: boolean, optimizeMargin: boolean, optimizePadding: boolean, removeZeroUnits: boolean, expected: boolean[]) => {
       const options = {
         output: 'output.css',
@@ -91,7 +91,7 @@ describe('cleanArgs', () => {
   })
 })
 
-function generateOptmizationsCase (): Array<[boolean, boolean, boolean, boolean, boolean, boolean[]]> {
+function generateOptimizationFlagCases (): Array<[boolean, boolean, boolean, boolean, boolean, boolean[]]> {
   const ret: Array<[boolean, boolean, boolean, boolean, boolean, boolean[]]> = []
   for (let i = 0; i < 32; i++) {
     const optimizeShortHand = (i & 16) !== 0
