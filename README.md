@@ -34,6 +34,7 @@ To enable the optimization pass a `Optimizations` object (file: `src/lib/optimiz
 interface Optimizations {
   paddingShortHand?: boolean
   marginShortHand?: boolean
+  removeZeroUnits?: boolean
 }
 ```
 
@@ -46,19 +47,31 @@ interface Optimizations {
 To optimize your CSS file, simply run the following command in your terminal:
 
 ```bash
-$ npm start -- compile input.css -o optimized.css
+$ npm start -- compile input.css optimized.css
 ```
 
 Or via npx
 
 ```bash
-$ npx @gafreax/csscrunch compile input.css -o optimized.css
+$ npx @gafreax/csscrunch compile input.css optimized.css
 ```
 
 Or via global install
 ```bash
 $ npm install -g @gafreaxa/csscrunch
-$ csscrunch compile input.css -o optimized.css
+$ csscrunch compile input.css optimized.css
+```
+
+You can also use the flags:
+`--optimize-short-hand` to optimize padding and margin short hand
+`--optimize-margin` to optimize margin short hand
+`--optimize-padding` to optimize padding short hand
+`--remove-zero-units` to remove zero units
+`--optimize-all` to enable all optimizations
+Example:
+
+```bash
+$ npx @gafreax/csscrunch compile --optimize-all input.css optimized.css
 ```
 
 ## Contribution
