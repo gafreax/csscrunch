@@ -63,10 +63,12 @@ export const createShorthandProperty = (ruleValue: string, rule: SpacingRule): s
   } else if (isVerticalAndHorizontalEqual({ top, bottom, left, right })) {
     shorthandValue = `${rule}:${top} ${right};`
   } else {
-    shorthandValue = `${rule}:${top !== '' ? top + ' ' : ''}${right !== '' ? right + ' ' : ''}${bottom !== '' ? bottom + ' ' : ''}${left !== '' ? left : ''};`
+    const sides = [top, right, bottom, left].filter(v => v !== '')
+    shorthandValue = `${rule}:${sides.join(' ')};`
   }
-  const ruleWithoutPaddingOrMargin = ruleValue.replace(rule === 'padding' ? REGEX_FIND_PADDING : REGEX_FIND_MARGIN, '')
-  if (ruleWithoutPaddingOrMargin.trim().length === 0 || ruleWithoutPaddingOrMargin.charAt(ruleWithoutPaddingOrMargin.length - 1) === ';') {
+  const ruleWithoutPaddingOrMargin = ruleValue.replace(rule === 'padding' ? REGEX_FIND_PADDING : REGEX_FIND_MARGIN, '').trim()
+  const ruleWithoutPaddingOrMarginLength = ruleWithoutPaddingOrMargin.length
+  if (ruleWithoutPaddingOrMarginLength === 0 || ruleWithoutPaddingOrMargin.charAt(ruleWithoutPaddingOrMarginLength - 1) === ';') {
     return ruleWithoutPaddingOrMargin + shorthandValue
   }
   return ruleWithoutPaddingOrMargin + ';' + shorthandValue

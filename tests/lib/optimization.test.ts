@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { existsNullSides, createShorthandProperty, getSideValue, removeComments, removeDuplicates } from '../../src/lib/optimization'
-import { Sides } from '../../src/lib/optimization'
+import { Sides } from '../../src/lib/optimization.d'
 
 describe('removeComments', () => {
   it('should remove single-line comments', () => {
@@ -130,7 +130,7 @@ describe('getSidesShortcut', () => {
     expect(res).toBe(expected)
   })
 
-  it('should return the optmized rule and also do not affect other rules', () => {
+  it('should return the optimized rule and also do not affect other rules', () => {
     const paddingRules = 'background-color:red;padding-top:10px;padding-bottom:10px;padding-right:10px;padding-left:30px;color:black;'
     const expected = 'background-color:red;color:black;padding:10px 10px 10px 30px;'
     const res = createShorthandProperty(paddingRules, 'padding')
