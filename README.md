@@ -20,10 +20,22 @@ npm install @gafreax/csscrunch
 ## Usage
 
 ```typescript
-import * as csscrunch from '@gafreax/csscrunch';
+// ESM
+import csscrunch from '@gafreax/csscrunch'
+const { default: compile } = csscrunch
 
 const cssString = '.example { color: red; font-size: 16px; }';
-const parsedCSS = csscrunch.compile(cssString);
+const parsedCSS = compile(cssString);
+
+```
+
+```typescript
+// CommonJS
+const csscrunch = require('@gafreax/csscrunch')
+const { default: compile } = csscrunch
+
+const cssString = '.example { color: red; font-size: 16px; }';
+const parsedCSS = compile(cssString);
 
 ```
 
