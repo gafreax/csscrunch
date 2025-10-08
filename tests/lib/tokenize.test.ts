@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { buildMediaTokens, cleanMediaQueryRule, tokenize } from '../../src/lib/tokenize'
+import { buildMediaTokens, cleanMediaQueryRule, isPunctuation, isSkippable, tokenize } from '../../src/lib/tokenize'
 import { getMediaQueries } from '../../src/lib/mediaQuery'
 
 describe('cleanMediaQueryRule', () => {
@@ -11,6 +11,42 @@ describe('cleanMediaQueryRule', () => {
     const expected = '@media screen and(max-width:600px){body{color:red;}}'
     const res = cleanMediaQueryRule(rule)
     expect(res).toBe(expected)
+  })
+})
+
+describe('isSkippable', () => {
+  it('should skip whitespace characters', () => {
+    expect(isSkippable(' ', ' ', 'a')).toBe(true)
+    expect(isSkippable('\n', ' ', 'a')).toBe(true)
+    expect(isSkippable(' ', '\n', 'a')).toBe(true)
+  })
+
+  it('should skip space after punctuation', () => {
+    expect(isSkippable(' ', ';', 'a')).toBe(true)
+    expect(isSkippable(' ', ':', 'a')).toBe(true)
+    expect(isSkippable(' ', '{', 'a')).toBe(true)
+    expect(isSkippable(' ', '}', 'a')).toBe(true)
+  })
+
+  it('should skip whitespace before punctuation', () => {
+    expect(isSkippable(' ', 'a', ';')).toBe(true)
+    expect(isSkippable(' ', 'a', ':')).toBe(true)
+    expect(isSkippable(' ', 'a', '{')).toBe(true)
+    expect(isSkippable(' ', 'a', '}')).toBe(true)
+  })
+})
+
+describe('isPunctuation', () => {
+  it('should identify punctuation characters', () => {
+    expect(isPunctuation(';')).toBe(true)
+    expect(isPunctuation(':')).toBe(true)
+    expect(isPunctuation('{')).toBe(true)
+    expect(isPunctuation('}')).toBe(true)
+    expect(isPunctuation('(')).toBe(true)
+    expect(isPunctuation(')')).toBe(true)
+    expect(isPunctuation('a')).toBe(false)
+    expect(isPunctuation(' ')).toBe(false)
+    expect(isPunctuation('\n')).toBe(false)
   })
 })
 
@@ -88,7 +124,7 @@ describe('tokenize', () => {
       z-index: 1;
     }`
     const res = tokenize(css, { paddingShortHand: true })
-    expect(res).toEqual({ '.p': 'padding:12px 23px 11px 40px;' })
+    expect(res).toEqual({ '.p': 'z-index:1;padding:12px 23px 11px 40px;' })
   })
 
   it('media queries', () => {

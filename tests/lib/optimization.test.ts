@@ -1,7 +1,19 @@
 import { describe, it, expect } from 'vitest'
-import { existsNullSides, createShorthandProperty, getSideValue, removeComments, removeDuplicates } from '../../src/lib/optimization'
+import { isAllSideDifferent, existsNullSides, createShorthandProperty, getSideValue, removeComments, removeDuplicates } from '../../src/lib/optimization'
 import { Sides } from '../../src/lib/optimization.d'
 
+describe('allSideDifferent', () => {
+  it('should return true if all sides are different', () => {
+    expect(isAllSideDifferent({ left: '10px', right: '20px', top: '30px', bottom: '40px' })).toBe(true)
+    expect(isAllSideDifferent({ left: '10px', right: '20px', top: '30px', bottom: '50px' })).toBe(true)
+  })
+
+  it('should return false if any sides are the same', () => {
+    expect(isAllSideDifferent({ left: '10px', right: '10px', top: '30px', bottom: '40px' })).toBe(false)
+    expect(isAllSideDifferent({ left: '10px', right: '20px', top: '10px', bottom: '40px' })).toBe(false)
+    expect(isAllSideDifferent({ left: '10px', right: '20px', top: '30px', bottom: '30px' })).toBe(false)
+  })
+})
 describe('removeComments', () => {
   it('should remove single-line comments', () => {
     expect(removeComments('color: black;')).toBe(

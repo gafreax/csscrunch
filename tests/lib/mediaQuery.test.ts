@@ -91,6 +91,14 @@ const complexCssWithMediaQuery = `
   }
 }`
 
+const mediaQueryWithCommentsInside = `
+@media screen and (max-width: 992px) {
+  body {
+    background-color: blue; /* Another comment */
+  }
+}
+`
+
 describe('findIndexOfMediaQueries', () => {
   it('return position of media query if present', () => {
     expect(findIndexOfMediaQueries(simpleCssWithMediaQuery)).toEqual([75, 233])
@@ -111,5 +119,15 @@ describe('getMediaQueries', () => {
     const rules = getMediaQueries(complexCssWithMediaQuery)
 
     expect(rules.length).toEqual(6)
+  })
+
+  it('return media queries with comments inside', () => {
+    const rules = getMediaQueries(mediaQueryWithCommentsInside)
+    expect(rules.length).toEqual(1)
+    expect(rules[0].val).not.toContain('/* Another comment */')
+  })
+
+  it('return empty array if no media query', () => {
+    expect(getMediaQueries('')).toEqual([])
   })
 })
