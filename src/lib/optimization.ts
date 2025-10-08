@@ -32,26 +32,36 @@ export const isAllSideDifferent = ({ left, right, top, bottom }: Sides): boolean
   return left !== right && right !== top && top !== bottom
 }
 
-export const getSideValue = (params: { rule: SpacingRule, ruleValue: string, side: Side }): string => {
+export const getSideValue = (params: { rule: SpacingRule, ruleValue: string, side: Side }): { value: string, isImportant: boolean } => {
   const { rule, ruleValue, side } = params
   const sideProp = `${rule}-${side}:`
-  if (!ruleValue.includes(sideProp)) {
-    return ''
+  const trimmedRuleValue = ruleValue.trim().replace(/\s*:\s*/g, ':')
+  if (!trimmedRuleValue.includes(sideProp)) {
+    return { value: '', isImportant: false }
   }
-  const startSideValue = ruleValue.indexOf(sideProp) + sideProp.length
-  const endSideValue = ruleValue.indexOf(';', ruleValue.indexOf(sideProp))
-  return ruleValue.substring(startSideValue, endSideValue > 0 ? endSideValue : ruleValue.length).trim()
+  const startSideValue = trimmedRuleValue.indexOf(sideProp) + sideProp.length
+  const endSideValue = trimmedRuleValue.indexOf(';', trimmedRuleValue.indexOf(sideProp))
+  const value = trimmedRuleValue.substring(startSideValue, endSideValue > 0 ? endSideValue : trimmedRuleValue.length)
+  const valueWithoutImportant = value.replace('!important', '').trim()
+  const isImportant = value.includes('!important')
+  return {
+    value: valueWithoutImportant,
+    isImportant
+  }
 }
 
 export const createShorthandProperty = (ruleValue: string, rule: SpacingRule): string => {
   // Extract the individual side values from the rule value
-  const bottom = getSideValue({ rule, ruleValue, side: 'bottom' })
-  const left = getSideValue({ rule, ruleValue, side: 'left' })
-  const right = getSideValue({ rule, ruleValue, side: 'right' })
-  const top = getSideValue({ rule, ruleValue, side: 'top' })
+  const { value: bottom, isImportant: bottomIsImportant } = getSideValue({ rule, ruleValue, side: 'bottom' })
+  const { value: left, isImportant: leftIsImportant } = getSideValue({ rule, ruleValue, side: 'left' })
+  const { value: right, isImportant: rightIsImportant } = getSideValue({ rule, ruleValue, side: 'right' })
+  const { value: top, isImportant: topIsImportant } = getSideValue({ rule, ruleValue, side: 'top' })
 
+  const importantCount: number = [bottomIsImportant, leftIsImportant, rightIsImportant, topIsImportant].filter(v => v).length
+  // importantCount = 2 // Temporary fix to always consider important for now
   // Don't optimize if any side is missing
-  if (existsNullSides({ left, right, top, bottom })) {
+  // Should not optimize if one of the sides is important but not all
+  if (existsNullSides({ left, right, top, bottom }) || (importantCount >= 1 && importantCount < 4)) {
     return ruleValue
   }
 
@@ -59,12 +69,12 @@ export const createShorthandProperty = (ruleValue: string, rule: SpacingRule): s
   let shorthandValue = ''
 
   if (isAllSideEqual({ left, right, top, bottom })) {
-    shorthandValue = `${rule}:${top};`
+    shorthandValue = `${rule}:${top}${importantCount === 4 ? ' !important' : ''};`
   } else if (isVerticalAndHorizontalEqual({ top, bottom, left, right })) {
-    shorthandValue = `${rule}:${top} ${right};`
+    shorthandValue = `${rule}:${top} ${right}${importantCount === 4 ? ' !important' : ''};`
   } else {
     const sides = [top, right, bottom, left].filter(v => v !== '')
-    shorthandValue = `${rule}:${sides.join(' ')};`
+    shorthandValue = `${rule}:${sides.join(' ')}${importantCount === 4 ? ' !important' : ''};`
   }
   const ruleWithoutPaddingOrMargin = ruleValue.replace(rule === 'padding' ? REGEX_FIND_PADDING : REGEX_FIND_MARGIN, '').trim()
   const ruleWithoutPaddingOrMarginLength = ruleWithoutPaddingOrMargin.length

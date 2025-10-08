@@ -68,6 +68,119 @@ describe('removeDuplicates', () => {
 })
 
 describe('getSideValue', () => {
+  it('should return the value and if is important of the side', () => {
+    const rule = 'padding'
+    const ruleValue = `
+      padding-left: 11px !important;
+      padding-right: 12px;
+      padding-top: 13px !important;
+      padding-bottom: 14px;
+    `
+
+    const top = getSideValue({ rule, ruleValue, side: 'top' })
+    const right = getSideValue({ rule, ruleValue, side: 'right' })
+    const left = getSideValue({ rule, ruleValue, side: 'left' })
+    const bottom = getSideValue({ rule, ruleValue, side: 'bottom' })
+
+    expect(top.value).toBe('13px')
+    expect(top.isImportant).toBe(true)
+    expect(right.value).toBe('12px')
+    expect(right.isImportant).toBe(false)
+    expect(left.value).toBe('11px')
+    expect(left.isImportant).toBe(true)
+    expect(bottom.value).toBe('14px')
+    expect(bottom.isImportant).toBe(false)
+  })
+
+  it('should handle spaces correctly', () => {
+    const rule = 'padding'
+    const ruleValue = `
+      padding-left :  11px  !important ;
+      padding-right:12px;
+      padding-top:   13px!important;
+      padding-bottom :14px ;
+    `
+
+    const top = getSideValue({ rule, ruleValue, side: 'top' })
+    const right = getSideValue({ rule, ruleValue, side: 'right' })
+    const left = getSideValue({ rule, ruleValue, side: 'left' })
+    const bottom = getSideValue({ rule, ruleValue, side: 'bottom' })
+
+    expect(top.value).toBe('13px')
+    expect(top.isImportant).toBe(true)
+    expect(right.value).toBe('12px')
+    expect(right.isImportant).toBe(false)
+    expect(left.value).toBe('11px')
+    expect(left.isImportant).toBe(true)
+    expect(bottom.value).toBe('14px')
+    expect(bottom.isImportant).toBe(false)
+  })
+
+  it('should handle missing sides correctly', () => {
+    const rule = 'padding'
+    const ruleValue = `
+      padding-left: 11px !important;
+      padding-top: 13px !important;
+    `
+
+    const top = getSideValue({ rule, ruleValue, side: 'top' })
+    const right = getSideValue({ rule, ruleValue, side: 'right' })
+    const left = getSideValue({ rule, ruleValue, side: 'left' })
+    const bottom = getSideValue({ rule, ruleValue, side: 'bottom' })
+
+    expect(top.value).toBe('13px')
+    expect(top.isImportant).toBe(true)
+    expect(right.value).toBe('')
+    expect(right.isImportant).toBe(false)
+    expect(left.value).toBe('11px')
+    expect(left.isImportant).toBe(true)
+    expect(bottom.value).toBe('')
+    expect(bottom.isImportant).toBe(false)
+  })
+
+  it('should handle empty rule values correctly', () => {
+    const rule = 'padding'
+    const ruleValue = ''
+
+    const top = getSideValue({ rule, ruleValue, side: 'top' })
+    const right = getSideValue({ rule, ruleValue, side: 'right' })
+    const left = getSideValue({ rule, ruleValue, side: 'left' })
+    const bottom = getSideValue({ rule, ruleValue, side: 'bottom' })
+
+    expect(top.value).toBe('')
+    expect(top.isImportant).toBe(false)
+    expect(right.value).toBe('')
+    expect(right.isImportant).toBe(false)
+    expect(left.value).toBe('')
+    expect(left.isImportant).toBe(false)
+    expect(bottom.value).toBe('')
+    expect(bottom.isImportant).toBe(false)
+  })
+
+  it('should handle auto values correctly', () => {
+    const rule = 'margin'
+    const ruleValue = `
+      margin-left: auto !important;
+      margin-right: 12px;
+      margin-top: auto !important;
+      margin-bottom: 14px;
+    `
+
+    const top = getSideValue({ rule, ruleValue, side: 'top' })
+    const right = getSideValue({ rule, ruleValue, side: 'right' })
+    const left = getSideValue({ rule, ruleValue, side: 'left' })
+    const bottom = getSideValue({ rule, ruleValue, side: 'bottom' })
+
+    expect(top.value).toBe('auto')
+    expect(top.isImportant).toBe(true)
+    expect(right.value).toBe('12px')
+    expect(right.isImportant).toBe(false)
+    expect(left.value).toBe('auto')
+    expect(left.isImportant).toBe(true)
+    expect(bottom.value).toBe('14px')
+    expect(bottom.isImportant).toBe(false)
+  })
+
   it('should return the value of the side', () => {
     const rule = 'padding'
     const ruleValue = `
@@ -82,17 +195,17 @@ describe('getSideValue', () => {
     const left = getSideValue({ rule, ruleValue, side: 'left' })
     const bottom = getSideValue({ rule, ruleValue, side: 'bottom' })
 
-    expect(top).toBe('13px')
-    expect(right).toBe('12px')
-    expect(left).toBe('11px')
-    expect(bottom).toBe('14px')
+    expect(top.value).toBe('13px')
+    expect(right.value).toBe('12px')
+    expect(left.value).toBe('11px')
+    expect(bottom.value).toBe('14px')
   })
 
   it('should return null if no rule', () => {
     const rule = 'padding'
     const ruleValue = 'padding-top: 11px; padding-left: 23px'
     const bottom = getSideValue({ rule, ruleValue, side: 'bottom' })
-    expect(bottom).toBeFalsy()
+    expect(bottom.value).toBeFalsy()
   })
 })
 
@@ -154,7 +267,7 @@ describe('getSidesShortcut', () => {
     }
     const top = getSideValue({ rule: 'padding', ruleValue: paddingRules, side: 'top' })
 
-    expect(top).toBe(expectedSides.top)
+    expect(top.value).toBe(expectedSides.top)
   })
 })
 

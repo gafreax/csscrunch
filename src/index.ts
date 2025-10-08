@@ -13,7 +13,15 @@ export interface Options {
 const compile = (css: string, optimization?: Optimizations): string => {
   const cleanedCss = cleanCss(css)
   const tokens = tokenize(cleanedCss, optimization)
-  const compactedTokens = compact(tokens)
+  const mediaOptimizedRules = Object.entries(tokens).reduce((acc, curr) => {
+    const [key, value] = curr
+    if (key.startsWith('@media')) {
+      const compiledRulesForMedia = compile(value, optimization)
+      return { ...acc, [key]: compiledRulesForMedia }
+    }
+    return { ...acc, [key]: value }
+  }, {})
+  const compactedTokens = compact(mediaOptimizedRules)
   return stringify(compactedTokens)
 }
 
