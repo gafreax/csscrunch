@@ -62,10 +62,9 @@ export const createShorthandProperty = (ruleValue: string, rule: SpacingRule): s
   const { value: top, isImportant: topIsImportant } = getSideValue({ rule, ruleValue, side: 'top' })
 
   const importantCount: number = [bottomIsImportant, leftIsImportant, rightIsImportant, topIsImportant].filter(v => v).length
-  // importantCount = 2 // Temporary fix to always consider important for now
   // Don't optimize if any side is missing
   // Should not optimize if one of the sides is important but not all
-  if (existsNullSides({ left, right, top, bottom }) || (importantCount >= 1 && importantCount < 4)) {
+  if (existsNullSides({ left, right, top, bottom }) || notAllSideHasImportant(importantCount)) {
     return ruleValue
   }
 
@@ -117,4 +116,8 @@ export const removeDuplicates = (str: string, chars: string[]): string => {
     str = str.replace(regex, char)
   })
   return str
+}
+
+function notAllSideHasImportant (importantCount: number): boolean {
+  return importantCount >= 1 && importantCount < 4
 }
