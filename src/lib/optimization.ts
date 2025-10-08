@@ -29,11 +29,7 @@ export const isVerticalAndHorizontalEqual = ({ top, bottom, left, right }: Sides
 }
 
 export const isAllSideDifferent = ({ left, right, top, bottom }: Sides): boolean => {
-  const leftNotEqual = left !== right && left !== top && left !== bottom
-  const rightNotEqual = right !== left && right !== top && right !== bottom
-  const topNotEqual = top !== left && top !== right && top !== bottom
-  const bottomNotEqual = bottom !== left && bottom !== right && bottom !== top
-  return leftNotEqual && rightNotEqual && topNotEqual && bottomNotEqual
+  return new Set([left, right, top, bottom]).size === 4
 }
 
 export const getSideValue = (params: { rule: SpacingRule, ruleValue: string, side: Side }): { value: string, isImportant: boolean } => {
