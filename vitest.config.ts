@@ -5,6 +5,7 @@ export default defineConfig({
     environment: 'node',
     include: ['tests/**/*.test.ts'],
     // Explicitly disable SSR for tests
+    report: ['html'],
     server: {
       deps: {
         inline: ['.*']
