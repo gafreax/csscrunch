@@ -1,5 +1,11 @@
 import { Optimizations, Sides } from './optimization.d'
 
+type SpacingRule = 'padding' | 'margin'
+type Side = 'top' | 'right' | 'bottom' | 'left'
+
+const REGEX_FIND_PADDING = /(\s*)(padding)-((top|right|bottom|left):[^;]+;?)(\s*)/g
+const REGEX_FIND_MARGIN = /(\s*)(margin)-((top|right|bottom|left):[^;]+;?)(\s*)/g
+
 export const optimizeZeroUnitsRule = (ruleValue: string): string => {
   return ruleValue.replace(/(:| )0(px|%|em|rem)/g, (match: string, p1: string) => p1 + '0')
 }
@@ -23,29 +29,38 @@ export const isVerticalAndHorizontalEqual = ({ top, bottom, left, right }: Sides
 }
 
 export const isAllSideDifferent = ({ left, right, top, bottom }: Sides): boolean => {
-  return left !== right && right !== top && top !== bottom
+  return new Set([left, right, top, bottom]).size === 4
 }
 
-export const getSideValue = (params: { rule: string, ruleValue: string, side: string }): string => {
+export const getSideValue = (params: { rule: SpacingRule, ruleValue: string, side: Side }): { value: string, isImportant: boolean } => {
   const { rule, ruleValue, side } = params
   const sideProp = `${rule}-${side}:`
-  if (!ruleValue.includes(sideProp)) {
-    return ''
+  const trimmedRuleValue = ruleValue.trim().replace(/\s*:\s*/g, ':')
+  if (!trimmedRuleValue.includes(sideProp)) {
+    return { value: '', isImportant: false }
   }
-  const startSideValue = ruleValue.indexOf(sideProp) + sideProp.length
-  const endSideValue = ruleValue.indexOf(';', ruleValue.indexOf(sideProp))
-  return ruleValue.substring(startSideValue, endSideValue).trim()
+  const startSideValue = trimmedRuleValue.indexOf(sideProp) + sideProp.length
+  const endSideValue = trimmedRuleValue.indexOf(';', trimmedRuleValue.indexOf(sideProp))
+  const value = trimmedRuleValue.substring(startSideValue, endSideValue > 0 ? endSideValue : trimmedRuleValue.length)
+  const valueWithoutImportant = value.replace('!important', '').trim()
+  const isImportant = value.includes('!important')
+  return {
+    value: valueWithoutImportant,
+    isImportant
+  }
 }
 
-export const getSidesShortcut = (ruleValue: string, rule: string): string => {
+export const createShorthandProperty = (ruleValue: string, rule: SpacingRule): string => {
   // Extract the individual side values from the rule value
-  const bottom = getSideValue({ rule, ruleValue, side: 'bottom' })
-  const left = getSideValue({ rule, ruleValue, side: 'left' })
-  const right = getSideValue({ rule, ruleValue, side: 'right' })
-  const top = getSideValue({ rule, ruleValue, side: 'top' })
+  const { value: bottom, isImportant: bottomIsImportant } = getSideValue({ rule, ruleValue, side: 'bottom' })
+  const { value: left, isImportant: leftIsImportant } = getSideValue({ rule, ruleValue, side: 'left' })
+  const { value: right, isImportant: rightIsImportant } = getSideValue({ rule, ruleValue, side: 'right' })
+  const { value: top, isImportant: topIsImportant } = getSideValue({ rule, ruleValue, side: 'top' })
 
+  const importantCount: number = [bottomIsImportant, leftIsImportant, rightIsImportant, topIsImportant].filter(v => v).length
   // Don't optimize if any side is missing
-  if (existsNullSides({ left, right, top, bottom })) {
+  // Should not optimize if one of the sides is important but not all
+  if (existsNullSides({ left, right, top, bottom }) || notAllSideHasImportant(importantCount)) {
     return ruleValue
   }
 
@@ -53,40 +68,19 @@ export const getSidesShortcut = (ruleValue: string, rule: string): string => {
   let shorthandValue = ''
 
   if (isAllSideEqual({ left, right, top, bottom })) {
-    shorthandValue = `${rule}:${top};`
+    shorthandValue = `${rule}:${top}${importantCount === 4 ? ' !important' : ''};`
   } else if (isVerticalAndHorizontalEqual({ top, bottom, left, right })) {
-    shorthandValue = `${rule}:${top} ${right};`
-  } else if (isAllSideDifferent({ left, right, top, bottom })) {
-    shorthandValue = `${rule}:${top} ${right} ${bottom} ${left};`
+    shorthandValue = `${rule}:${top} ${right}${importantCount === 4 ? ' !important' : ''};`
   } else {
-    // If no optimization applied, return original
-    return ruleValue
+    const sides = [top, right, bottom, left].filter(v => v !== '')
+    shorthandValue = `${rule}:${sides.join(' ')}${importantCount === 4 ? ' !important' : ''};`
   }
-
-  // Remove the individual side properties from the rule value
-  let updatedRuleValue = ruleValue
-  updatedRuleValue = updatedRuleValue.replace(new RegExp(`${rule}-top:([^;]+);`, 'g'), '')
-  updatedRuleValue = updatedRuleValue.replace(new RegExp(`${rule}-right:([^;]+);`, 'g'), '')
-  updatedRuleValue = updatedRuleValue.replace(new RegExp(`${rule}-bottom:([^;]+);`, 'g'), '')
-  updatedRuleValue = updatedRuleValue.replace(new RegExp(`${rule}-left:([^;]+);`, 'g'), '')
-
-  // Clean up any double semicolons that might be created
-  updatedRuleValue = updatedRuleValue.replace(/;;/g, ';')
-
-  // Clean up any leading/trailing whitespace
-  updatedRuleValue = updatedRuleValue.trim()
-
-  // If there's remaining content, ensure it ends with a semicolon
-  if (updatedRuleValue.length > 0) {
-    if (!updatedRuleValue.endsWith(';')) {
-      updatedRuleValue += ';'
-    }
-    // Add a space separator if needed
-    updatedRuleValue += ' '
+  const ruleWithoutPaddingOrMargin = ruleValue.replace(rule === 'padding' ? REGEX_FIND_PADDING : REGEX_FIND_MARGIN, '').trim()
+  const ruleWithoutPaddingOrMarginLength = ruleWithoutPaddingOrMargin.length
+  if (ruleWithoutPaddingOrMarginLength === 0 || ruleWithoutPaddingOrMargin.charAt(ruleWithoutPaddingOrMarginLength - 1) === ';') {
+    return ruleWithoutPaddingOrMargin + shorthandValue
   }
-
-  // Return just the shorthand if there's no other rules left
-  return updatedRuleValue.length > 0 ? updatedRuleValue + shorthandValue : shorthandValue
+  return ruleWithoutPaddingOrMargin + ';' + shorthandValue
 }
 
 export const optimizeRule = (ruleValue: string, optimizations?: Optimizations): string => {
@@ -95,10 +89,10 @@ export const optimizeRule = (ruleValue: string, optimizations?: Optimizations): 
   }
   let optimized = ruleValue
   if (optimizations.paddingShortHand !== undefined && optimizations.paddingShortHand) {
-    optimized = getSidesShortcut(optimized, 'padding')
+    optimized = createShorthandProperty(optimized, 'padding')
   }
   if (optimizations.marginShortHand !== undefined && optimizations.marginShortHand) {
-    optimized = getSidesShortcut(optimized, 'margin')
+    optimized = createShorthandProperty(optimized, 'margin')
   }
   if (optimizations.removeZeroUnits !== undefined && optimizations.removeZeroUnits) {
     optimized = optimizeZeroUnitsRule(optimized)
@@ -118,4 +112,8 @@ export const removeDuplicates = (str: string, chars: string[]): string => {
     str = str.replace(regex, char)
   })
   return str
+}
+
+function notAllSideHasImportant (importantCount: number): boolean {
+  return importantCount >= 1 && importantCount < 4
 }

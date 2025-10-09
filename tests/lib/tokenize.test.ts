@@ -1,6 +1,5 @@
-import { getSidesShortcut } from './../../src/lib/optimization'
 import { describe, it, expect } from 'vitest'
-import { buildMediaTokens, cleanMediaQueryRule, tokenize } from '../../src/lib/tokenize'
+import { buildMediaTokens, cleanMediaQueryRule, isPunctuation, isSkippable, tokenize } from '../../src/lib/tokenize'
 import { getMediaQueries } from '../../src/lib/mediaQuery'
 
 describe('cleanMediaQueryRule', () => {
@@ -15,29 +14,39 @@ describe('cleanMediaQueryRule', () => {
   })
 })
 
-describe('getSidesShortcut', () => {
-  it('if all padding are specified return shortcut with 4 values', () => {
-    const paddingRules = 'padding-top: 12px; padding-right: 23px; padding-bottom: 11px; padding-left: 40px;'
-    const res = getSidesShortcut(paddingRules, 'padding')
-    expect(res).toBe('padding:12px 23px 11px 40px;')
+describe('isSkippable', () => {
+  it('should skip whitespace characters', () => {
+    expect(isSkippable(' ', ' ', 'a')).toBe(true)
+    expect(isSkippable('\n', ' ', 'a')).toBe(true)
+    expect(isSkippable(' ', '\n', 'a')).toBe(true)
   })
 
-  it('if top and bottom are the same but not the left and right return rules without optimization', () => {
-    const paddingRules = 'padding-top: 12px; padding-right: 23px; padding-bottom: 12px; padding-left: 40px;'
-    const res = getSidesShortcut(paddingRules, 'padding')
-    expect(res).toBe(paddingRules)
+  it('should skip space after punctuation', () => {
+    expect(isSkippable(' ', ';', 'a')).toBe(true)
+    expect(isSkippable(' ', ':', 'a')).toBe(true)
+    expect(isSkippable(' ', '{', 'a')).toBe(true)
+    expect(isSkippable(' ', '}', 'a')).toBe(true)
   })
 
-  it('if top and bottom are the same return shortcut with 2 values', () => {
-    const paddingRules = 'padding-top: 12px; padding-right: 23px; padding-bottom: 12px; padding-left: 23px;'
-    const res = getSidesShortcut(paddingRules, 'padding')
-    expect(res).toBe('padding:12px 23px;')
+  it('should skip whitespace before punctuation', () => {
+    expect(isSkippable(' ', 'a', ';')).toBe(true)
+    expect(isSkippable(' ', 'a', ':')).toBe(true)
+    expect(isSkippable(' ', 'a', '{')).toBe(true)
+    expect(isSkippable(' ', 'a', '}')).toBe(true)
   })
+})
 
-  it('if only top is specified return no shortcut', () => {
-    const paddingRules = 'padding-top: 12px;'
-    const res = getSidesShortcut(paddingRules, 'padding')
-    expect(res).toBe('padding-top: 12px;')
+describe('isPunctuation', () => {
+  it('should identify punctuation characters', () => {
+    expect(isPunctuation(';')).toBe(true)
+    expect(isPunctuation(':')).toBe(true)
+    expect(isPunctuation('{')).toBe(true)
+    expect(isPunctuation('}')).toBe(true)
+    expect(isPunctuation('(')).toBe(true)
+    expect(isPunctuation(')')).toBe(true)
+    expect(isPunctuation('a')).toBe(false)
+    expect(isPunctuation(' ')).toBe(false)
+    expect(isPunctuation('\n')).toBe(false)
   })
 })
 
@@ -115,7 +124,7 @@ describe('tokenize', () => {
       z-index: 1;
     }`
     const res = tokenize(css, { paddingShortHand: true })
-    expect(res).toEqual({ '.p': 'padding:12px 23px 11px 40px;' })
+    expect(res).toEqual({ '.p': 'z-index:1;padding:12px 23px 11px 40px;' })
   })
 
   it('media queries', () => {

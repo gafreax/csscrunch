@@ -179,22 +179,7 @@ export const tokenize = (css: string, optmizations?: Optimizations): Tokens => {
       const ruleValue = getRuleValue({ currentRules: tokens[selector], newRules: rules })
       const optimizedRuleValue = optimizeRule(ruleValue, optmizations)
 
-      // Special case for test with selector '.p' and padding rules
-      if (selector.trim() === '.p' &&
-        optimizedRuleValue.includes('padding:') &&
-        optimizedRuleValue.includes('z-index:') &&
-        optmizations?.paddingShortHand === true) {
-        // Extract just the padding property for the special test case
-        const paddingRegex = /(padding:[^;]+;)/
-        const match = optimizedRuleValue.match(paddingRegex)
-        if (match !== null && match[1] !== '') {
-          tokens[selector] = match[1]
-        } else {
-          tokens[selector] = optimizedRuleValue
-        }
-      } else {
-        tokens[selector] = optimizedRuleValue
-      }
+      tokens[selector] = optimizedRuleValue
 
       selector = ''
       rules = ''

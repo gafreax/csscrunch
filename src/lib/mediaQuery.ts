@@ -39,7 +39,6 @@ export const getMediaQueries = (css: string): MediaQuery[] => {
         if (i + 1 < css.length && css[i] === '/' && css[i + 1] === '*') {
           const commentEnd = css.indexOf('*/', i + 2)
           if (commentEnd === -1) break // Unclosed comment
-          val += css.substring(i, commentEnd + 2)
           i = commentEnd + 1
           continue
         }
