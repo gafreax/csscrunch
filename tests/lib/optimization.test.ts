@@ -1,6 +1,33 @@
 import { describe, it, expect } from 'vitest'
-import { isAllSideDifferent, existsNullSides, createShorthandProperty, getSideValue, removeComments, removeDuplicates, isHexColor6Digits, isHexNumberChar, colorOptimization } from '../../src/lib/optimization'
+import { isAllSideDifferent, existsNullSides, createShorthandProperty, getSideValue, removeComments, removeDuplicates, isHexColor6Digits, isHexNumberChar, reduceHexColor, optimizeColor } from '../../src/lib/optimization'
 import { Sides } from '../../src/lib/optimization.d'
+
+describe('optimizeColor', () => {
+  it('should extract color and optimize it', () => {
+    const css = `
+      .a{
+        background: #ffffff
+      }
+      .b {
+        color: #ffaa00
+        border-color: #FFAAEE
+      }
+
+      .c {
+        color: #fff
+      }
+
+      .d {
+        color: purple
+      }
+    `
+    const res = optimizeColor(css).toLowerCase()
+    expect(res).not.toContain('#ffffff')
+    expect(res).toContain('#fa0')
+    expect(res).toContain('#fae')
+    expect(res).toContain('color: purple')
+  })
+})
 
 describe('allSideDifferent', () => {
   it('should return true if all sides are different', () => {
@@ -59,26 +86,26 @@ describe('isHexNumberChar', () => {
   })
 })
 
-describe('colorOptimization', () => {
+describe('reduceHexColor', () => {
   it('should shorten 6-digit hex colors to 3-digit when possible', () => {
-    expect(colorOptimization('#FFFFFF')).toBe('#FFF')
-    expect(colorOptimization('#000000')).toBe('#000')
-    expect(colorOptimization('#AABBCC')).toBe('#ABC')
-    expect(colorOptimization('#112233')).toBe('#123')
+    expect(reduceHexColor('#FFFFFF')).toBe('#FFF')
+    expect(reduceHexColor('#000000')).toBe('#000')
+    expect(reduceHexColor('#AABBCC')).toBe('#ABC')
+    expect(reduceHexColor('#112233')).toBe('#123')
   })
 
   it('should return the original color if it cannot be shortened', () => {
-    expect(colorOptimization('#FFFAAA')).toBe('#FFFAAA')
-    expect(colorOptimization('#123456')).toBe('#123456')
-    expect(colorOptimization('#ABCDE1')).toBe('#ABCDE1')
+    expect(reduceHexColor('#FFFAAA')).toBe('#FFFAAA')
+    expect(reduceHexColor('#123456')).toBe('#123456')
+    expect(reduceHexColor('#ABCDE1')).toBe('#ABCDE1')
   })
 
   it('should return the original string if it is not a valid 6-digit hex color', () => {
-    expect(colorOptimization('red')).toBe('red')
-    expect(colorOptimization('#FFF')).toBe('#FFF')
-    expect(colorOptimization('123456')).toBe('123456')
-    expect(colorOptimization('#12345G')).toBe('#12345G')
-    expect(colorOptimization('')).toBe('')
+    expect(reduceHexColor('red')).toBe('red')
+    expect(reduceHexColor('#FFF')).toBe('#FFF')
+    expect(reduceHexColor('123456')).toBe('123456')
+    expect(reduceHexColor('#12345G')).toBe('#12345G')
+    expect(reduceHexColor('')).toBe('')
   })
 })
 
