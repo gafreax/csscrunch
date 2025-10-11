@@ -21,7 +21,8 @@ export function start (): void {
     .option('--optimize-margin', 'optimize margin short hand')
     .option('--optimize-padding', 'optimize padding short hand')
     .option('--remove-zero-units', 'remove zero units')
-    .option('--optimize-all', 'shorthand for --optimize-short-hand --remove-zero-units')
+    .option('--optimize-color', 'optimize hex color codes')
+    .option('--optimize-all', 'shorthand for --optimize-short-hand --remove-zero-units --optimize-color')
     .action((input: string, output: string, options: Options) => {
       try {
         const css = fs.readFileSync(input)

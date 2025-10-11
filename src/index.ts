@@ -5,11 +5,6 @@ import { Optimizations } from './lib/optimization.d'
 
 export { tokenize, stringify, compact }
 
-export interface Options {
-  paddingShortHand?: boolean
-  marginShortHand?: boolean
-}
-
 const compile = (css: string, optimization?: Optimizations): string => {
   const cleanedCss = cleanCss(css)
   const tokens = tokenize(cleanedCss, optimization)

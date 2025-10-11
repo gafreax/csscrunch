@@ -6,6 +6,7 @@ export interface Options {
   optimizeAll: boolean
   optimizeMargin: boolean
   optimizePadding: boolean
+  optimizeColor: boolean
   removeZeroUnits: boolean
 }
 
@@ -17,7 +18,8 @@ export const getOptimizations = (options: Options): Optimizations => {
   return {
     paddingShortHand: options.optimizePadding || options.optimizeShortHand || options.optimizeAll,
     marginShortHand: options.optimizeMargin || options.optimizeShortHand || options.optimizeAll,
-    removeZeroUnits: options.removeZeroUnits || options.optimizeAll
+    removeZeroUnits: options.removeZeroUnits || options.optimizeAll,
+    optimizeColor: options.optimizeColor || options.optimizeAll
   }
 }
 
