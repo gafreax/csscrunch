@@ -32,6 +32,36 @@ export const isAllSideDifferent = ({ left, right, top, bottom }: Sides): boolean
   return new Set([left, right, top, bottom]).size === 4
 }
 
+export const isHexNumberChar = (char: string): boolean => {
+  const charCode = char.charCodeAt(0)
+  if (isNaN(charCode) || char.length !== 1) {
+    return false
+  }
+  return (charCode >= 48 && charCode <= 57) ||
+          (charCode >= 65 && charCode <= 70) ||
+          (charCode >= 97 && charCode <= 102)
+}
+
+export const isHexColor6Digits = (color: string): boolean => {
+  if (color.length !== 7 || color[0] !== '#') return false
+  for (let i = 1; i < 7; i++) {
+    if (!(isHexNumberChar(color.charAt(i)))) {
+      return false
+    }
+  }
+  return true
+}
+
+export const colorOptimization = (color: string): string => {
+  if (!isHexColor6Digits(color)) {
+    return color
+  }
+  if (color[1] === color[2] && color[3] === color[4] && color[5] === color[6]) {
+    return `#${color[1]}${color[3]}${color[5]}`
+  }
+  return color
+}
+
 export const getSideValue = (params: { rule: SpacingRule, ruleValue: string, side: Side }): { value: string, isImportant: boolean } => {
   const { rule, ruleValue, side } = params
   const sideProp = `${rule}-${side}:`
