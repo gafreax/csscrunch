@@ -5,6 +5,7 @@ type Side = 'top' | 'right' | 'bottom' | 'left'
 
 const REGEX_FIND_PADDING = /(\s*)(padding)-((top|right|bottom|left):[^;]+;?)(\s*)/g
 const REGEX_FIND_MARGIN = /(\s*)(margin)-((top|right|bottom|left):[^;]+;?)(\s*)/g
+const REGEX_HEX_COLOR = /#([0-9A-Fa-f]{6})/g
 
 export const optimizeZeroUnitsRule = (ruleValue: string): string => {
   return ruleValue.replace(/(:| )0(px|%|em|rem)/g, (match: string, p1: string) => p1 + '0')
@@ -52,7 +53,7 @@ export const isHexColor6Digits = (color: string): boolean => {
   return true
 }
 
-export const colorOptimization = (color: string): string => {
+export const reduceHexColor = (color: string): string => {
   if (!isHexColor6Digits(color)) {
     return color
   }
@@ -60,6 +61,10 @@ export const colorOptimization = (color: string): string => {
     return `#${color[1]}${color[3]}${color[5]}`
   }
   return color
+}
+
+export const optimizeColor = (ruleValue: string): string => {
+  return ruleValue.replace(REGEX_HEX_COLOR, (match: string) => reduceHexColor(match))
 }
 
 export const getSideValue = (params: { rule: SpacingRule, ruleValue: string, side: Side }): { value: string, isImportant: boolean } => {
@@ -126,6 +131,9 @@ export const optimizeRule = (ruleValue: string, optimizations?: Optimizations): 
   }
   if (optimizations.removeZeroUnits !== undefined && optimizations.removeZeroUnits) {
     optimized = optimizeZeroUnitsRule(optimized)
+  }
+  if (optimizations.optimizeColor !== undefined && optimizations.optimizeColor) {
+    optimized = optimizeColor(optimized)
   }
   return optimized
 }
