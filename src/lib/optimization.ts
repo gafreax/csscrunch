@@ -5,7 +5,7 @@ type Side = 'top' | 'right' | 'bottom' | 'left'
 
 const REGEX_FIND_PADDING = /(\s*)(padding)-((top|right|bottom|left):[^;]+;?)(\s*)/g
 const REGEX_FIND_MARGIN = /(\s*)(margin)-((top|right|bottom|left):[^;]+;?)(\s*)/g
-const REGEX_HEX_COLOR = /#([0-9A-Fa-f]{6})/g
+const REGEX_HEX_COLOR = /[\s|:|\n]{1}#([0-9A-Fa-f]{6})/g
 
 export const optimizeZeroUnitsRule = (ruleValue: string): string => {
   return ruleValue.replace(/(:| )0(px|%|em|rem)/g, (match: string, p1: string) => p1 + '0')
@@ -33,30 +33,8 @@ export const isAllSideDifferent = ({ left, right, top, bottom }: Sides): boolean
   return new Set([left, right, top, bottom]).size === 4
 }
 
-export const isHexNumberChar = (char: string): boolean => {
-  const charCode = char.charCodeAt(0)
-  if (isNaN(charCode) || char.length !== 1) {
-    return false
-  }
-  return (charCode >= 48 && charCode <= 57) ||
-          (charCode >= 65 && charCode <= 70) ||
-          (charCode >= 97 && charCode <= 102)
-}
-
-export const isHexColor6Digits = (color: string): boolean => {
-  if (color.length !== 7 || color[0] !== '#') return false
-  for (let i = 1; i < 7; i++) {
-    if (!(isHexNumberChar(color.charAt(i)))) {
-      return false
-    }
-  }
-  return true
-}
-
 export const reduceHexColor = (color: string): string => {
-  if (!isHexColor6Digits(color)) {
-    return color
-  }
+  if (color === '') return color
   if (color[1] === color[2] && color[3] === color[4] && color[5] === color[6]) {
     return `#${color[1]}${color[3]}${color[5]}`
   }
@@ -64,7 +42,7 @@ export const reduceHexColor = (color: string): string => {
 }
 
 export const optimizeColor = (ruleValue: string): string => {
-  return ruleValue.replace(REGEX_HEX_COLOR, (match: string) => reduceHexColor(match))
+  return ruleValue.replace(REGEX_HEX_COLOR, (match: string) => reduceHexColor(match.trim()))
 }
 
 export const getSideValue = (params: { rule: SpacingRule, ruleValue: string, side: Side }): { value: string, isImportant: boolean } => {

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { isAllSideDifferent, existsNullSides, createShorthandProperty, getSideValue, removeComments, removeDuplicates, isHexColor6Digits, isHexNumberChar, reduceHexColor, optimizeColor } from '../../src/lib/optimization'
+import { isAllSideDifferent, existsNullSides, createShorthandProperty, getSideValue, removeComments, removeDuplicates, reduceHexColor, optimizeColor } from '../../src/lib/optimization'
 import { Sides } from '../../src/lib/optimization.d'
 
 describe('optimizeColor', () => {
@@ -27,6 +27,23 @@ describe('optimizeColor', () => {
     expect(res).toContain('#fae')
     expect(res).toContain('color: purple')
   })
+
+  it('should handle line breaks and tabs correctly', () => {
+    const css = `
+      .a {
+        background:
+        #ffffff;
+      }
+      .b {
+        color:    #000000;
+      }
+    `
+    const res = optimizeColor(css).toLowerCase()
+    expect(res).not.toContain('#ffffff')
+    expect(res).not.toContain('#000000')
+    expect(res).toContain('#fff')
+    expect(res).toContain('#000')
+  })
 })
 
 describe('allSideDifferent', () => {
@@ -39,50 +56,6 @@ describe('allSideDifferent', () => {
     expect(isAllSideDifferent({ left: '10px', right: '10px', top: '30px', bottom: '40px' })).toBe(false)
     expect(isAllSideDifferent({ left: '10px', right: '20px', top: '10px', bottom: '40px' })).toBe(false)
     expect(isAllSideDifferent({ left: '10px', right: '20px', top: '30px', bottom: '30px' })).toBe(false)
-  })
-})
-
-describe('isHexColor6Digits', () => {
-  it('should return true for valid 6-digit hex colors', () => {
-    expect(isHexColor6Digits('#FFFFFF')).toBe(true)
-    expect(isHexColor6Digits('#000000')).toBe(true)
-    expect(isHexColor6Digits('#123ABC')).toBe(true)
-    expect(isHexColor6Digits('#abcdef')).toBe(true)
-  })
-
-  it('should return false for invalid hex colors', () => {
-    expect(isHexColor6Digits('#FFF')).toBe(false) // 3-digit hex
-    expect(isHexColor6Digits('FFFFFF')).toBe(false) // Missing '#'
-    expect(isHexColor6Digits('#12345G')).toBe(false) // Invalid character 'G'
-    expect(isHexColor6Digits('#1234')).toBe(false) // 4-digit hex
-    expect(isHexColor6Digits('#1234567')).toBe(false) // 7-digit hex
-    expect(isHexColor6Digits('')).toBe(false) // Empty string
-    expect(isHexColor6Digits('#12')).toBe(false) // Too short
-  })
-})
-
-describe('isHexNumberChar', () => {
-  it('should return true for valid hex characters', () => {
-    const validChars = '0123456789ABCDEFabcdef'
-    for (const char of validChars) {
-      expect(isHexNumberChar(char)).toBe(true)
-    }
-  })
-
-  it('should return false for invalid hex characters', () => {
-    const invalidChars = 'GHIJKLMNOPQRSTUVWXYZghijklmnopqrstuvwxyz!@#$%^&*()_+-=[]{}|;:\'",.<>?/`~ '
-    for (const char of invalidChars) {
-      expect(isHexNumberChar(char)).toBe(false)
-    }
-  })
-
-  it('should return false for empty string', () => {
-    expect(isHexNumberChar('')).toBe(false)
-  })
-
-  it('should return false for strings longer than one character', () => {
-    expect(isHexNumberChar('AB')).toBe(false)
-    expect(isHexNumberChar('123')).toBe(false)
   })
 })
 
