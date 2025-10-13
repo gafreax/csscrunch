@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CSSCrunch Playground</title>
+  <style>
+    body { font-family: monospace; margin: 0; padding: 10px; display: flex; flex-direction: column; height: 100vh; }
+    .top { display: flex; gap: 10px; margin-bottom: 10px; }
+    .views { display: flex; flex-direction: column; gap: 10px; flex: 1; position: relative; }
+    textarea, pre { flex: 1; font-family: monospace; font-size: 13px; padding: 8px; border: 1px solid #ccc; border-radius: 6px; background: #fafafa; overflow: auto; }
+    select, button { padding: 6px; font-size: 13px; }
+    .buttons { display: flex; gap: 6px; }
+    #bench { font-size: 12px; color: #333; font-family: monospace; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,255,255,0.8); padding: 4px 8px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div class="top">
+    <select id="exampleSelect">
+    </select>
+    <div class="buttons">
+      <button id="compileBtn">Compile</button>
+      <button id="optimizeBtn">Compile Optimized</button>
+    </div>
+  </div>
+  <div class="views">
+    <textarea id="cssIn"></textarea>
+    <pre id="compiledCss"></pre>
+    <div id="bench">Ready</div>
+  </div>
+
+  <script type="module">
+    //skypack.dev support esmodule from commonjs by default
+    import compile from "https://cdn.skypack.dev/@gafreax/csscrunch"
+
+    const cssIn = document.getElementById('cssIn');
+    const compiledCssEl = document.getElementById('compiledCss');
+    const exampleSelect = document.getElementById('exampleSelect');
+    const bench = document.getElementById('bench');
+
+    const examples = {
+      fruits: `.banana{ \n  color: red;\n}\n.banana{ \n  background-color: blue;\n}\n.pera{\n  color: green;\n}\n.pera{\n  background-color: yellow;\n  color: black;\n}\n\n.mela{\n  color: red;\n}\n.cigliegia{\n  color: red;\n}`,
+      basic: `.container { display: flex; gap: 10px; }\n.item { background: #eee; padding: 10px; border-radius: 4px; }`,
+      buttons: `.btn { padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; }\n.btn.primary { background: #007bff; color: white; }\n.btn.secondary { background: #ccc; }`,
+      card: `.card { border: 1px solid #ddd; border-radius: 6px; padding: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }\n.card h3 { margin: 0 0 5px; }\n.card p { font-size: 14px; }`,
+      redundant: `/* Unoptimized redundant selectors */\n.box { padding: 10px; }\n.box { padding: 10px; margin: 0px; }\n.box { margin: 0px; color: red; }\n.container { display: block; display: block; display: block; }\n@media screen and (min-width: 600px) { .box { width: 100%; width: 100%; } }`,
+      inefficient: `/* Inefficient CSS with unnecessary units and defaults */\nbody { margin: 0px; padding: 0px; background-color: white; color: black; }\n.container { display: block; width: 100.0%; height: auto; }\n.item { border: 0px solid transparent; border-width: 0px; }\nh1 { font-weight: 700; font-weight: bold; font-size: 24.0px; }`,
+      repetitive: `/* Lots of repetition */\n.btn { border-radius: 4px; border-radius: 4px; border-radius: 4px; padding: 10px; padding: 10px; margin: 0px; margin: 0px; }\n.header { background: #fff; background: #ffffff; color: #000; color: black; }\n.footer { padding: 10px; padding: 10px; }`,
+      bloated: `/* Extremely verbose and bloated */\n.container { display: flex; display: flex; flex-direction: row; flex-direction: row; flex-direction: row; }\n.box { padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px; }\n.box { padding: 10px 10px 10px 10px; }\n.item { margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; }\n.item { margin: 0px 0px 0px 0px; }`,
+      messy: `/* Complex and redundant */\n.nav { display: block; display: block; float: none; float: none; }\n.nav a { color: blue; color: blue; text-decoration: none; text-decoration: none; }\n.nav a:hover { color: darkblue; color: darkblue; }\n.section { padding: 20px 20px 20px 20px; padding: 20px; }\n.section { margin: 10px 10px 10px 10px; margin: 10px; }`
+    };
+
+    Object.keys(examples).forEach(key => {
+      const option = document.createElement('option');
+      option.value = key;
+      option.textContent = key.charAt(0).toUpperCase() + key.slice(1) + ' Example';
+      exampleSelect.appendChild(option);
+    });
+
+    cssIn.value = examples.fruits;
+
+    async function compileAndShow(optimize = false) {
+      const css = cssIn.value;
+      const start = performance.now();
+      let out;
+      try {
+        out = compile(css, optimize ? { removeZeroUnits: true, marginShortHand: true, paddingShortHand: true } : undefined);
+        if (typeof out === 'object' && typeof out.toString === 'function') out = out.toString();
+      } catch (err) {
+        console.error(err);
+        out = css;
+      }
+      const end = performance.now();
+      const duration = (end - start).toFixed(2);
+      compiledCssEl.textContent = out;
+      bench.textContent = `Compiled in ${duration} ms${optimize ? ' (optimized)' : ''}`;
+    }
+
+    document.getElementById('compileBtn').onclick = () => compileAndShow(false);
+    document.getElementById('optimizeBtn').onclick = () => compileAndShow(true);
+
+    exampleSelect.onchange = () => {
+      cssIn.value = examples[exampleSelect.value];
+      compileAndShow(false);
+    };
+
+    compileAndShow();
+  </script>
+</body>
+</html>
