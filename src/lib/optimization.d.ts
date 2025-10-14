@@ -2,7 +2,7 @@ export interface Optimizations {
   paddingShortHand?: boolean
   marginShortHand?: boolean
   removeZeroUnits?: boolean
-  optimizeColor?: boolean
+  optimizeColors?: boolean
 }
 
 export interface Sides {

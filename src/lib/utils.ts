@@ -19,7 +19,7 @@ export const getOptimizations = (options: Options): Optimizations => {
     paddingShortHand: options.optimizePadding || options.optimizeShortHand || options.optimizeAll,
     marginShortHand: options.optimizeMargin || options.optimizeShortHand || options.optimizeAll,
     removeZeroUnits: options.removeZeroUnits || options.optimizeAll,
-    optimizeColor: options.optimizeColor || options.optimizeAll
+    optimizeColors: options.optimizeColor || options.optimizeAll
   }
 }
 

@@ -5,10 +5,11 @@ type Side = 'top' | 'right' | 'bottom' | 'left'
 
 const REGEX_FIND_PADDING = /(\s*)(padding)-((top|right|bottom|left):[^;]+;?)(\s*)/g
 const REGEX_FIND_MARGIN = /(\s*)(margin)-((top|right|bottom|left):[^;]+;?)(\s*)/g
-const REGEX_HEX_COLOR = /[\s|:|\n]{1}#([0-9A-Fa-f]{6})/g
+const REGEX_FIND_HEX_COLOR = /([\s|:|\n])+(#[0-9A-Fa-f]{6})/g
+const REGEX_FIND_ZERO_UNIT = /(:| )0(px|%|em|rem)/g
 
 export const optimizeZeroUnitsRule = (ruleValue: string): string => {
-  return ruleValue.replace(/(:| )0(px|%|em|rem)/g, (match: string, p1: string) => p1 + '0')
+  return ruleValue.replace(REGEX_FIND_ZERO_UNIT, (match: string, p1: string) => p1 + '0')
 }
 
 export const isAllSideEqual = ({ left, right, top, bottom }: Sides): boolean => {
@@ -42,7 +43,12 @@ export const reduceHexColor = (color: string): string => {
 }
 
 export const optimizeColor = (ruleValue: string): string => {
-  return ruleValue.replace(REGEX_HEX_COLOR, (match: string) => reduceHexColor(match.trim()))
+  return ruleValue.replaceAll(REGEX_FIND_HEX_COLOR, (match: string, ...groups: string[]) => {
+    const [firstGroup, colorMatch] = groups
+    const isColumn = firstGroup[firstGroup.length - 1] === ':'
+    const reducedHexColor = reduceHexColor(colorMatch)
+    return isColumn ? ':' + reducedHexColor : ' ' + reducedHexColor
+  })
 }
 
 export const getSideValue = (params: { rule: SpacingRule, ruleValue: string, side: Side }): { value: string, isImportant: boolean } => {
@@ -110,7 +116,7 @@ export const optimizeRule = (ruleValue: string, optimizations?: Optimizations): 
   if (optimizations.removeZeroUnits !== undefined && optimizations.removeZeroUnits) {
     optimized = optimizeZeroUnitsRule(optimized)
   }
-  if (optimizations.optimizeColor !== undefined && optimizations.optimizeColor) {
+  if (optimizations.optimizeColors !== undefined && optimizations.optimizeColors) {
     optimized = optimizeColor(optimized)
   }
   return optimized
