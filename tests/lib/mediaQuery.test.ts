@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import {
   findIndexOfMediaQueries,
-  getMediaQueries
+  getMediaQueries,
+  deepLevel
 } from '../../src/lib/mediaQuery'
 const simpleCssWithMediaQuery = `
 /* On screens that are 992px or less, set the background color to blue */
@@ -130,4 +131,30 @@ describe('getMediaQueries', () => {
   it('return empty array if no media query', () => {
     expect(getMediaQueries('')).toEqual([])
   })
+})
+
+
+describe('deepLevel', () => {
+  it('correctly handle increase level', () => {
+    const r = deepLevel('{')
+    expect(r).toBe(1)
+  })
+
+  it('correctly handle decrease level', () => {
+    const r = deepLevel('}')
+    expect(r).toBe(-1)
+  })
+
+  it('correctly handle other char', () => {
+    const r = deepLevel('0')
+    expect(r).toBe(0)
+  })
+
+  it('correctly handle full string', () => {
+    const str = '.a { color: red; }'
+    let level = 0
+    for(let char in str) level += deepLevel(char)
+    expect(level).toBe(0)
+  })
+
 })
