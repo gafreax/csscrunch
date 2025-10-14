@@ -153,7 +153,7 @@ describe('deepLevel', () => {
   it('correctly handle full string', () => {
     const str = '.a { color: red; }'
     let level = 0
-    for(let char in str) level += deepLevel(char)
+    for(let char of str) level += deepLevel(char)
     expect(level).toBe(0)
   })
 
