@@ -6,7 +6,7 @@ type Side = 'top' | 'right' | 'bottom' | 'left'
 const REGEX_FIND_PADDING = /(\s*)(padding)-((top|right|bottom|left):[^;]+;?)(\s*)/g
 const REGEX_FIND_MARGIN = /(\s*)(margin)-((top|right|bottom|left):[^;]+;?)(\s*)/g
 const REGEX_FIND_HEX_COLOR = /([\s:])+(#[0-9A-Fa-f]{6})/g
-const REGEX_FIND_ZERO_UNIT = /(:| )0(px|%|em|rem)/g
+const REGEX_FIND_ZERO_UNIT = /([:\s])0(px|%|em|rem)/g
 
 export const optimizeZeroUnitsRule = (ruleValue: string): string => {
   return ruleValue.replace(REGEX_FIND_ZERO_UNIT, (match: string, p1: string) => p1 + '0')
