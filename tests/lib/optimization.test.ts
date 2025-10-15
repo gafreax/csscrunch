@@ -5,21 +5,10 @@ import { Sides } from '../../src/lib/optimization.d'
 describe('optimizeColor', () => {
   it('should extract color and optimize it', () => {
     const css = `
-      .a{
-        background: #ffffff
-      }
-      .b {
-        color: #ffaa00
-        border-color: #FFAAEE
-      }
-
-      .c {
-        color: #fff
-      }
-
-      .d {
-        color: purple
-      }
+      .a{ background: #ffffff }
+      .b{ color: #ffaa00; border-color: #FFAAEE; }
+      .c{ color: #fff }
+      .d{ color: purple }
     `
     const res = optimizeColor(css).toLowerCase()
     expect(res).not.toContain('#ffffff')
@@ -43,6 +32,47 @@ describe('optimizeColor', () => {
     expect(res).not.toContain('#000000')
     expect(res).toContain('#fff')
     expect(res).toContain('#000')
+  })
+
+  it('should not affect non-color values', () => {
+    const css = `
+      .a { font-size: 12px; margin: 10px; }
+      .b { border-width: 1px; padding: 5px; }
+    `
+    const res = optimizeColor(css)
+    expect(res).toBe(css)
+  })
+
+  it('should handle empty strings', () => {
+    const css = ''
+    const res = optimizeColor(css)
+    expect(res).toBe('')
+  })
+
+  it('should handle multiple colors in a single rule', () => {
+    const css = `
+      .a { box-shadow: 0 0 5px #FFFFFF, 0 0 10px #FFAAEE; }
+      .b { text-shadow: 1px 1px 2px #AABBCC, 2px 2px 4px #FFAAEE; }
+    `
+    const res = optimizeColor(css).toLowerCase()
+    expect(res).not.toContain('#ffffff')
+    expect(res).toContain('#fff')
+    expect(res).not.toContain('#ffaaee')
+    expect(res).toContain('#fae')
+    expect(res).not.toContain('#aabbcc')
+    expect(res).toContain('#abc')
+  })
+
+  it('should handle !important correctly', () => {
+    const css = `
+      .a { color: #FFFFFF !important; }
+      .b { border-color: #AABBCC !important; }
+    `
+    const res = optimizeColor(css).toLowerCase()
+    expect(res).not.toContain('#ffffff')
+    expect(res).toContain('#fff')
+    expect(res).not.toContain('#aabbcc')
+    expect(res).toContain('#abc')
   })
 })
 

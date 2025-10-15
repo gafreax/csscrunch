@@ -6,7 +6,7 @@ exports[`compile > compiles CSS background.css with optimizations 1`] = `
 `;
 
 exports[`compile > compiles CSS colors.css with optimizations 1`] = `
-".a{background-color:#FFF;border-color:#ABC;outline-color:#FAA;color:#000;outline-color:#123456;border:solid 1px #F00}.b{background-color:#FFF;border-color:#ABC;outline-color:#FAA;color:#000;outline-color:#123456;border:solid 1px #F00;background:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA")}.c{background:url('https://example.com/image.png?color=#000000');border-color:#000 #123456 #ABC #FAA}.d{box-shadow:0 0 5px #000, 0 0 10px #FFF!important;text-shadow:1px 1px 2px #ABC, 2px 2px 4px #FAA}
+".a{background-color:#FFF;border-color:#ABC !important;outline-color:#FAA;color:#000;outline-color:#123456;border:solid 1px #F00}.b{background-color:#FFF;border-color:#ABC;outline-color:#FAA;color:#000;outline-color:#123456;border:solid 1px #F00;background:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA")}.c{background:url('https://example.com/image.png?color=#000000');border-color:#000 #123456 #ABC #FAA}.d{box-shadow:0 0 5px #000, 0 0 10px #FFF!important;text-shadow:1px 1px 2px #ABC, 2px 2px 4px #FAA}.e{border-color:red #0F0 #00F #FF0}.k{border-color:red #0F0 white #123456}
 "
 `;
 
