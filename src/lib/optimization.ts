@@ -43,7 +43,7 @@ export const reduceHexColor = (color: string): string => {
 }
 
 export const optimizeColor = (ruleValue: string): string => {
-  return ruleValue.replaceAll(REGEX_FIND_HEX_COLOR, (match: string, ...groups: string[]) => {
+  return ruleValue.replace(REGEX_FIND_HEX_COLOR, (match: string, ...groups: string[]) => {
     const [firstGroup, colorMatch] = groups
     const isColumn = firstGroup[firstGroup.length - 1] === ':'
     const reducedHexColor = reduceHexColor(colorMatch)
