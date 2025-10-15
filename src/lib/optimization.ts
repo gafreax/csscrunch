@@ -43,10 +43,9 @@ export const reduceHexColor = (color: string): string => {
 }
 
 export const optimizeColor = (ruleValue: string): string => {
-  return ruleValue.replace(REGEX_FIND_HEX_COLOR, (match: string, ...groups: string[]) => {
-    const [firstGroup, colorMatch] = groups
-    const isColumn = firstGroup[firstGroup.length - 1] === ':'
-    const reducedHexColor = reduceHexColor(colorMatch)
+  return ruleValue.replace(REGEX_FIND_HEX_COLOR, (match: string, prefix: string, color: string) => {
+    const isColumn = prefix[prefix.length - 1] === ':'
+    const reducedHexColor = reduceHexColor(color)
     return isColumn ? ':' + reducedHexColor : ' ' + reducedHexColor
   })
 }
