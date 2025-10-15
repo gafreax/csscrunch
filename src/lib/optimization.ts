@@ -5,9 +5,11 @@ type Side = 'top' | 'right' | 'bottom' | 'left'
 
 const REGEX_FIND_PADDING = /(\s*)(padding)-((top|right|bottom|left):[^;]+;?)(\s*)/g
 const REGEX_FIND_MARGIN = /(\s*)(margin)-((top|right|bottom|left):[^;]+;?)(\s*)/g
+const REGEX_FIND_HEX_COLOR = /([\s:])+(#[0-9A-Fa-f]{6})/g
+const REGEX_FIND_ZERO_UNIT = /([:\s])0(px|%|em|rem)/g
 
 export const optimizeZeroUnitsRule = (ruleValue: string): string => {
-  return ruleValue.replace(/(:| )0(px|%|em|rem)/g, (match: string, p1: string) => p1 + '0')
+  return ruleValue.replace(REGEX_FIND_ZERO_UNIT, (match: string, p1: string) => p1 + '0')
 }
 
 export const isAllSideEqual = ({ left, right, top, bottom }: Sides): boolean => {
@@ -30,6 +32,22 @@ export const isVerticalAndHorizontalEqual = ({ top, bottom, left, right }: Sides
 
 export const isAllSideDifferent = ({ left, right, top, bottom }: Sides): boolean => {
   return new Set([left, right, top, bottom]).size === 4
+}
+
+export const reduceHexColor = (color: string): string => {
+  if (color === '') return color
+  if (color[1] === color[2] && color[3] === color[4] && color[5] === color[6]) {
+    return `#${color[1]}${color[3]}${color[5]}`
+  }
+  return color
+}
+
+export const optimizeColor = (ruleValue: string): string => {
+  return ruleValue.replace(REGEX_FIND_HEX_COLOR, (match: string, prefix: string, color: string) => {
+    const isColumn = prefix[prefix.length - 1] === ':'
+    const reducedHexColor = reduceHexColor(color)
+    return isColumn ? ':' + reducedHexColor : ' ' + reducedHexColor
+  })
 }
 
 export const getSideValue = (params: { rule: SpacingRule, ruleValue: string, side: Side }): { value: string, isImportant: boolean } => {
@@ -96,6 +114,9 @@ export const optimizeRule = (ruleValue: string, optimizations?: Optimizations): 
   }
   if (optimizations.removeZeroUnits !== undefined && optimizations.removeZeroUnits) {
     optimized = optimizeZeroUnitsRule(optimized)
+  }
+  if (optimizations.optimizeColors !== undefined && optimizations.optimizeColors) {
+    optimized = optimizeColor(optimized)
   }
   return optimized
 }

@@ -1,6 +1,80 @@
 import { describe, it, expect } from 'vitest'
-import { isAllSideDifferent, existsNullSides, createShorthandProperty, getSideValue, removeComments, removeDuplicates } from '../../src/lib/optimization'
+import { isAllSideDifferent, existsNullSides, createShorthandProperty, getSideValue, removeComments, removeDuplicates, reduceHexColor, optimizeColor } from '../../src/lib/optimization'
 import { Sides } from '../../src/lib/optimization.d'
+
+describe('optimizeColor', () => {
+  it('should extract color and optimize it', () => {
+    const css = `
+      .a{ background: #ffffff }
+      .b{ color: #ffaa00; border-color: #FFAAEE; }
+      .c{ color: #fff }
+      .d{ color: purple }
+    `
+    const res = optimizeColor(css).toLowerCase()
+    expect(res).not.toContain('#ffffff')
+    expect(res).toContain('#fa0')
+    expect(res).toContain('#fae')
+    expect(res).toContain('color: purple')
+  })
+
+  it('should handle line breaks and tabs correctly', () => {
+    const css = `
+      .a {
+        background:
+        #ffffff;
+      }
+      .b {
+        color:    #000000;
+      }
+    `
+    const res = optimizeColor(css).toLowerCase()
+    expect(res).not.toContain('#ffffff')
+    expect(res).not.toContain('#000000')
+    expect(res).toContain('#fff')
+    expect(res).toContain('#000')
+  })
+
+  it('should not affect non-color values', () => {
+    const css = `
+      .a { font-size: 12px; margin: 10px; }
+      .b { border-width: 1px; padding: 5px; }
+    `
+    const res = optimizeColor(css)
+    expect(res).toBe(css)
+  })
+
+  it('should handle empty strings', () => {
+    const css = ''
+    const res = optimizeColor(css)
+    expect(res).toBe('')
+  })
+
+  it('should handle multiple colors in a single rule', () => {
+    const css = `
+      .a { box-shadow: 0 0 5px #FFFFFF, 0 0 10px #FFAAEE; }
+      .b { text-shadow: 1px 1px 2px #AABBCC, 2px 2px 4px #FFAAEE; }
+    `
+    const res = optimizeColor(css).toLowerCase()
+    expect(res).not.toContain('#ffffff')
+    expect(res).toContain('#fff')
+    expect(res).not.toContain('#ffaaee')
+    expect(res).toContain('#fae')
+    expect(res).not.toContain('#aabbcc')
+    expect(res).toContain('#abc')
+  })
+
+  it('should handle !important correctly', () => {
+    const css = `
+      .a { color: #FFFFFF !important; }
+      .b { border-color: #AABBCC !important; }
+    `
+    const res = optimizeColor(css).toLowerCase()
+    expect(res).not.toContain('#ffffff')
+    expect(res).toContain('#fff')
+    expect(res).not.toContain('#aabbcc')
+    expect(res).toContain('#abc')
+  })
+})
 
 describe('allSideDifferent', () => {
   it('should return true if all sides are different', () => {
@@ -14,6 +88,30 @@ describe('allSideDifferent', () => {
     expect(isAllSideDifferent({ left: '10px', right: '20px', top: '30px', bottom: '30px' })).toBe(false)
   })
 })
+
+describe('reduceHexColor', () => {
+  it('should shorten 6-digit hex colors to 3-digit when possible', () => {
+    expect(reduceHexColor('#FFFFFF')).toBe('#FFF')
+    expect(reduceHexColor('#000000')).toBe('#000')
+    expect(reduceHexColor('#AABBCC')).toBe('#ABC')
+    expect(reduceHexColor('#112233')).toBe('#123')
+  })
+
+  it('should return the original color if it cannot be shortened', () => {
+    expect(reduceHexColor('#FFFAAA')).toBe('#FFFAAA')
+    expect(reduceHexColor('#123456')).toBe('#123456')
+    expect(reduceHexColor('#ABCDE1')).toBe('#ABCDE1')
+  })
+
+  it('should return the original string if it is not a valid 6-digit hex color', () => {
+    expect(reduceHexColor('red')).toBe('red')
+    expect(reduceHexColor('#FFF')).toBe('#FFF')
+    expect(reduceHexColor('123456')).toBe('123456')
+    expect(reduceHexColor('#12345G')).toBe('#12345G')
+    expect(reduceHexColor('')).toBe('')
+  })
+})
+
 describe('removeComments', () => {
   it('should remove single-line comments', () => {
     expect(removeComments('color: black;')).toBe(

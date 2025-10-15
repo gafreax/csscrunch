@@ -13,8 +13,10 @@
     "prebuild": "pnpm run clean && ts-standard --fix src/**/*.ts tests/**/*.ts",
     "prepare": "pnpm run build && husky",
     "test": "vitest run",
-    "coverage": "vitest --coverage",
-    "updatesnap": "vitest run --update"
+    "test:watch": "vitest",
+    "test:exclude-snap": "vitest run -t \"^(?!.*snapshot.*)$\"",
+    "test:update-snap": "vitest run --update",
+    "test:coverage": "vitest run --coverage"
   },
   "author": "Gabriele Fontana",
   "bin": {
