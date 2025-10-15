@@ -133,7 +133,6 @@ describe('getMediaQueries', () => {
   })
 })
 
-
 describe('deepLevel', () => {
   it('correctly handle increase level', () => {
     const r = deepLevel('{')
@@ -153,8 +152,7 @@ describe('deepLevel', () => {
   it('correctly handle full string', () => {
     const str = '.a { color: red; }'
     let level = 0
-    for(let char of str) level += deepLevel(char)
+    for (const char of str) level += deepLevel(char)
     expect(level).toBe(0)
   })
-
 })
