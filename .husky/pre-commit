@@ -1,4 +1,23 @@
 #!/usr/bin/env sh
+# Use local node modules
+export PATH="$(pwd)/node_modules/.bin:$PATH"
 
-npm run lint:fix
-npm run test
+# Get staged files
+STAGED=$(git diff --cached --name-only --diff-filter=ACM)
+STAGED_TESTS=$(echo "$STAGED" | grep -E '\.(test|spec)\.(js|ts)$' || true)
+STAGED_JS_FILES=$(echo "$STAGED" | grep -E '\.(js|jsx|ts|tsx)$' || true)
+
+# Skip if no relevant files
+if [ -z "$STAGED_TESTS" ] && [ -z "$STAGED_JS_FILES" ]; then
+  exit 0
+fi
+
+# Run tests on staged test files
+if [ -n "$STAGED_TESTS" ]; then
+  vitest run $STAGED_TESTS
+fi
+
+# Lint staged JS/TS files
+if [ -n "$STAGED_JS_FILES" ]; then
+  ts-standard --fix $STAGED_JS_FILES
+fi
