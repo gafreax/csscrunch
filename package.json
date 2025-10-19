@@ -16,7 +16,8 @@
     "test:watch": "vitest",
     "test:exclude-snap": "vitest run -t \"^(?!.*snapshot.*)$\"",
     "test:update-snap": "vitest run --update",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:bench": "vitest bench"
   },
   "author": "Gabriele Fontana",
   "bin": {

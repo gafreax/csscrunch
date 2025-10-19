@@ -108,10 +108,10 @@ const getRuleValue: GetRuleValueFunction = ({ currentRules, newRules }) => {
  * @returns cleaned css string
  */
 export const cleanCss = (css: string): string => {
-  const cssNoDuplicates = removeDuplicates(css, [';', '.', ' '])
-  const cssNoComments = removeComments(cssNoDuplicates)
+  const cssNoComments = removeComments(css)
   const cssNoLastSemi = removeRuleLastSemi(cssNoComments)
-  return cssNoLastSemi
+  const cssNoDuplicates = removeDuplicates(cssNoLastSemi, [';', '.', ' '])
+  return cssNoDuplicates
 }
 
 /**

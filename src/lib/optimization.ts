@@ -124,7 +124,6 @@ export const optimizeRule = (ruleValue: string, optimizations?: Optimizations): 
 export const removeComments = (css: string): string => {
   return css
     .replace(/\/\*[\s\S]*?\*\//g, '')
-    .trim()
 }
 
 export const removeDuplicates = (str: string, chars: string[]): string => {
