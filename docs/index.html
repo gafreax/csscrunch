@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Crunch</title>
+  <style>
+    :root {
+      --light-brown: #D2B48C;
+      --brown: #8B4513;
+      --green: #228B22;
+      --dark-green: #006400;
+      --background: #F5F5DC;
+      --text-color: #333;
+    }
+    body {
+      font-family: sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 2rem;
+      background-color: var(--background);
+      color: var(--text-color);
+    }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 2rem;
+    }
+    header img {
+      width: 100px;
+      height: 100px;
+    }
+    h1, h2 {
+      color: var(--dark-green);
+    }
+    a {
+      color: var(--green);
+    }
+    code, pre {
+      font-family: monospace;
+    }
+    pre {
+      background-color: #f0f0e0; /* Lighter beige for contrast */
+      padding: 1rem;
+      border-radius: 5px;
+      border-left: 5px solid var(--light-brown);
+      color: var(--brown);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="./logo.png" alt="CSS Crunch Logo">
+    <div>
+      <h1>CSS Crunch</h1>
+      <p>A powerful TypeScript library for optimizing CSS strings.</p>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h2>Features</h2>
+      <ul>
+        <li>Rule grouping</li>
+        <li>CSS compression</li>
+        <li>Selector merging</li>
+        <li>Media query handling</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Comparison</h2>
+      <p>Here is a benchmark comparison against other popular CSS optimization libraries like clean-css.</p>
+      <div>
+        <p><em>[Benchmark comparison placeholder]</em></p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Installation & Usage</h2>
+      <h3>Installation</h3>
+      <pre><code>npm install csscrunch</code></pre>
+      <h3>CLI Usage</h3>
+      <pre><code>npx csscrunch compile input.css optimized.css</code></pre>
+      <h3>Library Usage</h3>
+      <pre><code>import { compile } from 'csscrunch';
+
+const css = '...';
+const optimizedCss = compile(css);
+      </code></pre>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      <a href="https://github.com/gafreax/csscrunch">View on GitHub</a>
+    </p>
+  </footer>
+
+</body>
+</html>
