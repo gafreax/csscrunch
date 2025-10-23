@@ -86,6 +86,26 @@ Example:
 $ npx @gafreax/csscrunch compile --optimize-all input.css optimized.css
 ```
 
+## Benchmark
+
+This project includes two types of benchmarks.
+
+### Vitest Benchmarks
+
+To run the standard suite of benchmarks, use the following command:
+
+```bash
+pnpm run test:bench
+```
+
+### Performance Comparison vs. clean-css
+
+A dedicated script is available to compare the performance of `csscrunch` against `clean-css`. To run it, use the following command:
+
+```bash
+ts-node benchmark/comparison.ts
+```
+
 ## Contribution
 
 We welcome contributions to this open-source project. If you encounter issues or have suggestions for improvement, please feel free to create GitHub issues or submit pull requests.

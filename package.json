@@ -27,7 +27,10 @@
   "devDependencies": {
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
+    "@types/clean-css": "^4.2.11",
     "@vitest/coverage-v8": "^4.0.1",
+    "benny": "^3.7.1",
+    "clean-css": "^5.3.3",
     "husky": "^9.1.7",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",

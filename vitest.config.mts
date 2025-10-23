@@ -10,6 +10,9 @@ export default defineConfig({
       deps: {
         inline: ['.*']
       }
+    },
+    benchmark: {
+      include: ['benchmark/**/*.benchmark.ts']
     }
   }
 })

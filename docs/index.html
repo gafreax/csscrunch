@@ -81,14 +81,22 @@
     <section>
       <h2>Installation & Usage</h2>
       <h3>Installation</h3>
-      <pre><code>npm install csscrunch</code></pre>
+      <pre><code>npm install @gafreax/csscrunch</code></pre>
       <h3>CLI Usage</h3>
-      <pre><code>npx csscrunch compile input.css optimized.css</code></pre>
-      <h3>Library Usage</h3>
-      <pre><code>import { compile } from 'csscrunch';
+      <pre><code>npx @gafreax/csscrunch compile input.css optimized.css</code></pre>
+      <h3>Library Usage (ESM)</h3>
+      <pre><code>import csscrunch from '@gafreax/csscrunch'
+const { default: compile } = csscrunch
 
-const css = '...';
-const optimizedCss = compile(css);
+const cssString = '.example { color: red; font-size: 16px; }';
+const parsedCSS = compile(cssString);
+      </code></pre>
+      <h3>Library Usage (CommonJS)</h3>
+      <pre><code>const csscrunch = require('@gafreax/csscrunch')
+const { default: compile } = csscrunch
+
+const cssString = '.example { color: red; font-size: 16px; }';
+const parsedCSS = compile(cssString);
       </code></pre>
     </section>
   </main>

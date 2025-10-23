@@ -1,0 +1,27 @@
+{
+  "name": "Benchmarking: unit.css",
+  "date": "2025-10-23T22:57:44.397Z",
+  "version": "1.0.0",
+  "results": [
+    {
+      "name": "csscrunch (full optimization)",
+      "ops": 8538,
+      "margin": 5.05,
+      "percentSlower": 0
+    },
+    {
+      "name": "clean-css (level 2)",
+      "ops": 2169,
+      "margin": 4.64,
+      "percentSlower": 74.6
+    }
+  ],
+  "fastest": {
+    "name": "csscrunch (full optimization)",
+    "index": 0
+  },
+  "slowest": {
+    "name": "clean-css (level 2)",
+    "index": 1
+  }
+}
