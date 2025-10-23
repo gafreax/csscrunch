@@ -1,0 +1,26 @@
+/* 1. Multiple selectors with class, id, descendant, and adjacent sibling */
+.container .item, #main-content > .highlighted + .note {
+  background: #f0f0f0;
+  border: 2px solid #333;
+}
+
+/* 2. Grouped selectors with general sibling, descendant, and class */
+#sidebar ~ .ad-banner, .footer .links .link, .header + .nav {
+  color: #0077cc;
+  padding: 10px;
+}
+
+/* 3. Mixed selectors with descendant, class, id, and adjacent sibling */
+#profile .avatar + .username, .dashboard .stats ~ .chart, #menu .item, .alert {
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+
+#menu-r0c0m0:checked~.menu-links{
+  background-color: #f0f0f0;
+}
+#menu-r0c1m0:checked~.menu-links a,
+#menu-r0c2m0:checked~.menu-links span{
+  color: #0077cc;
+}
+
