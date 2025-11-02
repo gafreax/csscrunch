@@ -1,0 +1,77 @@
+
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta http-equiv="X-UA-Compatible" />
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+      <title>Benchmarking: csscrunch vs clean-css</title>
+      <style>
+        body {
+          margin: 0;
+          padding: 0;
+          background: #ddd;
+        }
+
+        .container {
+          box-sizing: border-box;
+          height: 96vh;
+          width: 96vw;
+          margin: 2vh 2vw;
+          resize: both;
+          overflow: hidden;
+          padding: 20px;
+          background: white;
+          box-shadow: 0 0 15px #aaa;
+        }
+        canvas {
+          height: 96% !important;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <canvas id="chart-size-report1762126147157" width="16" ></canvas>
+      </div>
+      <script>
+        const ctx = document.getElementById('chart-size-report1762126147157')
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ["big.css","current.css","gmail-strip.css","media-query-pretty.css","media-query-simple.css","media-query.css"],
+            datasets: [
+              {
+                label: 'Original Size (log kb})',
+                data: [19,151,33,11,2,11],
+                backgroundColor: 'rgba(91,91,91, 0.7)',
+              },
+              {
+                label: 'csscrunch Size (log kb)',
+                data: [14,36,11,8,1,8],
+                backgroundColor: 'rgba(0,200,0, 0.7)',
+              },
+              {
+                label: 'clean-css Size (log kb)',
+                data: [13,96,17,9,1,9],
+                backgroundColor: 'rgba(0,0,255, 0.7)',
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'CSS Size Comparison: csscrunch vs clean-css',
+              },
+            },
+          },
+        })
+      </script>
+    </body>
+  </html>
+  

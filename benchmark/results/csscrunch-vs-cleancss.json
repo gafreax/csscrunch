@@ -1,27 +1,87 @@
 {
-  "name": "Benchmarking: unit.css",
-  "date": "2025-10-23T22:57:44.397Z",
+  "name": "Benchmarking: csscrunch vs clean-css",
+  "date": "2025-11-02T23:30:19.999Z",
   "version": "1.0.0",
   "results": [
     {
-      "name": "csscrunch (full optimization)",
-      "ops": 8538,
-      "margin": 5.05,
+      "name": "csscrunch big.css",
+      "ops": 239,
+      "margin": 1.27,
+      "percentSlower": 95.95
+    },
+    {
+      "name": "clean-css big.css",
+      "ops": 166,
+      "margin": 1.31,
+      "percentSlower": 97.19
+    },
+    {
+      "name": "csscrunch current.css",
+      "ops": 4,
+      "margin": 0.67,
+      "percentSlower": 99.93
+    },
+    {
+      "name": "clean-css current.css",
+      "ops": 18,
+      "margin": 1.11,
+      "percentSlower": 99.7
+    },
+    {
+      "name": "csscrunch gmail-strip.css",
+      "ops": 246,
+      "margin": 0.86,
+      "percentSlower": 95.84
+    },
+    {
+      "name": "clean-css gmail-strip.css",
+      "ops": 71,
+      "margin": 0.75,
+      "percentSlower": 98.8
+    },
+    {
+      "name": "csscrunch media-query-pretty.css",
+      "ops": 766,
+      "margin": 1.05,
+      "percentSlower": 87.03
+    },
+    {
+      "name": "clean-css media-query-pretty.css",
+      "ops": 316,
+      "margin": 1.2,
+      "percentSlower": 94.65
+    },
+    {
+      "name": "csscrunch media-query-simple.css",
+      "ops": 5907,
+      "margin": 1.22,
       "percentSlower": 0
     },
     {
-      "name": "clean-css (level 2)",
-      "ops": 2169,
-      "margin": 4.64,
-      "percentSlower": 74.6
+      "name": "clean-css media-query-simple.css",
+      "ops": 1685,
+      "margin": 0.53,
+      "percentSlower": 71.47
+    },
+    {
+      "name": "csscrunch media-query.css",
+      "ops": 732,
+      "margin": 1.37,
+      "percentSlower": 87.61
+    },
+    {
+      "name": "clean-css media-query.css",
+      "ops": 298,
+      "margin": 1.22,
+      "percentSlower": 94.96
     }
   ],
   "fastest": {
-    "name": "csscrunch (full optimization)",
-    "index": 0
+    "name": "csscrunch media-query-simple.css",
+    "index": 8
   },
   "slowest": {
-    "name": "clean-css (level 2)",
-    "index": 1
+    "name": "csscrunch current.css",
+    "index": 2
   }
 }
