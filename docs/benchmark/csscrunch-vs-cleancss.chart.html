@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+    <title>Benchmarking: csscrunch vs clean-css</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #ddd;
+      }
+
+      .container {
+        box-sizing: border-box;
+        height: 96vh;
+        width: 96vw;
+        margin: 2vh 2vw;
+        resize: both;
+        overflow: hidden;
+        padding: 20px;
+        background: white;
+        box-shadow: 0 0 15px #aaa;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <canvas id="chart1762126219999" width="16" height="9"></canvas>
+    </div>
+    <script>
+      const format = (num) => {
+        const [whole, fraction] = String(num).split('.')
+        const chunked = []
+        whole
+          .split('')
+          .reverse()
+          .forEach((char, index) => {
+            if (index % 3 === 0) {
+              chunked.unshift([char])
+            } else {
+              chunked[0].unshift(char)
+            }
+          })
+
+        const fractionStr = fraction !== undefined ? '.' + fraction : ''
+
+        return (
+          chunked.map((chunk) => chunk.join('')).join(' ') + fractionStr
+        )
+      }
+      const ctx1762126219999 = document
+        .getElementById('chart1762126219999')
+        .getContext('2d')
+      const chart1762126219999 = new Chart(ctx1762126219999, {
+        type: 'bar',
+        data: {
+          labels: ["csscrunch big.css","clean-css big.css","csscrunch current.css","clean-css current.css","csscrunch gmail-strip.css","clean-css gmail-strip.css","csscrunch media-query-pretty.css","clean-css media-query-pretty.css","csscrunch media-query-simple.css","clean-css media-query-simple.css","csscrunch media-query.css","clean-css media-query.css"],
+          datasets: [
+            {
+              data: [239,166,4,18,246,71,766,316,5907,1685,732,298],
+              backgroundColor: ["hsl(4.859999999999997, 85%, 55%)","hsl(3.372000000000003, 85%, 55%)","hsl(0.08399999999999182, 85%, 55%)","hsl(0.35999999999999654, 85%, 55%)","hsl(4.9919999999999956, 85%, 55%)","hsl(1.4400000000000033, 85%, 55%)","hsl(15.563999999999998, 85%, 55%)","hsl(6.419999999999993, 85%, 55%)","hsl(120, 85%, 55%)","hsl(34.236, 85%, 55%)","hsl(14.868000000000002, 85%, 55%)","hsl(6.048000000000007, 85%, 55%)"],
+              borderColor: ["hsl(4.859999999999997, 85%, 55%)","hsl(3.372000000000003, 85%, 55%)","hsl(0.08399999999999182, 85%, 55%)","hsl(0.35999999999999654, 85%, 55%)","hsl(4.9919999999999956, 85%, 55%)","hsl(1.4400000000000033, 85%, 55%)","hsl(15.563999999999998, 85%, 55%)","hsl(6.419999999999993, 85%, 55%)","hsl(120, 85%, 55%)","hsl(34.236, 85%, 55%)","hsl(14.868000000000002, 85%, 55%)","hsl(6.048000000000007, 85%, 55%)"],
+              borderWidth: 2,
+            },
+          ],
+        },
+        options: {
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Benchmarking: csscrunch vs clean-css',
+              font: { size: 20 },
+              padding: 20,
+            },
+            legend: {
+              display: false,
+            },
+            tooltip: {
+              callbacks: {
+                label: (context) => {
+                  return format(context.parsed.y) + ' ops/s'
+                },
+              },
+              displayColors: false,
+              backgroundColor: '#222222',
+              padding: 10,
+              cornerRadius: 5,
+              intersect: false,
+            },
+          },
+          scales: {
+            x: {
+              grid: {
+                color: '#888888',
+              },
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Operations per second',
+                padding: 10,
+              },
+              grid: {
+                color: '#888888',
+              },
+            },
+          },
+        },
+      })
+    </script>
+  </body>
+</html>
