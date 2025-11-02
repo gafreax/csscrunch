@@ -1,6 +1,6 @@
 {
   "name": "@gafreax/csscrunch",
-  "version": "1.2.11",
+  "version": "1.2.12",
   "description": "Simple CSS Parser to tokenize CSS, merge rules, and optimize it",
   "main": "dist/src/index.js",
   "scripts": {
