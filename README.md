@@ -4,6 +4,8 @@ This package provides a powerful and efficient TypeScript library for optimizing
 
 The great focus is on keeping a great compatibility across all kind of render engine especially on the various Outlook.
 
+[Go here to the online and interactive playground](https://gafreax.github.io/csscrunch/docs/playground.html)
+
 ## Features
 * **Group rules:** Group same rules with one selector.
 * **Compress:** Compress the size by removing not necessary char.
