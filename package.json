@@ -30,21 +30,21 @@
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
     "@types/clean-css": "^4.2.11",
-    "@vitest/coverage-v8": "^4.0.1",
+    "@vitest/coverage-v8": "^4.0.15",
     "benny": "^3.7.1",
     "clean-css": "^5.3.3",
     "husky": "^9.1.7",
-    "rimraf": "^6.0.1",
+    "rimraf": "^6.1.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@types/node": "^24.9.1",
-    "commander": "^14.0.1",
-    "vitest": "^4.0.1"
+    "@types/node": "^24.10.3",
+    "commander": "^14.0.2",
+    "vitest": "^4.0.15"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "^4.52.5"
+    "@rollup/rollup-linux-x64-gnu": "^4.53.3"
   },
   "pnpm": {
     "overrides": {
@@ -64,6 +64,9 @@
     },
     "onlyBuiltDependencies": [
       "esbuild"
-    ]
+    ],
+    "engine": {
+      "node": ">=24.11.0"
+    }
   }
 }

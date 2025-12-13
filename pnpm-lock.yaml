@@ -24,13 +24,13 @@ importers:
   .:
     dependencies:
       '@types/node':
-        specifier: ^24.9.1
+        specifier: ^24.10.3
         version: 24.10.3
       commander:
-        specifier: ^14.0.1
+        specifier: ^14.0.2
         version: 14.0.2
       vitest:
-        specifier: ^4.0.1
+        specifier: ^4.0.15
         version: 4.0.15(@types/node@24.10.3)(jiti@2.6.1)
     devDependencies:
       '@biomejs/biome':
@@ -46,7 +46,7 @@ importers:
         specifier: ^4.2.11
         version: 4.2.11
       '@vitest/coverage-v8':
-        specifier: ^4.0.1
+        specifier: ^4.0.15
         version: 4.0.15(vitest@4.0.15(@types/node@24.10.3)(jiti@2.6.1))
       benny:
         specifier: ^3.7.1
@@ -58,7 +58,7 @@ importers:
         specifier: ^9.1.7
         version: 9.1.7
       rimraf:
-        specifier: ^6.0.1
+        specifier: ^6.1.2
         version: 6.1.2
       ts-node:
         specifier: ^10.9.2
@@ -68,7 +68,7 @@ importers:
         version: 5.9.3
     optionalDependencies:
       '@rollup/rollup-linux-x64-gnu':
-        specifier: ^4.52.5
+        specifier: ^4.53.3
         version: 4.53.3
 
 packages:
