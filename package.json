@@ -8,9 +8,9 @@
     "build": "tsc",
     "clean": "rimraf dist/",
     "start": "ts-node src/launch.ts",
-    "lint": "ts-standard src/**/*.ts",
-    "lint:fix": "ts-standard --fix src/**/*.ts",
-    "prebuild": "pnpm run clean && ts-standard --fix src/**/*.ts tests/**/*.ts",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "prebuild": "pnpm run clean && biome check --write .",
     "prepare": "pnpm run build && husky",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -34,8 +34,8 @@
     "husky": "^9.1.7",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
-    "ts-standard": "^12.0.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "@biomejs/biome": "^2.3.8"
   },
   "dependencies": {
     "@types/node": "^24.9.1",
