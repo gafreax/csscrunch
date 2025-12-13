@@ -4,20 +4,21 @@
   "description": "Simple CSS Parser to tokenize CSS, merge rules, and optimize it",
   "main": "dist/src/index.js",
   "scripts": {
+    "check": "biome check && vitest test --run && vitest bench --run && tsc --noEmit && pnpm audit",
     "prepublish": "pnpm run build",
     "build": "tsc",
     "clean": "rimraf dist/",
     "start": "ts-node src/launch.ts",
-    "lint": "ts-standard src/**/*.ts",
-    "lint:fix": "ts-standard --fix src/**/*.ts",
-    "prebuild": "pnpm run clean && ts-standard --fix src/**/*.ts tests/**/*.ts",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "prebuild": "pnpm run clean && biome check --write .",
     "prepare": "pnpm run build && husky",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:exclude-snap": "vitest run -t \"^(?!.*snapshot.*)$\"",
     "test:update-snap": "vitest run --update",
     "test:coverage": "vitest run --coverage",
-    "test:bench": "vitest bench"
+    "test:bench": "vitest bench --run"
   },
   "author": "Gabriele Fontana",
   "bin": {
@@ -25,6 +26,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@biomejs/biome": "^2.3.8",
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
     "@types/clean-css": "^4.2.11",
@@ -34,7 +36,6 @@
     "husky": "^9.1.7",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
-    "ts-standard": "^12.0.2",
     "typescript": "^5.9.3"
   },
   "dependencies": {
@@ -56,6 +57,9 @@
       "brace-expansion@>=1.0.0 <=1.1.11": ">=1.1.12",
       "brace-expansion@>=2.0.0 <=2.0.1": ">=2.0.2",
       "vite@>=6.0.0 <=6.3.5": ">=6.3.6",
+      "vite@<=7.1.10": ">=7.1.11",
+      "js-yaml@>=4.0.0 <4.1.1": ">=4.1.1",
+      "glob@>=11.0.0 <11.1.0": ">=11.1.0",
       "vite@>=7.1.0 <=7.1.10": ">=7.1.11"
     },
     "onlyBuiltDependencies": [

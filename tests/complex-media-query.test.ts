@@ -1,9 +1,9 @@
-import { describe, it, expect } from 'vitest'
-import compile from '../src/index'
+import { describe, expect, it } from "vitest";
+import compile from "../src/index";
 
-describe('Complex Media Query Issue', () => {
-  it('handles complex selectors after media queries', () => {
-    const css = `@media (max-width: 520px) {
+describe("Complex Media Query Issue", () => {
+	it("handles complex selectors after media queries", () => {
+		const css = `@media (max-width: 520px) {
       .test {
         display: block;
       }
@@ -19,14 +19,14 @@ describe('Complex Media Query Issue', () => {
       line-height: 200%;
       width: auto;
       padding: 5px 20px;
-    }`
+    }`;
 
-    const result = compile(css)
+		const result = compile(css);
 
-    expect(result).toContain('background-color:#3AAEE0')
-    expect(result).toContain('border-radius:4px')
-    expect(result).toContain('color:#ffffff')
-    expect(result).toContain('direction:ltr')
-    expect(result).toContain('font-family:inherit')
-  })
-})
+		expect(result).toContain("background-color:#3AAEE0");
+		expect(result).toContain("border-radius:4px");
+		expect(result).toContain("color:#ffffff");
+		expect(result).toContain("direction:ltr");
+		expect(result).toContain("font-family:inherit");
+	});
+});

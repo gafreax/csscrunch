@@ -19,5 +19,5 @@ fi
 
 # Lint staged JS/TS files
 if [ -n "$STAGED_JS_FILES" ]; then
-  ts-standard --fix $STAGED_JS_FILES
+  biome check --write $STAGED_JS_FILES
 fi

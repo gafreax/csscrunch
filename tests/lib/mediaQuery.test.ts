@@ -1,9 +1,10 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from "vitest";
 import {
-  findIndexOfMediaQueries,
-  getMediaQueries,
-  deepLevel
-} from '../../src/lib/mediaQuery'
+	deepLevel,
+	findIndexOfMediaQueries,
+	getMediaQueries,
+} from "../../src/lib/mediaQuery";
+
 const simpleCssWithMediaQuery = `
 /* On screens that are 992px or less, set the background color to blue */
 @media screen and (max-width: 992px) {
@@ -18,7 +19,7 @@ const simpleCssWithMediaQuery = `
     background-color: olive;
   }
 }
-`
+`;
 const complexCssWithMediaQuery = `
 
 /* Small screens (phones) */
@@ -90,7 +91,7 @@ const complexCssWithMediaQuery = `
   section {
     flex-direction: column;
   }
-}`
+}`;
 
 const mediaQueryWithCommentsInside = `
 @media screen and (max-width: 992px) {
@@ -98,61 +99,61 @@ const mediaQueryWithCommentsInside = `
     background-color: blue; /* Another comment */
   }
 }
-`
+`;
 
-describe('findIndexOfMediaQueries', () => {
-  it('return position of media query if present', () => {
-    expect(findIndexOfMediaQueries(simpleCssWithMediaQuery)).toEqual([75, 233])
-  })
+describe("findIndexOfMediaQueries", () => {
+	it("return position of media query if present", () => {
+		expect(findIndexOfMediaQueries(simpleCssWithMediaQuery)).toEqual([75, 233]);
+	});
 
-  it('return empty array if no media query', () => {
-    expect(findIndexOfMediaQueries('')).toEqual([])
-  })
-})
+	it("return empty array if no media query", () => {
+		expect(findIndexOfMediaQueries("")).toEqual([]);
+	});
+});
 
-describe('getMediaQueries', () => {
-  it('return media queries', () => {
-    const rules = getMediaQueries(simpleCssWithMediaQuery)
-    expect(rules.length).toEqual(2)
-  })
+describe("getMediaQueries", () => {
+	it("return media queries", () => {
+		const rules = getMediaQueries(simpleCssWithMediaQuery);
+		expect(rules.length).toEqual(2);
+	});
 
-  it('return media queries with complex css', () => {
-    const rules = getMediaQueries(complexCssWithMediaQuery)
+	it("return media queries with complex css", () => {
+		const rules = getMediaQueries(complexCssWithMediaQuery);
 
-    expect(rules.length).toEqual(6)
-  })
+		expect(rules.length).toEqual(6);
+	});
 
-  it('return media queries with comments inside', () => {
-    const rules = getMediaQueries(mediaQueryWithCommentsInside)
-    expect(rules.length).toEqual(1)
-    expect(rules[0].val).not.toContain('/* Another comment */')
-  })
+	it("return media queries with comments inside", () => {
+		const rules = getMediaQueries(mediaQueryWithCommentsInside);
+		expect(rules.length).toEqual(1);
+		expect(rules[0].val).not.toContain("/* Another comment */");
+	});
 
-  it('return empty array if no media query', () => {
-    expect(getMediaQueries('')).toEqual([])
-  })
-})
+	it("return empty array if no media query", () => {
+		expect(getMediaQueries("")).toEqual([]);
+	});
+});
 
-describe('deepLevel', () => {
-  it('correctly handle increase level', () => {
-    const r = deepLevel('{')
-    expect(r).toBe(1)
-  })
+describe("deepLevel", () => {
+	it("correctly handle increase level", () => {
+		const r = deepLevel("{");
+		expect(r).toBe(1);
+	});
 
-  it('correctly handle decrease level', () => {
-    const r = deepLevel('}')
-    expect(r).toBe(-1)
-  })
+	it("correctly handle decrease level", () => {
+		const r = deepLevel("}");
+		expect(r).toBe(-1);
+	});
 
-  it('correctly handle other char', () => {
-    const r = deepLevel('0')
-    expect(r).toBe(0)
-  })
+	it("correctly handle other char", () => {
+		const r = deepLevel("0");
+		expect(r).toBe(0);
+	});
 
-  it('correctly handle full string', () => {
-    const str = '.a { color: red; }'
-    let level = 0
-    for (const char of str) level += deepLevel(char)
-    expect(level).toBe(0)
-  })
-})
+	it("correctly handle full string", () => {
+		const str = ".a { color: red; }";
+		let level = 0;
+		for (const char of str) level += deepLevel(char);
+		expect(level).toBe(0);
+	});
+});

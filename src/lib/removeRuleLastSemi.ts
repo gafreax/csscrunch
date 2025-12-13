@@ -1,3 +1,3 @@
-export function removeRuleLastSemi (str: string): string {
-  return str.replace(/;\s*}/g, '}')
+export function removeRuleLastSemi(str: string): string {
+	return str.replace(/;\s*}/g, "}");
 }

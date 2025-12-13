@@ -1,23 +1,23 @@
-import { cleanCss, tokenize } from './lib/tokenize'
-import { stringify } from './lib/stringify'
-import { compact } from './lib/compact'
-import { Optimizations } from './lib/optimization.d'
+import { compact } from "./lib/compact";
+import type { Optimizations } from "./lib/optimization.d";
+import { stringify } from "./lib/stringify";
+import { cleanCss, tokenize } from "./lib/tokenize";
 
-export { tokenize, stringify, compact }
+export { tokenize, stringify, compact };
 
 const compile = (css: string, optimization?: Optimizations): string => {
-  const cleanedCss = cleanCss(css)
-  const tokens = tokenize(cleanedCss, optimization)
-  const mediaOptimizedRules = Object.entries(tokens).reduce((acc, curr) => {
-    const [key, value] = curr
-    if (key.startsWith('@media')) {
-      const compiledRulesForMedia = compile(value, optimization)
-      return { ...acc, [key]: compiledRulesForMedia }
-    }
-    return { ...acc, [key]: value }
-  }, {})
-  const compactedTokens = compact(mediaOptimizedRules)
-  return stringify(compactedTokens)
-}
+	const cleanedCss = cleanCss(css);
+	const tokens = tokenize(cleanedCss, optimization);
+	const entries = Object.entries(tokens).map(([key, value]) => {
+		if (key.startsWith("@media")) {
+			const compiledRulesForMedia = compile(value, optimization);
+			return [key, compiledRulesForMedia];
+		}
+		return [key, value];
+	});
+	const mediaOptimizedRules = Object.fromEntries(entries);
+	const compactedTokens = compact(mediaOptimizedRules);
+	return stringify(compactedTokens);
+};
 
-export default compile
+export default compile;
