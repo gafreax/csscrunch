@@ -1,1 +1,2 @@
-npm run build
+pnpm audit --fix
+pnpm run build
