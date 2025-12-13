@@ -1,20 +1,20 @@
 export interface BuildMediaTokensI {
-  css: string
-  mediaQueries: MediaQuery[]
+	css: string;
+	mediaQueries: MediaQuery[];
 }
 
-export type Token = string
+export type Token = string;
 
 export interface Tokens {
-  [key: string]: Token
+	[key: string]: Token;
 }
 
 interface GetRuleValueI {
-  currentRules: string
-  newRules: string
+	currentRules: string;
+	newRules: string;
 }
 
-export type GetRuleValueFunction = (params: GetRuleValueI) => string
+export type GetRuleValueFunction = (params: GetRuleValueI) => string;
 
 /**
  * build media queries tokens
@@ -23,6 +23,8 @@ export type GetRuleValueFunction = (params: GetRuleValueI) => string
  * @param object media query
  * @returns {Tokens} media tokens
  */
-export type BuildMediaTokensFunction = (mediaTokens: BuildMediaTokensI) => Tokens
+export type BuildMediaTokensFunction = (
+	mediaTokens: BuildMediaTokensI,
+) => Tokens;
 
-export type RuleObject = Record<string, string>
+export type RuleObject = Record<string, string>;
