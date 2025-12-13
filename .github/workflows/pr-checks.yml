@@ -15,14 +15,14 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '24'
         cache: 'pnpm'
     - name: Install dependencies
       run: pnpm install
     - name: Run linting
       run: pnpm run lint
     - name: Check complexity
-      run: npx eslint src/ --ext .ts --max-warnings 0
+      run: npx biome lint --only=noExcessiveCognitiveComplexity src/
 
   test:
     runs-on: ubuntu-latest
@@ -34,7 +34,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '24'
         cache: 'pnpm'
     - name: Install dependencies
       run: pnpm install
@@ -51,7 +51,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '24'
         cache: 'pnpm'
     - name: Install dependencies
       run: pnpm install
@@ -68,7 +68,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '24'
         cache: 'pnpm'
     - name: Install dependencies
       run: pnpm install
