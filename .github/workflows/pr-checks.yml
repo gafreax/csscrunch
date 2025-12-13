@@ -1,0 +1,118 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: pnpm/action-setup@v4
+      with:
+        version: latest
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'pnpm'
+    - name: Install dependencies
+      run: pnpm install
+    - name: Run linting
+      run: pnpm run lint
+    - name: Check complexity
+      run: npx eslint src/ --ext .ts --max-warnings 0
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: pnpm/action-setup@v4
+      with:
+        version: latest
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'pnpm'
+    - name: Install dependencies
+      run: pnpm install
+    - name: Run tests
+      run: pnpm run test
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: pnpm/action-setup@v4
+      with:
+        version: latest
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'pnpm'
+    - name: Install dependencies
+      run: pnpm install
+    - name: Build
+      run: pnpm run build
+
+  performance:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: pnpm/action-setup@v4
+      with:
+        version: latest
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'pnpm'
+    - name: Install dependencies
+      run: pnpm install
+    - name: Build
+      run: pnpm run build
+    - name: Run benchmarks
+      run: node benchmark/comparison.ts
+    - name: Check performance regression
+      run: |
+        node -e "
+        const fs = require('fs');
+        const results = JSON.parse(fs.readFileSync('benchmark/results/csscrunch-vs-cleancss.json', 'utf8'));
+        const baseline = JSON.parse(fs.readFileSync('benchmark/baseline.json', 'utf8'));
+        let hasRegression = false;
+        results.results.forEach(result => {
+          if (result.name.startsWith('csscrunch')) {
+            const baselineResult = baseline.results.find(b => b.name === result.name);
+            if (baselineResult) {
+              const degradation = ((baselineResult.ops - result.ops) / baselineResult.ops) * 100;
+              if (degradation > 5) {
+                console.error(\`Performance regression: \${result.name} is \${degradation.toFixed(2)}% slower\`);
+                hasRegression = true;
+              }
+            }
+          }
+        });
+        if (hasRegression) process.exit(1);
+        "
+
+  docs-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Check for feature commits and docs updates
+      run: |
+        COMMITS=$(gh pr view ${{ github.event.pull_request.number }} --json commits --jq '.commits[].message')
+        HAS_FEAT=$(echo "$COMMITS" | grep -c "^feat:" || true)
+        if [ "$HAS_FEAT" -gt 0 ]; then
+          CHANGED_FILES=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files[].path')
+          DOCS_UPDATED=$(echo "$CHANGED_FILES" | grep -E "(docs/|AGENT\.md|README\.md)" | wc -l)
+          if [ "$DOCS_UPDATED" -eq 0 ]; then
+            echo "Error: New features detected (feat: commits), but no documentation updates in docs/, AGENT.md, or README.md."
+            exit 1
+          fi
+        fi
