@@ -154,6 +154,13 @@ describe("reduceHexColor", () => {
 		expect(reduceHexColor("#12345G")).toBe("#12345G");
 		expect(reduceHexColor("")).toBe("");
 	});
+
+	it("should preserve hex colors with transparency", () => {
+		expect(reduceHexColor("#FFFFFF00")).toBe("#FFFFFF00");
+		expect(reduceHexColor("#00000000")).toBe("#00000000");
+		expect(reduceHexColor("#AABBCC00")).toBe("#AABBCC00");
+		expect(reduceHexColor("#11223300")).toBe("#11223300");
+	});
 });
 
 describe("removeComments", () => {
