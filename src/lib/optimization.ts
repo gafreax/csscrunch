@@ -60,7 +60,7 @@ export const isAllSideDifferent = ({
 };
 
 export const reduceHexColor = (color: string): string => {
-	if (color === "") return color;
+	if (color === "" || color.length !== 7 || color[0] !== "#") return color;
 	if (color[1] === color[2] && color[3] === color[4] && color[5] === color[6]) {
 		return `#${color[1]}${color[3]}${color[5]}`;
 	}
