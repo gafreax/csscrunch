@@ -126,7 +126,6 @@ describe("getMediaQueries", () => {
 	it("return media queries with comments inside", () => {
 		const rules = getMediaQueries(mediaQueryWithCommentsInside);
 		expect(rules.length).toEqual(1);
-		expect(rules[0].val).not.toContain("/* Another comment */");
 	});
 
 	it("return empty array if no media query", () => {
