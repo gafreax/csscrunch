@@ -29,7 +29,6 @@ export const getMediaQueries = (css: string): MediaQuery[] => {
 		if (firstParenthesis < 0) continue; // Skip if no opening brace found
 
 		let deep = 1;
-		let val = "";
 		const rule = css.slice(index, firstParenthesis);
 		let i = firstParenthesis + 1;
 
@@ -50,11 +49,6 @@ export const getMediaQueries = (css: string): MediaQuery[] => {
 					deep--;
 				}
 
-				// Collect characters for the value
-				if (deep > 0) {
-					val += css[i];
-				}
-
 				// Exit when we reach the closing brace of the media query
 				if (deep === 0) {
 					break;
@@ -66,7 +60,6 @@ export const getMediaQueries = (css: string): MediaQuery[] => {
 
 			mediaQueries.push({
 				rule,
-				val,
 				start: index,
 				end: mediaQueryEnd,
 			});
