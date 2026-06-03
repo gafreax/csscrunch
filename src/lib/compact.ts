@@ -6,21 +6,39 @@ import type { Tokens } from "./tokenizeTypes";
  * @returns compacted Tokens
  */
 export const compact = (tokens: Tokens): Tokens => {
-	for (const token in tokens) {
-		// do not optimize media queries
-		if (token.includes("@media")) continue;
-		const matchedToken = [];
-		for (const matchToken in tokens) {
-			if (tokens[token] === tokens[matchToken] && token !== matchToken) {
-				matchedToken.push(matchToken);
-				delete tokens[matchToken]; // eslint-disable-line
+	const compactedTokens: Tokens = {};
+	const keys = Object.keys(tokens);
+
+	let currentGroup: string[] = [];
+	let currentValue: string | null = null;
+	let isMediaGroup = false;
+
+	const flush = () => {
+		if (currentGroup.length > 0 && currentValue !== null) {
+			if (isMediaGroup) {
+				for (const mediaKey of currentGroup) {
+					compactedTokens[mediaKey] = currentValue;
+				}
+			} else {
+				compactedTokens[currentGroup.join(",")] = currentValue;
 			}
 		}
-		if (matchedToken.length > 0) {
-			const newToken = `${token},${matchedToken.join(",")}`;
-			tokens[newToken] = tokens[token];
-			delete tokens[token]; // eslint-disable-line
+	};
+
+	for (const key of keys) {
+		const value = tokens[key];
+		const isMedia = key.includes("@media");
+
+		if (currentValue === value && isMedia === isMediaGroup && !isMedia) {
+			currentGroup.push(key);
+		} else {
+			flush();
+			currentGroup = [key];
+			currentValue = value;
+			isMediaGroup = isMedia;
 		}
 	}
-	return tokens;
+	flush();
+
+	return compactedTokens;
 };
