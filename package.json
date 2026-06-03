@@ -32,12 +32,11 @@
     "@types/clean-css": "^4.2.11",
     "@types/node": "^25.9.1",
     "@vitest/coverage-v8": "^4.0.1",
-    "benny": "^3.7.1",
     "clean-css": "^5.3.3",
     "husky": "^9.1.7",
     "rimraf": "^6.0.1",
-    "tsx": "^4.22.3",
     "tsdown": "^0.22.1",
+    "tsx": "^4.22.3",
     "typescript": "^6.0.3"
   },
   "dependencies": {
