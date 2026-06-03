@@ -1,4 +1,4 @@
-import type { Tokens } from "./tokenize.d";
+import type { Tokens } from "./tokenizeTypes";
 
 /**
  * Compact the tokens

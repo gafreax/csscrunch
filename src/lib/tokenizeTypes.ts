@@ -1,3 +1,5 @@
+import type { MediaQuery } from "./mediaQueryTypes";
+
 export interface BuildMediaTokensI {
 	css: string;
 	mediaQueries: MediaQuery[];

@@ -1,5 +1,5 @@
 import { compact } from "./lib/compact";
-import type { Optimizations } from "./lib/optimization.d";
+import type { Optimizations } from "./lib/optimizationTypes";
 import { stringify } from "./lib/stringify";
 import { cleanCss, tokenize } from "./lib/tokenize";
 

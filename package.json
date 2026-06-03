@@ -6,9 +6,9 @@
   "scripts": {
     "check": "biome check && vitest test --run && vitest bench --run && tsc --noEmit && pnpm audit",
     "prepublish": "pnpm run build",
-    "build": "tsc",
+    "build": "tsdown src/index.ts src/launch.ts --format cjs,esm --dts",
     "clean": "rimraf dist/",
-    "start": "ts-node src/launch.ts",
+    "start": "tsx src/launch.ts",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "prebuild": "pnpm run clean && biome check --write .",
@@ -30,16 +30,17 @@
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
     "@types/clean-css": "^4.2.11",
+    "@types/node": "^25.9.1",
     "@vitest/coverage-v8": "^4.0.1",
     "benny": "^3.7.1",
     "clean-css": "^5.3.3",
     "husky": "^9.1.7",
     "rimraf": "^6.0.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "tsx": "^4.22.3",
+    "tsdown": "^0.22.1",
+    "typescript": "^6.0.3"
   },
   "dependencies": {
-    "@types/node": "^24.9.1",
     "commander": "^14.0.1",
     "vitest": "^4.0.1"
   },
