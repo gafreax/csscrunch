@@ -1,4 +1,4 @@
-import type { Tokens } from "./tokenize.d";
+import type { Tokens } from "./tokenizeTypes";
 
 /**
  * Stringify tokens object to use as css string

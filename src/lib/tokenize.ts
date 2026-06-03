@@ -1,14 +1,14 @@
 import { getMediaQueries } from "./mediaQuery";
-import type { MediaQuery } from "./mediaQuery.d";
+import type { MediaQuery } from "./mediaQueryTypes";
 import { optimizeRule, removeComments, removeDuplicates } from "./optimization";
-import type { Optimizations } from "./optimization.d";
+import type { Optimizations } from "./optimizationTypes";
 import { removeRuleLastSemi } from "./removeRuleLastSemi";
 import type {
 	BuildMediaTokensFunction,
 	GetRuleValueFunction,
 	RuleObject,
 	Tokens,
-} from "./tokenize.d";
+} from "./tokenizeTypes";
 import { isEmpty, isWhitespace } from "./utils";
 
 const REGEX_MEDIA_QUERY_BRACKETS_WITH_SPACE = /[\n\t]| {2,}| ?([{}() ,;:]) ?/g;
