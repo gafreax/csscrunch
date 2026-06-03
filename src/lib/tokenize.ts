@@ -179,20 +179,9 @@ export const tokenize = (css: string, optmizations?: Optimizations): Tokens => {
 			index >= mediaQueries[mediaQueryParsed].start &&
 			index < mediaQueries[mediaQueryParsed].end
 		) {
-			// We're inside a media query
-			if (index === mediaQueries[mediaQueryParsed].end - 1) {
-				// We're at the closing brace
-				oldChar = char;
-				if (char === "}") {
-					mediaQueryParsed++;
-					// Make sure we don't skip the next character after the media query
-					// This is important when a selector immediately follows a media query
-					if (index + 1 < css.length && css[index + 1] === ".") {
-						// Make sure we don't accidentally skip a class selector
-						continue;
-					}
-				}
-			}
+			index = mediaQueries[mediaQueryParsed].end - 1;
+			oldChar = css[index];
+			mediaQueryParsed++;
 			continue;
 		}
 
