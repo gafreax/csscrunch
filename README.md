@@ -103,7 +103,7 @@ pnpm run test:bench
 A dedicated script is available to compare the performance of `csscrunch` against `clean-css`. To run it, use the following command:
 
 ```bash
-ts-node benchmark/comparison.ts
+tsx benchmark/comparison.ts
 ```
 
 ## Contribution
