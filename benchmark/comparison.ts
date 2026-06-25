@@ -48,7 +48,7 @@ if (flags.includes('--throughput') || flags.length === 0) {
     benny.complete(),
     benny.save({ file: 'csscrunch-vs-cleancss', version: '1.0.0' }),
     benny.save({ file: 'csscrunch-vs-cleancss', format: 'chart.html' })
-  ).catch((e) => {
+  ).catch((e: unknown) => {
     console.error(e)
   })
 }

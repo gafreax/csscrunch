@@ -3,7 +3,7 @@ import type { Optimizations } from "./lib/optimizationTypes";
 import { stringify } from "./lib/stringify";
 import { cleanCss, tokenize } from "./lib/tokenize";
 
-export { tokenize, stringify, compact };
+export { compact, stringify, tokenize };
 
 const compile = (css: string, optimization?: Optimizations): string => {
 	const cleanedCss = cleanCss(css);
