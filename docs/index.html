@@ -3,49 +3,270 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSS Crunch</title>
+  <title>CSS Crunch | High-Performance CSS Optimizer</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
     :root {
-      --light-brown: #D2B48C;
-      --brown: #8B4513;
-      --green: #228B22;
-      --dark-green: #006400;
-      --background: #F5F5DC;
-      --text-color: #333;
+      --bg-color: #0a0a0c;
+      --text-color: #e2e8f0;
+      --accent: #00ffcc;
+      --accent-glow: rgba(0, 255, 204, 0.4);
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --gradient-text: linear-gradient(90deg, #00ffcc 0%, #3b82f6 100%);
     }
-    body {
-      font-family: sans-serif;
-      line-height: 1.6;
+
+    * {
+      box-sizing: border-box;
       margin: 0;
-      padding: 2rem;
-      background-color: var(--background);
-      color: var(--text-color);
+      padding: 0;
     }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: radial-gradient(circle at 15% 50%, rgba(0, 255, 204, 0.08), transparent 25%),
+                        radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.08), transparent 25%);
+    }
+
     header {
       display: flex;
       align-items: center;
-      gap: 20px;
-      margin-bottom: 2rem;
+      justify-content: center;
+      flex-direction: column;
+      padding: 6rem 2rem 4rem;
+      text-align: center;
+      position: relative;
     }
+
     header img {
-      width: 100px;
-      height: 100px;
+      width: 140px;
+      height: 140px;
+      margin-bottom: 1.5rem;
+      filter: drop-shadow(0 0 20px var(--accent-glow));
+      animation: float 6s ease-in-out infinite;
     }
-    h1, h2 {
-      color: var(--dark-green);
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
     }
-    a {
-      color: var(--green);
+
+    h1 {
+      font-size: 4rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: var(--gradient-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.05em;
     }
-    code, pre {
-      font-family: monospace;
+
+    p.subtitle {
+      font-size: 1.2rem;
+      color: #94a3b8;
+      max-width: 600px;
+      margin: 0 auto 2rem;
     }
+
+    .badges {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .badge:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+
+    .badge span {
+      color: var(--accent);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+
+    section {
+      margin-bottom: 4rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 3rem;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    section:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h2::before {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 2rem 0 1rem;
+      color: #e2e8f0;
+    }
+
+    ul.features {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    ul.features li {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--card-border);
+      padding: 1.5rem;
+      border-radius: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    ul.features li:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: var(--accent);
+    }
+
+    ul.features li::before {
+      content: '✓';
+      color: var(--accent);
+      font-size: 1.2rem;
+    }
+
     pre {
-      background-color: #f0f0e0; /* Lighter beige for contrast */
+      background: #0f1115;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: #a5b4fc;
+      margin-bottom: 1.5rem;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    code {
+      font-family: inherit;
+    }
+
+    .benchmark-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .chart-box {
+      background: #0f1115;
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
       padding: 1rem;
-      border-radius: 5px;
-      border-left: 5px solid var(--light-brown);
-      color: var(--brown);
+      overflow: hidden;
+    }
+
+    .chart-box iframe {
+      width: 100%;
+      height: 500px;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .chart-box.tall iframe {
+      height: 800px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: rgba(0, 255, 204, 0.1);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+    }
+
+    .btn:hover {
+      background: var(--accent);
+      color: var(--bg-color);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--card-border);
+      margin-top: 4rem;
+      color: #64748b;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    footer a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 2.5rem; }
+      section { padding: 2rem; }
     }
   </style>
 </head>
@@ -53,67 +274,79 @@
 
   <header>
     <img src="./logo.png" alt="CSS Crunch Logo">
-    <div>
-      <h1>CSS Crunch</h1>
-      <p>A powerful TypeScript library for optimizing CSS strings.</p>
+    <h1>CSS Crunch</h1>
+    <p class="subtitle">A lightning-fast, ultra-efficient TypeScript library for optimizing and compressing CSS strings.</p>
+    <div class="badges">
+      <div class="badge">Node.js <span>22-26</span></div>
+      <div class="badge">Module <span>NodeNext</span></div>
+      <div class="badge">ESM & <span>CommonJS</span></div>
     </div>
   </header>
 
   <main>
     <section>
       <h2>Features</h2>
-      <ul>
+      <ul class="features">
         <li>Rule grouping</li>
-        <li>CSS compression</li>
+        <li>Aggressive compression</li>
         <li>Selector merging</li>
-        <li>Media query handling</li>
+        <li>Smart Media query handling</li>
       </ul>
     </section>
 
     <section>
       <h2>Installation & Usage</h2>
+      
       <h3>Installation</h3>
       <pre><code>npm install @gafreax/csscrunch</code></pre>
+      
       <h3>CLI Usage</h3>
       <pre><code>npx @gafreax/csscrunch compile input.css optimized.css</code></pre>
+      
       <h3>Library Usage (ESM)</h3>
       <pre><code>import csscrunch from '@gafreax/csscrunch'
 const { default: compile } = csscrunch
 
 const cssString = '.example { color: red; font-size: 16px; }';
-const parsedCSS = compile(cssString);
-      </code></pre>
+const parsedCSS = compile(cssString);</code></pre>
+      
       <h3>Library Usage (CommonJS)</h3>
       <pre><code>const csscrunch = require('@gafreax/csscrunch')
 const { default: compile } = csscrunch
 
-const cssString = '.example { color: red; font-size: 17px; }';
-const parsedCSS = compile(cssString);
-      </code></pre>
+const cssString = '.example { color: red; font-size: 16px; }';
+const parsedCSS = compile(cssString);</code></pre>
     </section>
 
     <section>
-      <h2>Comparison</h2>
-      <p>Here is a benchmark comparison against other popular CSS optimization libraries like clean-css.</p>
-      <h3>Throughput Benchmark</h3>
-      <h5>Higher is better (op per sec)</h5>
-      <div>
-        <iframe src="./benchmark/csscrunch-vs-cleancss.chart.html" style="width: 100%; height: 500px; border: none;"></iframe>
-      </div>
-      <a href="./benchmark/throughput-report.html">View Detailed Throughput Report</a>
-      <h3>Size Benchmark</h3>
-      <h5>Lower is better (kb)</h5>
-      <div>
-        <iframe src="./benchmark/size-report.html" style="width: 100%; height: 800px; border: none;"></iframe>
-      </div>
-      <a href="./benchmark/size-report.html">View Detailed Size Report</a>
-    </section>
+      <h2>Performance Comparison</h2>
+      <p style="color: #94a3b8; margin-bottom: 2rem;">CSS Crunch is built for unparalleled performance. Below is a direct benchmark comparison against <strong>clean-css</strong>, showcasing superior throughput and compression efficiency.</p>
+      
+      <div class="benchmark-container">
+        <div>
+          <h3>🚀 Throughput Benchmark</h3>
+          <p style="font-size: 0.9rem; color: #a5b4fc; margin-top: -0.5rem; margin-bottom: 1rem;">Higher is better (operations per second)</p>
+          <div class="chart-box">
+            <iframe src="./benchmark/csscrunch-vs-cleancss.chart.html" title="Throughput Comparison Chart"></iframe>
+          </div>
+          <a href="./benchmark/throughput-report.html" class="btn">View Detailed Throughput Report</a>
+        </div>
 
+        <div>
+          <h3>📦 Size Benchmark</h3>
+          <p style="font-size: 0.9rem; color: #a5b4fc; margin-top: -0.5rem; margin-bottom: 1rem;">Lower is better (KB)</p>
+          <div class="chart-box tall">
+            <iframe src="./benchmark/size-report.html" title="Size Comparison Chart"></iframe>
+          </div>
+          <a href="./benchmark/size-report.html" class="btn">View Detailed Size Report</a>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer>
     <p>
-      <a href="https://github.com/gafreax/csscrunch">View on GitHub</a>
+      <a href="https://github.com/gafreax/csscrunch">View CSS Crunch on GitHub</a>
     </p>
   </footer>
 

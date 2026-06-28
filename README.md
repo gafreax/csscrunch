@@ -4,6 +4,10 @@ This package provides a powerful and efficient TypeScript library for optimizing
 
 The great focus is on keeping a great compatibility across all kind of render engine especially on the various Outlook.
 
+## Compatibility
+* **Node.js**: Officially supports Node 22, 24, and 26.
+* **Module Resolution**: Full support for `NodeNext` and ESM/CommonJS environments.
+
 ## Features
 * **Group rules:** Group same rules with one selector.
 * **Compress:** Compress the size by removing not necessary char.
@@ -86,24 +90,28 @@ Example:
 $ npx @gafreax/csscrunch compile --optimize-all input.css optimized.css
 ```
 
-## Benchmark
+## Benchmark & Performance
 
-This project includes two types of benchmarks.
+CSS Crunch is built for speed and efficiency. It significantly outperforms traditional tools in both execution time and optimization size. 
 
-### Vitest Benchmarks
+### 🚀 CSS Crunch vs. clean-css
 
-To run the standard suite of benchmarks, use the following command:
+We provide a dedicated benchmark comparison against `clean-css`, demonstrating CSS Crunch's superior throughput and compression capabilities.
 
-```bash
-pnpm run test:bench
-```
-
-### Performance Comparison vs. clean-css
-
-A dedicated script is available to compare the performance of `csscrunch` against `clean-css`. To run it, use the following command:
+To run the performance comparison script:
 
 ```bash
 tsx benchmark/comparison.ts
+```
+
+*For detailed visual reports on throughput and size, check out our [documentation site](https://gafreax.github.io/csscrunch/).*
+
+### Vitest Benchmarks
+
+To run the standard suite of internal benchmarks:
+
+```bash
+pnpm run test:bench
 ```
 
 ## Contribution
