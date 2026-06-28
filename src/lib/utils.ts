@@ -1,4 +1,4 @@
-import type { Optimizations } from "./optimization.d";
+import type { Optimizations } from "./optimizationTypes";
 
 export interface Options {
 	output: string;

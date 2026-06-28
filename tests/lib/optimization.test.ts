@@ -9,7 +9,7 @@ import {
 	removeComments,
 	removeDuplicates,
 } from "../../src/lib/optimization";
-import type { Sides } from "../../src/lib/optimization.d";
+import type { Sides } from "../../src/lib/optimizationTypes";
 
 describe("optimizeColor", () => {
 	it("should extract color and optimize it", () => {

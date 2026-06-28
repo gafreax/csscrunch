@@ -1,4 +1,4 @@
-import type { Optimizations, Sides } from "./optimization.d";
+import type { Optimizations, Sides } from "./optimizationTypes";
 
 type SpacingRule = "padding" | "margin";
 type Side = "top" | "right" | "bottom" | "left";

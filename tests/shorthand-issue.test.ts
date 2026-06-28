@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import compile from "../src";
-import type { Optimizations } from "../src/lib/optimization.d";
+import type { Optimizations } from "../src/lib/optimizationTypes";
 
 describe("Shorthand Issue", () => {
 	it("should optimize shorthand properties correctly", () => {

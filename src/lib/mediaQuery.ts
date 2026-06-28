@@ -1,4 +1,4 @@
-import type { MediaQuery } from "./mediaQuery.d";
+import type { MediaQuery } from "./mediaQueryTypes";
 
 export const deepLevel = (char: string): number => {
 	if (char === "{") {
