@@ -4,6 +4,8 @@ This package provides a powerful and efficient TypeScript library for optimizing
 
 The great focus is on keeping a great compatibility across all kind of render engine especially on the various Outlook.
 
+[Go here to the online and interactive playground](https://gafreax.github.io/csscrunch/examples/playground.html)
+
 ## Compatibility
 * **Node.js**: Officially supports Node 22, 24, and 26.
 * **Module Resolution**: Full support for `NodeNext` and ESM/CommonJS environments.
