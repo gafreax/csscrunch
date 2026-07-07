@@ -116,6 +116,31 @@ To run the standard suite of internal benchmarks:
 pnpm run test:bench
 ```
 
+## Tooling & Type-Checking
+
+CSS Crunch keeps its developer toolchain fast and modern. The type-check step of
+the `check` script runs on **TypeScript 7** via
+[`tsgo`](https://www.npmjs.com/package/@typescript/native-preview) (the native
+Go port of the compiler), while bundling and dual CJS/ESM output are handled by
+[`tsdown`](https://tsdown.dev) (Rolldown + oxc, in Rust).
+
+Measured on this repository (Apple Silicon):
+
+| Step | Classic tooling | Native (TS 7 / `tsgo`) | Speedup |
+| --- | --- | --- | --- |
+| Type-check (`--noEmit`) | ~0.34 s (`tsc` 6.0.3) | ~0.10 s (`tsgo`) | **~3.4×** |
+| `.d.ts` generation (in `tsdown`) | ~385 ms | ~130 ms | **~3×** |
+
+`tsgo` reports the exact same type errors as `tsc`, and the `.d.ts` it produces
+is **byte-identical** to the classic compiler's output. The bundle itself is
+transpiled by oxc (no type-checking during build), so type safety is enforced
+separately by the `check` script.
+
+> **Note:** TypeScript 7 is still in preview. We use `tsgo` for type-checking
+> only (it emits nothing), which is safe today. Generating declarations with the
+> native compiler (`dts: { tsgo: true }` in `tsdown.config.mts`) is still
+> experimental and kept opt-in until TS 7 reaches a stable release.
+
 ## Contribution
 
 We welcome contributions to this open-source project. If you encounter issues or have suggestions for improvement, please feel free to create GitHub issues or submit pull requests.
