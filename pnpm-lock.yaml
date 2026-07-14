@@ -26,9 +26,6 @@ importers:
       commander:
         specifier: ^14.0.3
         version: 14.0.3
-      vitest:
-        specifier: ^4.1.10
-        version: 4.1.10(@types/node@25.9.5)(@vitest/coverage-v8@4.1.10)(vite@7.2.7(@types/node@25.9.5)(jiti@2.6.1)(tsx@4.23.0))
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.5.3
@@ -72,6 +69,9 @@ importers:
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
+      vitest:
+        specifier: ^4.1.10
+        version: 4.1.10(@types/node@25.9.5)(@vitest/coverage-v8@4.1.10)(vite@7.2.7(@types/node@25.9.5)(jiti@2.6.1)(tsx@4.23.0))
     optionalDependencies:
       '@rollup/rollup-linux-x64-gnu':
         specifier: ^4.62.2

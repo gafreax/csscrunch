@@ -17,3 +17,10 @@ overrides:
 # `allowBuilds` is the pnpm 11 key that approves it (supersedes onlyBuiltDependencies).
 allowBuilds:
   esbuild: true
+# Supply-chain hardening: refuse dependency versions published less than 3 days
+# ago (value in minutes). Gives the ecosystem time to detect and pull a
+# compromised release before `pnpm install`/`pnpm up` can pull it into the
+# lockfile, while keeping the delay short enough not to block legitimate
+# security patches. If a patch ever needs adopting sooner, whitelist just that
+# version under `minimumReleaseAgeExclude`.
+minimumReleaseAge: 4320
